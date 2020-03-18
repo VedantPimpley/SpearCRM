@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import PeopleTable from '/home/vedant/Desktop/Workbench/Projects/CRM/front_end/src/components_and_containers/people.js'; 
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class NavBar extends React.Component {
+  render(){
+    return(
+      <ul>
+         <li className='navbar-entry'> <a href="#">Dashboard</a> </li>
+         <li className='navbar-entry'> <a href="#">People</a> </li>
+         <li className='navbar-entry'> <a href="#">Pipeline</a> </li>
+         <li className='navbar-entry' style={{float:"right"}}> <a href="#">&#x1F464;</a> </li>
+      </ul> 
+    )
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <>
+        <NavBar />
+        <div >
+          <PeopleTable className='table-container'/>
+        </div>
+      </>
+    );
+  }
 }
 
 export default App;
