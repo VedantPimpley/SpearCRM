@@ -1,5 +1,5 @@
 import React from 'react';
-import PeopleTable from '/home/vedant/Desktop/Workbench/Projects/CRM/front_end/src/components_and_containers/people.js'; 
+import PeopleTable from '/home/vedant/Desktop/Workbench/Projects/CRM/front_end/src/components/containers/people/people.js'; 
 import './App.css';
 
 class NavBar extends React.Component {

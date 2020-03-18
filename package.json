@@ -10,7 +10,8 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-highlight-words": "^0.16.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "react-trello": "^2.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
