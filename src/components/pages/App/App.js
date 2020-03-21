@@ -1,5 +1,5 @@
 import React from 'react';
-import PeopleTable from '../people/people.js'; 
+import PeopleTable from './people.js'; 
 import Pipeline from './pipeline.js';
 import Dashboard from './dashboard.js'
 import {
@@ -17,7 +17,7 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/"> Dashboard </Link> 
+              <Link to="/dashboard"> Dashboard </Link> 
             </li>
             <li>
               <Link to="/people"> People </Link>
@@ -29,9 +29,9 @@ export default function App() {
         </nav>
 
         <Switch>
-          {/* <Route path="/">
+          <Route path="/dashboard">
             <Dashboard />
-          </Route> */}
+          </Route>
           <Route path="/people">
             <PeopleTable />
           </Route>

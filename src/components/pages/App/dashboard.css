@@ -1,8 +1,8 @@
-.flex-container {
+/* .flex-container {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-}
+} */
 
 .eventsWidget {
 	border: 1px solid black;
