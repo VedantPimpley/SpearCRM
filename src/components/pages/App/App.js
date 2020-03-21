@@ -1,5 +1,6 @@
 import React from 'react';
-import PeopleTable from '/home/vedant/Desktop/Workbench/Projects/CRM/front_end/src/components/containers/people/people.js'; 
+import PeopleTable from '../people/people.js'; 
+import Pipeline from './pipeline.js';
 import './App.css';
 
 class NavBar extends React.Component {
@@ -23,6 +24,7 @@ class App extends React.Component {
         <div >
           <PeopleTable className='table-container'/>
         </div>
+        <Pipeline />
       </>
     );
   }
