@@ -1,33 +1,45 @@
 import React from 'react';
 import PeopleTable from '../people/people.js'; 
 import Pipeline from './pipeline.js';
+import Dashboard from './dashboard.js'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import './App.css';
 
-class NavBar extends React.Component {
-  render(){
-    return(
-      <ul>
-         <li className='navbar-entry'> <a href="#">Dashboard</a> </li>
-         <li className='navbar-entry'> <a href="#">People</a> </li>
-         <li className='navbar-entry'> <a href="#">Pipeline</a> </li>
-         <li className='navbar-entry' style={{float:"right"}}> <a href="#">&#x1F464;</a> </li>
-      </ul> 
-    )
-  }
-}
+export default function App() {
+  return(
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/"> Dashboard </Link> 
+            </li>
+            <li>
+              <Link to="/people"> People </Link>
+            </li>
+            <li>
+              <Link to="/pipeline"> Pipeline </Link>
+            </li>  
+          </ul>  
+        </nav>
 
-class App extends React.Component {
-  render() {
-    return (
-      <>
-        <NavBar />
-        <div >
-          <PeopleTable className='table-container'/>
-        </div>
-        <Pipeline />
-      </>
-    );
-  }
+        <Switch>
+          {/* <Route path="/">
+            <Dashboard />
+          </Route> */}
+          <Route path="/people">
+            <PeopleTable />
+          </Route>
+          <Route path="/pipeline">
+            <Pipeline />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
 }
-
-export default App;

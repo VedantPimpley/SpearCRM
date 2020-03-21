@@ -2,7 +2,7 @@
   max-width: 60%;
   float: left;
 }
-ul {
+nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@ ul {
 
 li {
   float: left;
-  border-right:1px solid #bbb;
+  /* border-right:1px solid #bbb; */
 }
 
 li:last-child {
@@ -32,5 +32,5 @@ li a:hover:not(.active) {
 }
 
 .active {
-  background-color: #4CAF50;
+  /* background-color: #4CAF50; */
 }
