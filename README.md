@@ -6,8 +6,8 @@ Technologies used:
 * ReactJS
 * react-router-dom
 * react-trello
-* Ant Design React Tables
+* react-highlight-words
+* react-google-charts
+* Ant Design React Tables (antd)
 * CanvasJS React Charts
-
-
-
+* yarn
