@@ -5,13 +5,12 @@ import CanvasJSReact from './canvasjs.react';
 
 export default function Dashboard() {
 	return(
-    <>
-      {/* removed the flex container containing these components */}
+    <div className="grid-container">
   		<PieChart />
 			<LineChart />
       <FunnelChart />
   	  <EventsWidget />
-    </>
+    </div>
 	); 
 } 
 
@@ -57,7 +56,7 @@ class PieChart extends React.Component {
   };
   render() {
     return (
-      <div className="App">
+      <div className="pieChartContainer">
         <Chart
           chartType="PieChart"
 					data={[
@@ -70,7 +69,7 @@ class PieChart extends React.Component {
           options={pieOptions}
           graph_id="PieChart"
           width={"100%"}
-          height={"400px"}
+          height={"100%"}
           legend_toggle
         />
       </div>
@@ -172,7 +171,6 @@ class FunnelChart extends React.Component {
 		);
 	}
 }
-
 
 class EventsWidget extends React.Component {
   render() {

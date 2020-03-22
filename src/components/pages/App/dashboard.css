@@ -1,18 +1,18 @@
-.flex-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+.grid-container {
+  display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, 1fr);
+	gap: 50px 50px;
+}
+
+.grid-container > * {
+  height: 90%;
+	width: 90%;
 }
 
 .eventsWidget {
 	border: 2px solid black;
 	border-radius:5px;
-	width:40%;
-	height:40%;
-}
-
-#topHeader {
-	background-color: #33C1FF;
 }
 
 .eventsScroller {
@@ -36,14 +36,6 @@ li {
 	margin-bottom: 5px;
 }
 
-.piechart{
-	border: 1px solid black;
-}
-
-.funnelchartContainer{
-	border: 1px solid black;
-}
-
-.linechartContainer{
-	border: 1px solid black;
+.pieChartContainer{
+	padding-top:70px;
 }

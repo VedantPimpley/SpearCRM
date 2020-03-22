@@ -17,8 +17,7 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/dashboard"> Dashboard </Link> 
-              {/* TODO: Server doesn't boot into dashboard */}
+              <Link to="/dashboard"> Dashboard </Link>
             </li>
             <li>
               <Link to="/people"> People </Link>
@@ -30,14 +29,14 @@ export default function App() {
         </nav>
 
         <Switch>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
           <Route path="/people">
             <PeopleTable />
           </Route>
           <Route path="/pipeline">
             <Pipeline />
+          </Route>
+          <Route path="/">
+            <Dashboard />
           </Route>
         </Switch>
       </div>

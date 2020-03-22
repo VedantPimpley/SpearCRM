@@ -5,4 +5,4 @@ import App from './components/pages/App/App.js';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// Task: Assign seperate screen space to each of the 4 dashboard components and render them.
+//Task: Build the sidebar or a seperate page for per-person info
