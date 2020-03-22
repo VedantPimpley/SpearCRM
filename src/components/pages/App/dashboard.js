@@ -1,14 +1,15 @@
 import React from 'react';
 //import './dashboard.css';
 import Chart from 'react-google-charts';
+import CanvasJSReact from './canvasjs.react';
 
 export default function Dashboard() {
 	return(
     <>
       {/* removed the flex container containing these components */}
   		<Piechart />
-  		<div id="funnelchartContainer" />
-  	  <div id="linechartContainer" />
+			<Linechart />
+      <Funnelchart />
   	  <div className="eventsWidget">
   			<h1> &nbsp; Tasks </h1>
   			<div className="eventsScroller">
@@ -64,7 +65,6 @@ const pieOptions = {
   },
   fontName: "Roboto"
 };
-
 class Piechart extends React.Component {
   state = {
     chartImageURI: ""
@@ -90,4 +90,109 @@ class Piechart extends React.Component {
       </div>
     );
   }
+}
+
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+class Linechart extends React.Component {
+	render() {
+		const lineOptions = {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light2", // "light1", "dark1", "dark2"
+			title:{
+				text: "Bounce Rate by Week of Year"
+			},
+			axisY: {
+				title: "Bounce Rate",
+				includeZero: false,
+				suffix: "%"
+			},
+			axisX: {
+				title: "Week of Year",
+				prefix: "W",
+				interval: 2
+			},
+			data: [{
+				type: "line",
+				toolTipContent: "Week {x}: {y}%",
+				dataPoints: [
+					{ x: 1, y: 64 },
+					{ x: 2, y: 61 },
+					{ x: 3, y: 64 },
+					{ x: 4, y: 62 },
+					{ x: 5, y: 64 },
+					{ x: 6, y: 60 },
+					{ x: 7, y: 58 },
+					{ x: 8, y: 59 },
+					{ x: 9, y: 53 },
+					{ x: 10, y: 54 },
+					{ x: 11, y: 61 },
+					{ x: 12, y: 60 },
+					{ x: 13, y: 55 },
+					{ x: 14, y: 60 },
+					{ x: 15, y: 56 },
+					{ x: 16, y: 60 },
+					{ x: 17, y: 59.5 },
+					{ x: 18, y: 63 },
+					{ x: 19, y: 58 },
+					{ x: 20, y: 54 },
+					{ x: 21, y: 59 },
+					{ x: 22, y: 64 },
+					{ x: 23, y: 59 }
+				]
+			}]
+		}
+		return (
+		<div>
+			<CanvasJSChart options = {lineOptions}
+				/* onRef={ref => this.chart = ref} */
+			/>
+			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+		</div>
+		);
+	}
+} 
+
+class Funnelchart extends React.Component {
+	render() {
+		var dataPoint;
+		var total;
+		const funnelOptions = {
+			animationEnabled: true,
+			title:{
+				text: "Sales Analysis"
+			},
+			data: [{
+				type: "funnel",
+				toolTipContent: "<b>{label}</b>: {y} <b>({percentage}%)</b>",
+				indexLabelPlacement: "inside",
+				indexLabel: "{label} ({percentage}%)",
+				dataPoints: [
+					{ y: 1400, label: "Prospects" },
+					{ y: 1212, label: "Qualified Prospects" },
+					{ y: 1080, label: "Proposals" },
+					{ y: 665,  label: "Negotiation" },
+					{ y: 578, label: "Final Sales" }
+				]
+			}]
+		}
+		//calculate percentage
+		dataPoint = funnelOptions.data[0].dataPoints;
+		total = dataPoint[0].y;
+		for(var i = 0; i < dataPoint.length; i++) {
+			if(i == 0) {
+				funnelOptions.data[0].dataPoints[i].percentage = 100;
+			} else {
+				funnelOptions.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);
+			}
+		}
+		return (
+			<div>
+				<CanvasJSChart options = {funnelOptions}
+					 onRef={ref => this.chart = ref}
+				/>
+				{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			</div>
+		);
+	}
 }
