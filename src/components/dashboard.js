@@ -1,7 +1,7 @@
 import React from 'react';
-import './dashboard.css';
+import './styles/dashboard.css';
 import Chart from 'react-google-charts';
-import CanvasJSReact from './canvasjs.react';
+import CanvasJSReact from './Other/canvasjs.react';
 
 export default function Dashboard() {
 	return(

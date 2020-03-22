@@ -8,7 +8,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import './App.css';
+import './styles/App.css';
 
 export default function App() {
   return(
