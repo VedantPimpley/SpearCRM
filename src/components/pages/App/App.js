@@ -18,6 +18,7 @@ export default function App() {
           <ul>
             <li>
               <Link to="/dashboard"> Dashboard </Link> 
+              {/* TODO: Server doesn't boot into dashboard */}
             </li>
             <li>
               <Link to="/people"> People </Link>
