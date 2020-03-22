@@ -10,16 +10,16 @@ nav ul {
   background-color: #333;
 }
 
-li {
+nav ul li {
   float: left;
   /* border-right:1px solid #bbb; */
 }
 
-li:last-child {
+nav ul li:last-child {
   border-right: none;
 }
 
-li a {
+nav ul li a {
   display: block;
   color: white;
   text-align: center;
@@ -27,10 +27,6 @@ li a {
   text-decoration: none;
 }
 
-li a:hover:not(.active) {
+nav ul li a:hover:not(.active) {
   background-color: #111;
-}
-
-.active {
-  /* background-color: #4CAF50; */
 }

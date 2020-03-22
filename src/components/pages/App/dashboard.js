@@ -1,5 +1,5 @@
 import React from 'react';
-//import './dashboard.css';
+import './dashboard.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './canvasjs.react';
 
@@ -7,30 +7,16 @@ export default function Dashboard() {
 	return(
     <>
       {/* removed the flex container containing these components */}
-  		<Piechart />
-			<Linechart />
-      <Funnelchart />
-  	  <div className="eventsWidget">
-  			<h1> &nbsp; Tasks </h1>
-  			<div className="eventsScroller">
-  				<ul>
-  					<li className="event" > Call Company X </li>
-  					<li className="eventDate" > Nov. 8 </li>
-  					<li className="event"> Meeting with ABC</li>
-  					<li className="eventDate" > Nov. 11 </li>
-  					<li className="event"> Email XYZ </li>
-  					<li className="eventDate" > Nov. 11 </li>
-  					<li className="event"> Transact Lorem's order </li>
-  					<li className="eventDate" > &nbsp; </li>
-  				</ul>
-  			</div>
-  		</div>
+  		<PieChart />
+			<LineChart />
+      <FunnelChart />
+  	  <EventsWidget />
     </>
 	); 
 } 
 
 const pieOptions = {
-  title: "",
+  title: "Lead Size",
   pieHole: 0,
   slices: [
     {
@@ -51,7 +37,7 @@ const pieOptions = {
     alignment: "center",
     textStyle: {
       color: "233238",
-      fontSize: 14
+      fontSize: 18
     }
   },
   tooltip: {
@@ -65,7 +51,7 @@ const pieOptions = {
   },
   fontName: "Roboto"
 };
-class Piechart extends React.Component {
+class PieChart extends React.Component {
   state = {
     chartImageURI: ""
   };
@@ -93,30 +79,30 @@ class Piechart extends React.Component {
 }
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-class Linechart extends React.Component {
+class LineChart extends React.Component {
 	render() {
 		const lineOptions = {
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: "light2", // "light1", "dark1", "dark2"
 			title:{
-				text: "Bounce Rate by Week of Year"
+				text: "Revenue generated"
 			},
 			axisY: {
-				title: "Bounce Rate",
+				title: "Revenue (in $1000)",
 				includeZero: false,
 				suffix: "%"
 			},
 			axisX: {
-				title: "Week of Year",
-				prefix: "W",
-				interval: 2
+				title: "Month",
+				prefix: "",
+				interval: 1
 			},
 			data: [{
 				type: "line",
 				toolTipContent: "Week {x}: {y}%",
 				dataPoints: [
-					{ x: 1, y: 64 },
+          { x: 1, y: 64 },
 					{ x: 2, y: 61 },
 					{ x: 3, y: 64 },
 					{ x: 4, y: 62 },
@@ -125,20 +111,10 @@ class Linechart extends React.Component {
 					{ x: 7, y: 58 },
 					{ x: 8, y: 59 },
 					{ x: 9, y: 53 },
-					{ x: 10, y: 54 },
-					{ x: 11, y: 61 },
-					{ x: 12, y: 60 },
-					{ x: 13, y: 55 },
-					{ x: 14, y: 60 },
-					{ x: 15, y: 56 },
-					{ x: 16, y: 60 },
-					{ x: 17, y: 59.5 },
-					{ x: 18, y: 63 },
-					{ x: 19, y: 58 },
-					{ x: 20, y: 54 },
-					{ x: 21, y: 59 },
-					{ x: 22, y: 64 },
-					{ x: 23, y: 59 }
+					{ x: 10, y: 66 },
+					{ x: 11, y: 69 },
+					{ x: 12, y: 64 },
+					{ x: 13, y: 68 },
 				]
 			}]
 		}
@@ -153,7 +129,7 @@ class Linechart extends React.Component {
 	}
 } 
 
-class Funnelchart extends React.Component {
+class FunnelChart extends React.Component {
 	render() {
 		var dataPoint;
 		var total;
@@ -168,11 +144,11 @@ class Funnelchart extends React.Component {
 				indexLabelPlacement: "inside",
 				indexLabel: "{label} ({percentage}%)",
 				dataPoints: [
-					{ y: 1400, label: "Prospects" },
-					{ y: 1212, label: "Qualified Prospects" },
-					{ y: 1080, label: "Proposals" },
-					{ y: 665,  label: "Negotiation" },
-					{ y: 578, label: "Final Sales" }
+					{ y: 1400, label: "Leads" },
+					{ y: 1212, label: "Clients Interested" },
+					{ y: 1080, label: "Negotiation" },
+					{ y: 665,  label: "Order Received" },
+					{ y: 578, label: "Payment" }
 				]
 			}]
 		}
@@ -195,4 +171,28 @@ class Funnelchart extends React.Component {
 			</div>
 		);
 	}
+}
+
+
+class EventsWidget extends React.Component {
+  render() {
+    return(
+      <div className="eventsWidget">
+        <h1> &nbsp; Tasks </h1>
+        <hr />
+    		<div className="eventsScroller">
+    			<ul className="eventsList">
+    				<li className="event" > Call Company X </li>
+    				<li className="eventDate" > Nov. 8 </li>
+    				<li className="event"> Meeting with ABC</li>
+    				<li className="eventDate" > Nov. 11 </li>
+    				<li className="event"> Email XYZ </li>
+    				<li className="eventDate" > Nov. 11 </li>
+    				<li className="event"> Transact Lorem's order </li>
+    				<li className="eventDate" > &nbsp; </li>
+    			</ul>
+        </div>
+      </div>
+    );
+  }
 }
