@@ -2,7 +2,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Radio, Divider, Input, Button } from 'antd';
-//import './people.css';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
