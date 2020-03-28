@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Profile from './profile.js';
 import 'antd/dist/antd.css';
 import { Table, Radio, Divider, Input, Button } from 'antd';
 import Highlighter from 'react-highlight-words';

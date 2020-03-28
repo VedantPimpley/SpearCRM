@@ -17,7 +17,7 @@ import './styles/profile.css';
 //  PastActivity
 //    PrettyList
 
-default export function Profile() {
+export default function Profile() {
   return(
     <>
       <ProfileHeader />
