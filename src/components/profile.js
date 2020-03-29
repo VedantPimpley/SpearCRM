@@ -54,6 +54,30 @@ function FieldsContainer() {
   );
 }
 
+class EditableField extends React.Component {
+  constructor(){
+    super(props);
+    props = {
+      fieldName: "",
+      fieldData: "",
+    }
+  }
+
+  onClickEditIcon(){
+
+  }
+
+
+  render() {
+    return(
+      <div>
+        <p> {{$fieldName}} </p>
+        <p> {{$fieldData}} </p>
+      </div>
+    );
+  }
+}
+
 function ActivityTracker() {
   return(
     <>
