@@ -1,52 +1,43 @@
 import React from 'react'
 
-export default class EditableField extends React.Component {
-  constructor() {
+export default class App extends React.Component {
+  constructor(props) {
     super(props);
-    this.setState = {
-      fieldName: "Name" //this.props.FieldName,
-      fieldData: "Rahul" //this.props.FieldData,
+    this.state = {
+      fieldName: "Name", //this.props.FieldName,
+      fieldData: "Rahul", //this.props.FieldData,
       DataIsBeingEdited: false,
     };
   }
 
-  getDerivedStateFromProps() {
-    //as name suggests, refer alligator.io
-  }
-
   EditFieldData() {
     this.setState = ({
-      DataIsBeingEdited: true
+      DataIsBeingEdited: true,
     });
+    console.log(this.state.DataIsBeingEdited);
   }
-
-  // onSubmit() {
-  //   this.setState = ({
-  //     DataIsBeingEdited: false
-  //   });
-  // }
 
   handleInputChange(e) {
     e.preventDefault();
     this.setState({
-      fieldData: e.target.value
+      fieldData: e.target.value,
     });
   }
 
   render() {
-    let fieldDataElement = <p> {this.state.fieldData} </p> ;
-    let fieldInput = null;
+    let fieldDataDisplayElement = <p> {this.state.fieldData} </p> ;
+    let fieldDataInputElement = null;
     if (this.state.DataIsBeingEdited) {
-      fieldInput = <input type="text" defaultValue="{this.state.fieldData}" onChange={this.handleInputChange.bind(this)}/>;
-      fieldDataElement = null;
+      fieldDataDisplayElement = null;
+      fieldDataInputElement = <input type="text" defaultValue={this.state.fieldData} onChange={this.handleInputChange.bind(this)}/>;
     }
 
     return(
       <>
         <p> {this.state.fieldName} </p>
         <button onClick={this.EditFieldData.bind(this)}> &#9999; </button>
-        {fieldDataElement}
-        {fieldInput}
+        {fieldDataDisplayElement}
+        {fieldDataInputElement}
       </>  
     );
   }
@@ -67,18 +58,6 @@ export default class EditableField extends React.Component {
 //fieldData p
 //fieldDataInput input type="text"
 //button ? top-right
-
-
-
-
-
-
-
-
-
-
-
-
 
 //All the things im confused about
 // this binding
