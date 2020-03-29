@@ -1,4 +1,5 @@
 import React from 'react'
+import './styles/EditableField.css'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,10 +12,9 @@ export default class App extends React.Component {
   }
 
   EditFieldData() {
-    this.setState = ({
-      DataIsBeingEdited: true,
+    this.setState({
+      DataIsBeingEdited: true
     });
-    console.log(this.state.DataIsBeingEdited);
   }
 
   handleInputChange(e) {
@@ -24,18 +24,32 @@ export default class App extends React.Component {
     });
   }
 
+  onKeyUp(e) {
+    if(e.key === 'Enter') {
+      this.setState({
+        DataIsBeingEdited: false
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    console.log(this.state.DataIsBeingEdited);
+  }
+
   render() {
-    let fieldDataDisplayElement = <p> {this.state.fieldData} </p> ;
+    let fieldDataDisplayElement = <span> {this.state.fieldData} </span> ;
     let fieldDataInputElement = null;
     if (this.state.DataIsBeingEdited) {
       fieldDataDisplayElement = null;
-      fieldDataInputElement = <input type="text" defaultValue={this.state.fieldData} onChange={this.handleInputChange.bind(this)}/>;
+      fieldDataInputElement = <input  type="text" defaultValue={this.state.fieldData} 
+                                      onChange={this.handleInputChange.bind(this)} 
+                                      onKeyUp={this.onKeyUp.bind(this)}/>;
     }
 
     return(
       <>
         <p> {this.state.fieldName} </p>
-        <button onClick={this.EditFieldData.bind(this)}> &#9999; </button>
+        <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
         {fieldDataDisplayElement}
         {fieldDataInputElement}
       </>  
@@ -69,8 +83,3 @@ export default class App extends React.Component {
 // multiple conditioal rendering
 // derived components/states
 // generators
-
-// 1. Create EditableField
-// DONE 1a. Create field name element and button element
-// DONE 1b. Create field data element and text input element and alternately render them
-// 1c. Create logic to handle input data submission and receiving it the way its done in react
