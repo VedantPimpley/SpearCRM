@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles/profile.css';
 import EditableField from "./subcomponents/EditableField.js";
+import data from "./people.js"
 
 export default function Profile() {
   return(
@@ -36,13 +37,9 @@ function FieldsContainer() {
   return(
     <div>
       <p> Generic fields </p>
-      <EditableField/>
-      <EditableField/>
-      <EditableField/>
-      <EditableField/>
-      <EditableField/>
-      <EditableField/>
-      <EditableField/>
+      <EditableField fieldName="Name" fieldData="Jake"/>
+      {/* <EditableField fieldName="Company" fieldData="Apple"/>
+      <EditableField fieldName="Size" fieldData="Enterprise"/> */}
     </div>
   );
 }

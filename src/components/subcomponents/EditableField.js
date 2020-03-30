@@ -5,10 +5,27 @@ export default class EditableField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fieldName: "Name", //this.props.FieldName,
-      fieldData: "Rahul", //this.props.FieldData,
+      fieldName: "",
+      fieldData: "",
       DataIsBeingEdited: false,
     };
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.fieldName !== nextProps.fieldName){
+      return{
+        fieldName: nextProps.fieldName
+      }
+    }
+
+    if (prevState.fieldData !== nextProps.fieldData){
+      return{
+        fieldData: nextProps.fieldData
+      }
+    }
+
+    // Return null if the state hasn't changed
+    return null;
   }
 
   EditFieldData() {
@@ -33,7 +50,7 @@ export default class EditableField extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.DataIsBeingEdited);
+    console.log(this.state.fieldData);
   }
 
   render() {
@@ -50,31 +67,21 @@ export default class EditableField extends React.Component {
     return(
       <div className="editable-field-component">
         <p> {this.state.fieldName} </p>
-        <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
         {fieldDataDisplayElement}
         {fieldDataInputElement}
+        <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
       </div>  
     );
   }
 
 }
 
-
-//Editable field
-
-//this.state = { fieldName="props.fieldName", fieldData="props.fieldData" }
-//Edit()
-//SaveEdit()
-//getDerivedStateFromProps()
+//1. Internal state isn't consistent with derived state
+//2. Element placement is weird: component container edges keep moving.
 
 
-//div container ? width:150px and height 50 px 
-//fieldName p 
-//fieldData p
-//fieldDataInput input type="text"
-//button ? top-right
 
-//All the things im confused about
+//All the things id like to look further into
 // this binding
 // events
 // event handlers

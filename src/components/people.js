@@ -6,7 +6,7 @@ import { Table, Radio, Divider, Input, Button } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-const data = [
+export const data = [
   {
     key: '1',
     name: 'John Brown',
