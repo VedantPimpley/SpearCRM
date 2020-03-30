@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles/profile.css';
-//import EditableField from "./subcomponents/EditableField.js";
+import EditableField from "./subcomponents/EditableField.js";
 
 export default function Profile() {
   return(
     <div className="grid-container">
       <p className="ProfileHeader"> ProfileHeader </p>
-      <p> FieldsContainer</p> 
+      <FieldsContainer /> 
        {/* with props as common fields  */}
       <p> FieldsContainer</p>
       {/* with props as specific fields */}
@@ -34,13 +34,17 @@ function StageIndicator() {
 
 function FieldsContainer() {
   return(
-    // for every field having App, Data as props
-      <EditableField />
+    <div>
+      <p> Generic fields </p>
+      <EditableField/>
+      <EditableField/>
+      <EditableField/>
+      <EditableField/>
+      <EditableField/>
+      <EditableField/>
+      <EditableField/>
+    </div>
   );
-}
-
-function EditableField(){
-  return null;
 }
 
 function ActivityTracker() {

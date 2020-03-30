@@ -43,16 +43,17 @@ export default class EditableField extends React.Component {
       fieldDataDisplayElement = null;
       fieldDataInputElement = <input  type="text" defaultValue={this.state.fieldData} 
                                       onChange={this.handleInputChange.bind(this)} 
-                                      onKeyUp={this.onKeyUp.bind(this)}/>;
+                                      onKeyUp={this.onKeyUp.bind(this)}
+                              />;
     }
 
     return(
-      <>
+      <div className="editable-field-component">
         <p> {this.state.fieldName} </p>
         <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
         {fieldDataDisplayElement}
         {fieldDataInputElement}
-      </>  
+      </div>  
     );
   }
 
