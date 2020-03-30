@@ -1,32 +1,17 @@
 import React from 'react';
 import './styles/profile.css';
-
-
-//profile.js: uid
-//ProfileHeader? cssGridComponent
-//  Name
-//  StageIndicator
-//FieldsContainer? cssGridComponent
-//  EditableField
-//FieldsContainer? cssGridComponent
-//  EditableField
-//Activity Tracker? cssGridComponent
-//  ManualLogger
-//  NextStep
-//    PrettyList
-//  PastActivity
-//    PrettyList
+//import EditableField from "./subcomponents/EditableField.js";
 
 export default function Profile() {
   return(
-    <>
-      <ProfileHeader />
-      <FieldsContainer /> 
+    <div className="grid-container">
+      <p className="ProfileHeader"> ProfileHeader </p>
+      <p> FieldsContainer</p> 
        {/* with props as common fields  */}
-      <FieldsContainer /> 
+      <p> FieldsContainer</p>
       {/* with props as specific fields */}
-      <ActivityTracker />
-    </>     
+      <p> ActivityTracker</p>    
+    </div>     
   );
 } 
 
@@ -54,28 +39,8 @@ function FieldsContainer() {
   );
 }
 
-class EditableField extends React.Component {
-  constructor(){
-    super(props);
-    props = {
-      fieldName: "",
-      fieldData: "",
-    }
-  }
-
-  onClickEditIcon(){
-
-  }
-
-
-  render() {
-    return(
-      <div>
-        <p> {{$fieldName}} </p>
-        <p> {{$fieldData}} </p>
-      </div>
-    );
-  }
+function EditableField(){
+  return null;
 }
 
 function ActivityTracker() {
@@ -89,7 +54,7 @@ function ActivityTracker() {
 }
 
 function ManualLogger() {
-  //
+  return null;
 }
 
 function NextStep() {
@@ -105,3 +70,22 @@ function PastActivity() {
     // with listItems as the recent history of client-customer interactions
   );
 }
+
+function PrettyList() {
+  return null;
+}
+
+//profile.js: uid
+//ProfileHeader? cssGridComponent
+//  Name
+//  StageIndicator
+//FieldsContainer? cssGridComponent
+//  EditableField
+//FieldsContainer? cssGridComponent
+//  EditableField
+//Activity Tracker? cssGridComponent
+//  ManualLogger
+//  NextStep
+//    PrettyList
+//  PastActivity
+//    PrettyList

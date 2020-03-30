@@ -1,7 +1,7 @@
 import React from 'react'
-import './styles/EditableField.css'
+import '../styles/EditableField.css'
 
-export default class App extends React.Component {
+export default class EditableField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.grid-container {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 1fr 9fr;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.ProfileHeader {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.grid-container > * {
+  border: 1px solid red;
+}
