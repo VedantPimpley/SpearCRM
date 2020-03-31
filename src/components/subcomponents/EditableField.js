@@ -5,32 +5,14 @@ export default class EditableField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fieldName: "",
-      fieldData: "",
-      DataIsBeingEdited: false,
+      fieldData: "Apple",
+      isDataBeingEdited: false,
     };
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.fieldName !== nextProps.fieldName){
-      return{
-        fieldName: nextProps.fieldName
-      }
-    }
-
-    if (prevState.fieldData !== nextProps.fieldData){
-      return{
-        fieldData: nextProps.fieldData
-      }
-    }
-
-    // Return null if the state hasn't changed
-    return null;
   }
 
   EditFieldData() {
     this.setState({
-      DataIsBeingEdited: true
+      isDataBeingEdited: true
     });
   }
 
@@ -44,7 +26,7 @@ export default class EditableField extends React.Component {
   onKeyUp(e) {
     if(e.key === 'Enter') {
       this.setState({
-        DataIsBeingEdited: false
+        isDataBeingEdited: false
       });
     }
   }
@@ -56,24 +38,27 @@ export default class EditableField extends React.Component {
   render() {
     let fieldDataDisplayElement = <span> {this.state.fieldData} </span> ;
     let fieldDataInputElement = null;
-    if (this.state.DataIsBeingEdited) {
+    if (this.state.isDataBeingEdited) {
       fieldDataDisplayElement = null;
-      fieldDataInputElement = <input  type="text" defaultValue={this.state.fieldData} 
-                                      onChange={this.handleInputChange.bind(this)} 
-                                      onKeyUp={this.onKeyUp.bind(this)}
-                              />;
+      fieldDataInputElement = (
+        < input  
+          type="text" 
+          defaultValue={this.state.fieldData} 
+          onChange={this.handleInputChange.bind(this)} 
+          onKeyUp={this.onKeyUp.bind(this)}
+        />
+      );
     }
 
     return(
       <div className="editable-field-component">
-        <p> {this.state.fieldName} </p>
+        <p> {this.props.fieldName} </p>
         {fieldDataDisplayElement}
-        {fieldDataInputElement}
         <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
+        {fieldDataInputElement}
       </div>  
     );
   }
-
 }
 
 //1. Internal state isn't consistent with derived state
