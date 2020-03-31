@@ -5,74 +5,38 @@ export default class EditableField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fieldData: "Apple",
-      isDataBeingEdited: false,
+      isBeingEdited: false,
     };
   }
 
-  EditFieldData() {
-    this.setState({
-      isDataBeingEdited: true
-    });
-  }
-
-  handleInputChange(e) {
-    e.preventDefault();
-    this.setState({
-      fieldData: e.target.value,
-    });
-  }
-
-  onKeyUp(e) {
-    if(e.key === 'Enter') {
-      this.setState({
-        isDataBeingEdited: false
-      });
-    }
+  componentDidMount() {
+    console.log(`State is ${this.state.isBeingEdited}`)
   }
 
   componentDidUpdate() {
-    console.log(this.state.fieldData);
+    console.log(`State is ${this.state.isBeingEdited}`)
   }
 
   render() {
-    let fieldDataDisplayElement = <span> {this.state.fieldData} </span> ;
-    let fieldDataInputElement = null;
-    if (this.state.isDataBeingEdited) {
-      fieldDataDisplayElement = null;
-      fieldDataInputElement = (
-        < input  
-          type="text" 
-          defaultValue={this.state.fieldData} 
-          onChange={this.handleInputChange.bind(this)} 
-          onKeyUp={this.onKeyUp.bind(this)}
-        />
-      );
+    let fieldDataComponent = <p> {this.props.fieldData} </p>;
+    let editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#9999; </button>;
+    if(this.state.isBeingEdited) {
+      fieldDataComponent = <input type="text" value={this.props.fieldData} />;
+      editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#10003; </button>;
     }
 
     return(
       <div className="editable-field-component">
         <p> {this.props.fieldName} </p>
-        {fieldDataDisplayElement}
-        <button className="DataEditButton"onClick={this.EditFieldData.bind(this)}> &#9999; </button>
-        {fieldDataInputElement}
+        {fieldDataComponent}
+        {editButton}
       </div>  
     );
   }
+
+  alternateViews() {
+    this.setState({
+      isBeingEdited: !this.state.isBeingEdited
+    });
+  }
 }
-
-//1. Internal state isn't consistent with derived state
-//2. Element placement is weird: component container edges keep moving.
-
-
-
-//All the things id like to look further into
-// this binding
-// events
-// event handlers
-// jsx 
-// setting js variables with value as jsx or html (single parent node)
-// conditional rendering
-// multiple conditioal rendering
-// derived components/states
-// generators
