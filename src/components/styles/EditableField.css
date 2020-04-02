@@ -1,14 +1,14 @@
-.DataEditButton{
-}
-
-
 .editable-field-component{
-  margin: 5px;
+  padding: 1px;
   border-bottom: 1px solid black;
   background-color: red;
 }
 
+.inline-section-editable-fields {
+  display: flex;
+  justify-content: space-between;
+}
+
 .inline-section-editable-fields > * {
   display: inline;
-  position: relative;
 }
