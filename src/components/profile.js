@@ -18,50 +18,64 @@ export default function Profile() {
 
 function ProfileHeader() {
   return(
-    <Fragment>
+    <>
       <ProfileName />
       <StageIndicator />
-    </Fragment>  
+    </>  
   );
 }
 
 function ProfileName() {
-  //
+  return null;
 }
 
 function StageIndicator() {
-  //
+  return null;
 }
 
-function FieldsContainer() {
+class FieldsContainer extends React.Component {
   constructor(props) {
     super(props);
-    state = {
-      tempFieldData: this.props.fields.name
-    }
+    this.state = {
+      draftData: this.props.fields.name,
+    };
+  }
+  
+  render() {
+    return(
+      <div>
+        <p> Generic fields </p>
+        <EditableField fieldName="Name" fieldData={this.state.draftData} handleChange={this.handleDataChange}/>
+      </div>
+    );
+  }  
+
+  handleDataChange = event => {
+    this.setState({
+      draftData: event.target.value
+    }); 
   }
 
-  handleEmailChange = event => {
-    this.setState({ draftEmail: event.target.value });
-  };
+  componentDidMount() {
+    console.log(this.state.draftData);
+    console.log(this.props.fields);
+  }
 
-  return(
-    <div>
-      <p> Generic fields </p>
-      <EditableField fieldName="Name" fieldData="Jake" handleChange={this.handleEmailChange}/>
-      <EditableField fieldName="Company" fieldData="Apple" handleChange={this.handleEmailChange}/>
-      <EditableField fieldName="Size" fieldData="Enterprise" handleChange={this.handleEmailChange}/>
-    </div>
-  );
+  componentDidUpdate() {
+    console.log("Updated "+this.state.draftData);
+  }
+  
+  handleDataChange = event => {
+    this.setState({ draftData: event.target.value });
+  }
+
 }
 
-const sample_data = [
-  {
-    id: '1',
-    name: 'John Brown',
-    company: '3C Electronics',
-  }
-];
+const sample_data = {
+  id: '1',
+  name: 'John Brown',
+  company: '3C Electronics',
+};
 
 function ActivityTracker() {
   return(

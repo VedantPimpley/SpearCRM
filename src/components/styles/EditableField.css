@@ -1,9 +1,14 @@
 .DataEditButton{
-  float: right;
 }
+
 
 .editable-field-component{
   margin: 5px;
   border-bottom: 1px solid black;
   background-color: red;
+}
+
+.inline-section-editable-fields > * {
+  display: inline;
+  position: relative;
 }
