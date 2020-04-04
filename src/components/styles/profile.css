@@ -20,3 +20,7 @@
 .grid-container > * {
   border: 1px solid green;
 }
+
+.manual-logger-header > * {
+  display: inline-block;
+}
