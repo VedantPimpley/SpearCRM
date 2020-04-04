@@ -120,18 +120,40 @@ const sample_data = {
   email: 'johnbrown@gmail.com',
 };
 
-function ActivityTracker() {
-  return(
-    <>
-      <ManualLogger />
-      <NextStep />
-      <PastActivity />
-    </>
-  );
+class ActivityTracker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state= {
+      mode: false,
+      //false means input is a call being logged. true means input is a new task.
+      draftInput: "",
+    };
+  }
+
+  onDivClick = () => {
+    this.setState({
+      mode: !this.state.mode
+    });
+  }
+
+  onSubmit = () => {
+    return null;
+    // add new data as a <li> to NextStep or PastActivity
+  }
+
+  render() {
+    return(
+      <>
+        <ManualLogger onDivClick={this.onDivClick} onSubmit={this.onSubmit} />
+        <NextStep />
+        <PastActivity />
+      </>
+    );
+  }  
 }
 
 function ManualLogger() {
-  return null;
+  
 }
 
 function NextStep() {
