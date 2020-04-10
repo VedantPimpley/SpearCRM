@@ -1,6 +1,7 @@
-import React from 'react';
+import React from 'react'
+import '../styles/ActivityTracker.css'
 
-class ActivityTracker extends React.Component {
+export default class ActivityTracker extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
@@ -27,30 +28,46 @@ class ActivityTracker extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    console.log(`Updated mode ${this.state.mode} and updated  draftInput ${this.state.draftInput}`)
+  }
+
   render() {
     return(
       <>
-        <ManualLogger onDivClick={this.onDivClick} onSubmit={this.onSubmit} handleChange={this.props.handleChange} />
+        <ManualLogger 
+          currentInput={this.state.draftInput}
+          currentState={this.state.mode} 
+          onClick={this.onDivClick} 
+          handleChange={this.handleChange} 
+          onSubmit={this.onSubmit}
+        />
         <NextStep />
-        <PastActivity />/p
+        <PastActivity />
       </>
     );
   }  
 }
 
-function ManualLogger() {
-  return(
-    <div className="manual-logger-container">
-      <div className="manual-logger-header">
-        <div className="log-call"> Log a Call </div>
-        <div className="new-task"> New Task </div>
+class ManualLogger extends React.Component {
+  componentDidMount() {
+    console.log("")
+  }
+
+  render(){
+    return(
+      <div className="manual-logger">
+        <div className="grid-container">
+          <div className="log-call"> Log a Call </div>
+          <div className="new-task"> New Task </div>
+          <div className="manual-logger-inputarea">
+            <input type="text" onChange={this.props.handleChange} value={this.props.currentInput} />
+            <button onClick={this.props.onSubmit}> Add </button> 
+          </div>
+        </div>
       </div>
-      <div className="manual-logger-inputarea">
-        <input type="text" onChange={this.props.handleChange} value={this.props.draftInput} />
-        <button onClick={this.props.onSubmit}> Add </button> 
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 function NextStep() {
