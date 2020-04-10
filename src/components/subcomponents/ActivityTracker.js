@@ -6,16 +6,17 @@ export default class ActivityTracker extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      mode: "call", //other mode is task
+      type: "call", //other type is task
       draftInput: "",
-      draftDate: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
+      draftDate: new Date().toJSON().slice(0,10),
     };
   }
 
-    
+  // TODO:GROUP TOGETHER ALL CHANGLE HANDLERS
+
   onTabChange = event => {
     this.setState({
-      mode: event.target.value
+      type: event.target.id
     }); 
   }
 
@@ -32,12 +33,12 @@ export default class ActivityTracker extends React.Component {
   }
 
   onSubmit = () => {
-    return null;
-    // add new data as a <li> to NextStep or PastActivity
+    console.log(this.state);
+    // TODO: DIRECTLY TAKE THIS AS A NEW ENTRY TO UPDATE BACKEND
   }
 
   componentDidUpdate() {
-    console.log(`Updated mode ${this.state.mode} and updated  draftInput ${this.state.draftInput}`)
+    console.log(this.state);
   }
 
   render() {
@@ -46,7 +47,7 @@ export default class ActivityTracker extends React.Component {
         <ManualLogger 
           draftDate={this.state.draftDate}
           draftInput={this.state.draftInput}
-          currentState={this.state.mode} 
+          type={this.state.type} 
           onClick={this.onTabChange} 
           handleChange={this.handleChange} 
           handleDateChange={this.handleDateChange} 

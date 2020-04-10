@@ -1,7 +1,7 @@
 import React from 'react';
 import EditableField from './EditableField.js'
 
-export default class FieldsContainerGeneric extends React.Component {
+export default class FieldsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -14,29 +14,31 @@ export default class ManualLogger extends React.Component {
   render(){
     return(
       <div className="manual-logger">
-        <div className="grid-container">
-          <ul className="segmented-control">
-            {/* TODO: STATE CHANGE IN MODE SHOULD OCCUR WHEN TABS ARE SELECTED*/}
-            <li className="segmented-control__item">
-              <input className="segmented-control__input" type="radio" onClick={this.props.onTabChange} value="call" name="option" id="option-1" defaultChecked />
-              <label className="segmented-control__label" htmlFor="option-1">Log a Call</label>
-            </li>
-            <li className="segmented-control__item">
-              <input className="segmented-control__input" type="radio" onClick={this.props.onTabChange} value="task" name="option" id="option-2" />
-              <label className="segmented-control__label" htmlFor="option-2">New Task</label>
-            </li>
-          </ul>
-          <div className="manual-logger-inputarea">
+        <ul className="segmented-control">
+          <li className="segmented-control__item">
+            <input className="segmented-control__input" type="radio"  value="call" name="option" id="option-1" defaultChecked />
+            <label className="segmented-control__label" id="call" onClick={this.props.onClick} htmlFor="option-1">Log a Call</label>
+          </li>
+          <li className="segmented-control__item">
+            <input className="segmented-control__input" type="radio" value="task" name="option" id="option-2" />
+            <label className="segmented-control__label" id="task" onClick={this.props.onClick} htmlFor="option-2">New Task</label>
+          </li>
+        </ul>
+        <div className="manual-logger-inputarea">
+          <div>
             <input 
               type="date" 
               className="manual-logger-date" 
               onChange={this.props.handleDateChange} 
               value={this.props.draftDate} 
             />
+          </div>
+          <div>
             <input 
               type="text"
               onChange={this.props.handleChange}  
               value={this.props.currentInput} 
+              placeholder={(this.props.type==="call" ? "Recap your call" : "Schedule new task/event")}
             />
             <button onClick={this.props.onSubmit}> Add </button> 
           </div>

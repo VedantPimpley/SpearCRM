@@ -1,16 +1,18 @@
 import React from 'react';
 import './styles/profile.css';
-import FieldsContainerGeneric from "./subcomponents/FieldsContainerGeneric";
+import FieldsContainer from "./subcomponents/FieldsContainer";
+import ActivityTracker from "./subcomponents/ActivityTracker";
+
 
 export default function Profile() {
   return(
     <div className="grid-container">
       <p className="ProfileHeader"> ProfileHeader </p>
-      <FieldsContainerGeneric fields={sample_data}/> 
+      <FieldsContainer fields={sample_data}/> 
        {/* with props as common fields  */}
-      <p> FieldsContainerSpecific</p>
+      <p> Specific fields</p>
       {/* with props as specific fields */}
-      {/* <ActivityTracker />     */}
+      <ActivityTracker />
     </div>     
   );
 } 
