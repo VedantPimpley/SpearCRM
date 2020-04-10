@@ -18,50 +18,21 @@ export default class FieldsContainerGeneric extends React.Component {
     return(
       <div>
         <p> Generic fields </p>
-        <EditableField fieldName="Name" fieldData={this.state.name} handleChange={this.handleNameChange}/>
-        <EditableField fieldName="Company" fieldData={this.state.company} handleChange={this.handleCompanyChange}/>
-        <EditableField fieldName="Type" fieldData={this.state.type} handleChange={this.handleTypeChange}/>
-        <EditableField fieldName="City" fieldData={this.state.city} handleChange={this.handleCityChange}/>
-        <EditableField fieldName="Phone Number" fieldData={this.state.phoneNumber} handleChange={this.handlePhoneNumberChange}/>
-        <EditableField fieldName="Email" fieldData={this.state.email} handleChange={this.handleEmailChange}/>
+        <EditableField name="name" fieldName="Name" fieldData={this.state.name} onChange={this.handleChange}/>
+        <EditableField name="company" fieldName="Company" fieldData={this.state.company} onChange={this.handleChange}/>
+        <EditableField name="type" fieldName="Type" fieldData={this.state.type} onChange={this.handleChange}/>
+        <EditableField name="city" fieldName="City" fieldData={this.state.city} onChange={this.handleChange}/>
+        <EditableField name="phoneNumber" fieldName="Phone Number" fieldData={this.state.phoneNumber} onChange={this.handleChange}/>
+        <EditableField name="email" this fieldName="Email" fieldData={this.state.email} onChange={this.handleChange}/>
       </div>
     );
   }  
 
-  handleNameChange = event => {
+  handleChange = e => {
+    console.log(`handleChange ${e.target.name}`);
     this.setState({
-      name: event.target.value
-    }); 
-  }
-
-  handleCompanyChange = event => {
-    this.setState({
-      company: event.target.value
-    }); 
-  }
-
-  handleTypeChange = event => {
-    this.setState({
-      type: event.target.value
-    }); 
-  }
-
-  handleCityChange = event => {
-    this.setState({
-      city: event.target.value
-    }); 
-  }
-  
-  handlePhoneNumberChange = event => {
-    this.setState({
-      phoneNumber: event.target.value
-    }); 
-  }
-
-  handleEmailChange = event => {
-    this.setState({
-      email: event.target.value
-    }); 
+      [e.target.name] : e.target.value
+    });
   }
 
   componentDidMount() {
@@ -70,9 +41,5 @@ export default class FieldsContainerGeneric extends React.Component {
 
   componentDidUpdate() {
     console.log(this.state);
-  }
-
-  handleDataChange = event => {
-    this.setState({ draftData: event.target.value });
   }
 }

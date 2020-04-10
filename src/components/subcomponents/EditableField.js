@@ -22,7 +22,7 @@ export default class EditableField extends React.Component {
     let fieldDataComponent = <div> {this.props.fieldData} </div>;
     let editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#9999; </button>;
     if(this.state.isBeingEdited) {
-      fieldDataComponent = <input type="text" defaultValue={this.props.fieldData} onChange={this.props.handleChange}/>;
+      fieldDataComponent = <input type="text" name={this.props.name} defaultValue={this.props.fieldData} onChange={this.props.onChange}/>;
       editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#10003; </button>;
     }
 

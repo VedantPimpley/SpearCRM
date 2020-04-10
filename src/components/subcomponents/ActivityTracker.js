@@ -12,6 +12,7 @@ export default class ActivityTracker extends React.Component {
     };
   }
 
+    
   onTabChange = event => {
     this.setState({
       mode: event.target.value
