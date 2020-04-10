@@ -12,17 +12,20 @@ ul.experiences li {
   padding-left: 33px;
   margin-bottom: 2.5em;
   list-style: none;
-  /* background: url('../img/misc/list-bullet-darkgray.png') no-repeat; */
+}
+  /* background: url('../img/misc/list-bullet-darkgray.png') no-repeat; 
 }
 ul.experiences li.green {
-  /* background: url('../img/misc/list-bullet-green.png') no-repeat; */
+   background: url('../img/misc/list-bullet-green.png') no-repeat; 
 }
 ul.experiences li.blue {
-  /* background: url('../img/misc/list-bullet-blue.png') no-repeat; */
+   background: url('../img/misc/list-bullet-blue.png') no-repeat; 
 }
 ul.experiences li.pink {
-  /* background: url('../img/misc/list-bullet-pink.png') no-repeat; */
+  background: url('../img/misc/list-bullet-pink.png') no-repeat;
 }
+  */
+
 .where {
   font-size: 1.2857em; /* 18/16 -> 18px */
   font-weight: 300;
