@@ -17,7 +17,7 @@ export default class FieldsContainer extends React.Component {
   render() {
     return(
       <div>
-        <p> Generic fields </p>
+        <h3> Generic fields </h3>
         <EditableField name="name" fieldName="Name" fieldData={this.state.name} onChange={this.handleChange}/>
         <EditableField name="company" fieldName="Company" fieldData={this.state.company} onChange={this.handleChange}/>
         <EditableField name="type" fieldName="Type" fieldData={this.state.type} onChange={this.handleChange}/>

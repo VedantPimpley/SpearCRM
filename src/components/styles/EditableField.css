@@ -1,4 +1,6 @@
 .editable-field-component{
+  margin-top:2px;
+  margin-bottom:2px;
   padding: 1px;
   border-bottom: 1px solid black;
   background-color: red;

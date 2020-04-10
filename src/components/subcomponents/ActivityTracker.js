@@ -45,7 +45,7 @@ export default class ActivityTracker extends React.Component {
   render() {
     return(
       <div className="activity-tracker-container">
-        <p> Activity Tracker</p>
+        <h3> Activity Tracker</h3>
         <ManualLogger 
           draftDate={this.state.draftDate}
           draftInput={this.state.draftInput}
