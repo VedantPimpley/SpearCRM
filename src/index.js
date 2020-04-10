@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import './index.css';
-import App from './components/subcomponents/ActivityTracker';
+import App from './components/subcomponents/ActivityTracker.js';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

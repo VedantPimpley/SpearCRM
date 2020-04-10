@@ -1,31 +1,38 @@
 import React from 'react'
 import '../styles/ActivityTracker.css'
+import ManualLogger from './ManualLogger.js'
 
 export default class ActivityTracker extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      mode: false,
-      //false means input is a call being logged. true means input is a new task.
+      mode: "call", //other mode is task
       draftInput: "",
+      draftDate: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
     };
   }
 
-  onDivClick = () => {
+  onTabChange = event => {
     this.setState({
-      mode: !this.state.mode
-    });
+      mode: event.target.value
+    }); 
   }
 
-  onSubmit = () => {
-    return null;
-    // add new data as a <li> to NextStep or PastActivity
+  handleDateChange = event => {
+    this.setState({
+      draftDate: event.target.value
+    });
   }
 
   handleChange = event => {
     this.setState({
       draftInput: event.target.value
     });
+  }
+
+  onSubmit = () => {
+    return null;
+    // add new data as a <li> to NextStep or PastActivity
   }
 
   componentDidUpdate() {
@@ -36,10 +43,12 @@ export default class ActivityTracker extends React.Component {
     return(
       <>
         <ManualLogger 
-          currentInput={this.state.draftInput}
+          draftDate={this.state.draftDate}
+          draftInput={this.state.draftInput}
           currentState={this.state.mode} 
-          onClick={this.onDivClick} 
+          onClick={this.onTabChange} 
           handleChange={this.handleChange} 
+          handleDateChange={this.handleDateChange} 
           onSubmit={this.onSubmit}
         />
         <NextStep />
@@ -47,27 +56,6 @@ export default class ActivityTracker extends React.Component {
       </>
     );
   }  
-}
-
-class ManualLogger extends React.Component {
-  componentDidMount() {
-    console.log("")
-  }
-
-  render(){
-    return(
-      <div className="manual-logger">
-        <div className="grid-container">
-          <div className="log-call"> Log a Call </div>
-          <div className="new-task"> New Task </div>
-          <div className="manual-logger-inputarea">
-            <input type="text" onChange={this.props.handleChange} value={this.props.currentInput} />
-            <button onClick={this.props.onSubmit}> Add </button> 
-          </div>
-        </div>
-      </div>
-    );
-  }
 }
 
 function NextStep() {
@@ -87,3 +75,8 @@ function PastActivity() {
 function PrettyList() {
   return null;
 }
+
+
+//Date selector/component
+//Text Input
+//State is stored in segmentedControl
