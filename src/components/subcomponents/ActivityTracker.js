@@ -1,6 +1,7 @@
 import React from 'react'
 import '../styles/ActivityTracker.css'
 import ManualLogger from './ManualLogger.js'
+import PrettyList from './PrettyList.js'
 
 export default class ActivityTracker extends React.Component {
   constructor(props) {
@@ -43,7 +44,8 @@ export default class ActivityTracker extends React.Component {
 
   render() {
     return(
-      <>
+      <div className="activity-tracker-container">
+        <p> Activity Tracker</p>
         <ManualLogger 
           draftDate={this.state.draftDate}
           draftInput={this.state.draftInput}
@@ -55,7 +57,7 @@ export default class ActivityTracker extends React.Component {
         />
         <NextStep />
         <PastActivity />
-      </>
+      </div>
     );
   }  
 }
@@ -73,11 +75,6 @@ function PastActivity() {
     // with listItems as the recent history of client-customer interactions
   );
 }
-
-function PrettyList() {
-  return null;
-}
-
 
 //Date selector/component
 //Text Input

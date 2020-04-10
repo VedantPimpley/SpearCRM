@@ -26,20 +26,3 @@ const sample_data = {
   phoneNumber: '9090909090',
   email: 'johnbrown@gmail.com',
 };
-
-
-//Component hierarchy
-//profile.js: uid
-//ProfileHeader? cssGridComponent
-//  Name
-//  StageIndicator
-//FieldsContainer? cssGridComponent
-//  EditableField
-//FieldsContainer? cssGridComponent
-//  EditableField
-//Activity Tracker? cssGridComponent
-//  ManualLogger
-//  NextStep
-//    PrettyList
-//  PastActivity
-//    PrettyList

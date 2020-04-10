@@ -11,3 +11,4 @@ Technologies used:
 * Ant Design React Tables (antd)
 * CanvasJS React Charts
 * yarn
+* springload/segmented-control
