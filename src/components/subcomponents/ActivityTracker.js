@@ -34,8 +34,18 @@ export default class ActivityTracker extends React.Component {
   }
 
   onSubmit = () => {
-    console.log(this.state);
-    // TODO: DIRECTLY TAKE THIS AS A NEW ENTRY TO UPDATE BACKEND
+    const activity = this.state;
+    const response = fetch('/add_activity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify()
+    });
+
+    if (response.ok) {
+      console.log("Response to add_activity worked");
+    }
   }
 
   componentDidUpdate() {

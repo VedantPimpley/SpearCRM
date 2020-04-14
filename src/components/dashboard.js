@@ -175,22 +175,68 @@ class FunnelChart extends React.Component {
 class EventsWidget extends React.Component {
   render() {
     return(
-      <div className="eventsWidget">
+			// TODO: Make this a checkbox
+			// TODO: Make the tasks not overflow
+      <div className="upcoming-tasks-widget">
         <h1> &nbsp; Tasks </h1>
         <hr />
-    		<div className="eventsScroller">
-    			<ul className="eventsList">
-    				<li className="event" > Call Company X </li>
-    				<li className="eventDate" > Nov. 8 </li>
-    				<li className="event"> Meeting with ABC</li>
+    		<div className="tasks-scroller-container">
+    			<ul className="tasks-list">
+						{tasksList.map( (item) => {
+							<>
+								console.log(item);
+								{/* <li className="task-title" key={item.id} > {item.taskTitle}
+									<span className="task-date" key={item.taskDate}>  </span> 
+								</li>
+								<li className="task-body" > {item.taskBody} </li> */}
+							</>
+							}
+						)}
+
+    				{/* <li className="event"> Meeting with ABC</li>
     				<li className="eventDate" > Nov. 11 </li>
     				<li className="event"> Email XYZ </li>
     				<li className="eventDate" > Nov. 11 </li>
     				<li className="event"> Transact Lorem's order </li>
-    				<li className="eventDate" > &nbsp; </li>
+    				<li className="eventDate" > &nbsp; </li> */}
     			</ul>
         </div>
       </div>
     );
   }
 }
+
+const tasksList = [
+	{
+		id:"1",
+		taskTitle: "Call Company X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+	{
+		id:"2",
+		taskTitle: "Call Company X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+	{
+		id:"3",
+		taskTitle: "Call Company X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+	{
+		id:"4",
+		taskTitle: "Call Company X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+	{
+		id:"5",
+		taskTitle: "Call Company X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+];
+
+// [ .. { taskTitle:'', taskBody:'', taskDate:''} .. ]

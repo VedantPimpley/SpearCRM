@@ -6,7 +6,7 @@ import ProfileHeader from "./subcomponents/ProfileHeader";
 
 export default function Profile() {
   return(
-    <div className="grid-container">
+    <div className="profile-page-grid-container">
       <div className='profile-header-container'>
         <ProfileHeader />
       </div>

@@ -10,23 +10,36 @@
 	width: 90%;
 }
 
-.eventsWidget {
+
+.pieChartContainer{
+	padding-top:70px;
+}
+
+.upcoming-tasks-widget {
 	border: 2px solid black;
 	border-radius:5px;
 }
 
-.eventsScroller {
+.tasks-scroller-container {
 	overflow:auto;
 	height:400px;
 }
 
-.eventDate {
-	border-bottom: 1px solid black;
+/* ------------- */
+
+.task-date {
 	font-style:italic;
-	list-style: none
+	float: right;
+	font-size: 18px;
+	margin-right: 5px;
 }
 
-.event{
+.task-body {
+	border-bottom: 1px solid black;
+	list-style: none;
+}
+
+.task-title{
 	font-family:'Times New Roman';
 	font-size:24px;
 	cursor: pointer;
@@ -34,8 +47,4 @@
 
 li {
 	margin-bottom: 5px;
-}
-
-.pieChartContainer{
-	padding-top:70px;
 }
