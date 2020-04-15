@@ -4,13 +4,13 @@ import '../styles/PrettyList.css'
 export default function PrettyList() {
   return(
     <div className="pretty-list">
-      <ul class="experiences">
+      <ul className="experiences">
         {sample_activity.map( (element, i) => {
           return (
-            <li class="blue" key={i}>
-              <div class="where"> {element.activityTitle} </div>
-              <div class="when"> {element.activityData} </div>
-              <p class="description"> {element.activityBody} </p>
+            <li className="blue" key={i}>
+              <div className="where"> {element.activityTitle} </div>
+              <div className="when"> {element.activityData} </div>
+              <p className="description"> {element.activityBody} </p>
            </li>
           );
         })

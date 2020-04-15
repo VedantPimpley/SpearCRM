@@ -1,7 +1,8 @@
 import React from 'react';
 import PeopleTable from './people.js'; 
 import Pipeline from './pipeline.js';
-import Dashboard from './dashboard.js'
+import Dashboard from './dashboard.js';
+import Profile from './profile.js';
 import {
   BrowserRouter as Router,
   Switch,
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/pipeline">
             <Pipeline />
           </Route>
+          <Route path="/profile" component={Profile} />
           <Route path="/">
             <Dashboard />
           </Route>

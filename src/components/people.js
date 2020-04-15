@@ -1,10 +1,15 @@
 
 import React from 'react';
-import Profile from './profile.js';
 import 'antd/dist/antd.css';
 import { Table, Radio, Divider, Input, Button } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 export const data = [
   {
@@ -250,10 +255,15 @@ class PeopleTable extends React.Component {
         dataIndex: 'name',
         render: text => <a>{text}</a>,
         key: 'name',
-        //width: '30%',
         ...this.getColumnSearchProps('name'),
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ['descend'],
+      },
+      {
+        title: 'Profile Page',
+        dataIndex: 'key',
+        key: 'key',
+        render: (text,key) => <Link to={{pathname: "/profile", state: {uid: key.key} }}> Profile </Link>
       },
       {
         title: 'Company',

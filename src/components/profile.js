@@ -4,17 +4,24 @@ import FieldsContainer from "./subcomponents/FieldsContainer";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import ProfileHeader from "./subcomponents/ProfileHeader";
 
-export default function Profile() {
-  return(
-    <div className="profile-page-grid-container">
-      <div className='profile-header-container'>
-        <ProfileHeader />
-      </div>
-      <FieldsContainer fields={sample_data}/> 
-      <FieldsContainer fields={sample_data}/>
-      <ActivityTracker />
-    </div>     
-  );
+export default class Profile extends React.Component {
+  componentDidMount() {
+    const { uid } = this.props.location.state;
+    console.log("UID is " + uid);
+  }
+
+  render(){
+    return(
+      <div className="profile-page-grid-container">
+        <div className='profile-header-container'>
+          <ProfileHeader />
+        </div>
+        <FieldsContainer fields={sample_data}/> 
+        <FieldsContainer fields={sample_data}/>
+        <ActivityTracker />
+      </div>     
+    );
+  }
 } 
 
 const sample_data = {
