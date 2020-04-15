@@ -9,7 +9,7 @@ export default function Dashboard() {
   		<PieChart />
 			<LineChart />
       <FunnelChart />
-  	  <EventsWidget />
+  	  <UpcomingTasksWidget />
     </div>
 	); 
 } 
@@ -118,7 +118,7 @@ class LineChart extends React.Component {
 			}]
 		}
 		return (
-		<div>
+		<div className="line-chart-container">
 			<CanvasJSChart options = {lineOptions}
 				/* onRef={ref => this.chart = ref} */
 			/>
@@ -172,7 +172,7 @@ class FunnelChart extends React.Component {
 	}
 }
 
-class EventsWidget extends React.Component {
+class UpcomingTasksWidget extends React.Component {
   render() {
     return(
 			// TODO: Make this a checkbox
@@ -182,23 +182,15 @@ class EventsWidget extends React.Component {
         <hr />
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">
-						{tasksList.map( (item) => {
-							<>
-								console.log(item);
-								{/* <li className="task-title" key={item.id} > {item.taskTitle}
-									<span className="task-date" key={item.taskDate}>  </span> 
-								</li>
-								<li className="task-body" > {item.taskBody} </li> */}
-							</>
-							}
-						)}
-
-    				{/* <li className="event"> Meeting with ABC</li>
-    				<li className="eventDate" > Nov. 11 </li>
-    				<li className="event"> Email XYZ </li>
-    				<li className="eventDate" > Nov. 11 </li>
-    				<li className="event"> Transact Lorem's order </li>
-    				<li className="eventDate" > &nbsp; </li> */}
+						{tasksList.map( (element,i) => {
+							return (
+								<div key={i}>
+									<li className="task-title"> {element.taskTitle} <span className="task-date"> {element.taskDate} </span> </li>
+									<li className="task-body"> {element.taskBody} </li>
+								</div>
+							);
+						})
+						}
     			</ul>
         </div>
       </div>
@@ -208,35 +200,36 @@ class EventsWidget extends React.Component {
 
 const tasksList = [
 	{
-		id:"1",
+		taskTitle: "Call X",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy MSFT",
+	},
+	{
+		taskTitle: "Call Y",
+		taskBody: "Nov. 9",
+		taskDate: "Encourage them to buy AMZN",
+	},
+	{
+		taskTitle: "Call Z",
+		taskBody: "Nov. 8",
+		taskDate: "Encourage them to buy IBM",
+	},
+	{
 		taskTitle: "Call Company X",
 		taskBody: "Nov. 8",
 		taskDate: "Encourage them to buy MSFT",
 	},
 	{
-		id:"2",
 		taskTitle: "Call Company X",
 		taskBody: "Nov. 8",
 		taskDate: "Encourage them to buy MSFT",
 	},
 	{
-		id:"3",
 		taskTitle: "Call Company X",
 		taskBody: "Nov. 8",
 		taskDate: "Encourage them to buy MSFT",
 	},
-	{
-		id:"4",
-		taskTitle: "Call Company X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
-	},
-	{
-		id:"5",
-		taskTitle: "Call Company X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
-	},
+	
 ];
 
 // [ .. { taskTitle:'', taskBody:'', taskDate:''} .. ]

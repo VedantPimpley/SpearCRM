@@ -18,11 +18,13 @@
 .upcoming-tasks-widget {
 	border: 2px solid black;
 	border-radius:5px;
+	height: 100%;
+	width: 95%;
 }
 
 .tasks-scroller-container {
 	overflow:auto;
-	height:400px;
+	height:350px;
 }
 
 /* ------------- */
@@ -47,4 +49,8 @@
 
 li {
 	margin-bottom: 5px;
+}
+
+.line-chart-container {
+	width:95%;
 }
