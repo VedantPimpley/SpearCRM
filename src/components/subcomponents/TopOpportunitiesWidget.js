@@ -12,7 +12,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { green } from "@material-ui/core/colors";
+import {Link} from 'react-router-dom';
 import '../styles/TopOpportunitiesWidget.css'
 
 function generate(element) {
@@ -48,10 +48,12 @@ export default function TopOpportunitiesWidget() {
       >
         {console.log(opportunities)}
         <ToggleButton value="leads" aria-label="people">
-          <PeopleIcon />
+          <PeopleOutlineIcon />
+          <div> &nbsp; Leads</div>
         </ToggleButton>
         <ToggleButton value="customers" aria-label="centered">
-          <PeopleOutlineIcon />
+          <PeopleIcon />
+          <div> &nbsp; Customers</div>
         </ToggleButton>
       </ToggleButtonGroup>
 
@@ -73,7 +75,9 @@ export default function TopOpportunitiesWidget() {
                     />
                     <ListItemSecondaryAction>
                       <IconButton edge="end" aria-label="delete">
-                          <OpenInNewIcon/>
+                        <Link to={{ pathname:'/profile', state:{uid:element.id} }}>
+                            <OpenInNewIcon/>
+                        </Link>
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
