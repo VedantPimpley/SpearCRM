@@ -39,7 +39,7 @@ export default function TopOpportunitiesWidget() {
 
   return (
     <div className="top-opportunities-widget-container">
-      <h2> Top Opportunities </h2>
+      <h2 className="top-opportunities-title"> &nbsp; Top Opportunities </h2>
       <ToggleButtonGroup
         value={alignment}
         exclusive
@@ -95,14 +95,14 @@ const sample_opps = {
     {"id":"1", "name":"Vedant","hotness":"Excellent" },
     {"id":"2", "name":"Amol", "hotness":"Excellent"},
     {"id":"3", "name":"Harsh", "hotness":"Excellent"},
-    {"id":"4", "name":"Shivam","hotness":"Very Likely"},
-    {"id":"5", "name":"Sagar", "hotness":"Very Likely"},
+    // {"id":"4", "name":"Shivam","hotness":"Very Likely"},
+    // {"id":"5", "name":"Sagar", "hotness":"Very Likely"},
   ],
   "customers" : [
     {"id":"6", "name":"Kanksha", "hotness":"High" },
     {"id":"7", "name":"Devang", "hotness":"High" },
     {"id":"8", "name":"Vishal", "hotness":"Moderate" },
-    {"id":"9", "name":"Rahul", "hotness":"Moderate" },
-    {"id":"10", "name":"Nikhil", "hotness":"Low" },
+    // {"id":"9", "name":"Rahul", "hotness":"Moderate" },
+    // {"id":"10", "name":"Nikhil", "hotness":"Low" },
   ],
 }

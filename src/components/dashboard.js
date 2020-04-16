@@ -179,7 +179,7 @@ class UpcomingTasksWidget extends React.Component {
 			// TODO: Make this a checkbox
 			// TODO: Make the tasks not overflow
       <div className="upcoming-tasks-widget">
-        <h1> &nbsp; Tasks </h1>
+        <h1 className='tasks-widget-title'> &nbsp; Tasks </h1>
         <hr />
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">

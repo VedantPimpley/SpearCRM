@@ -4,5 +4,13 @@
 }
 
 .top-opportunities-widget-container {
-  overflow: auto;
+  overflow: hidden;
+  margin-left:10px;
+  margin-top:10px;
+}
+
+.top-opportunities-title {
+  font-family: "Roboto";
+  font-size: 30px;
+  text-align: center;
 }

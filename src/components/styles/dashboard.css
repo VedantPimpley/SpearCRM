@@ -10,16 +10,19 @@
 	width: 90%;
 }
 
-
 .pieChartContainer{
 	padding-top:70px;
 }
 
 .upcoming-tasks-widget {
-	border: 2px solid black;
+	border: 1px solid black;
 	border-radius:5px;
 	height: 100%;
 	width: 95%;
+}
+
+.tasks-widget-title {
+	text-align: center;
 }
 
 .tasks-scroller-container {
