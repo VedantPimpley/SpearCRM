@@ -24,7 +24,7 @@ function generate(element) {
 }
 
 export default function TopOpportunitiesWidget() {
-  const [alignment, setAlignment] = useState("customers");
+  const [alignment, setAlignment] = useState("leads");
   const [opportunities, setOpportunities] = useState("");
 
   const handleAlignment = (event, newAlignment) => {
@@ -75,7 +75,7 @@ export default function TopOpportunitiesWidget() {
                     />
                     <ListItemSecondaryAction>
                       <IconButton edge="end" aria-label="delete">
-                        <Link to={{ pathname:'/profile', state:{uid:element.id} }}>
+                        <Link to={{ pathname: (alignment === "customers" ? '/accountprofile' : '/leadprofile'), state:{uid:element.id} }}>
                             <OpenInNewIcon/>
                         </Link>
                       </IconButton>

@@ -10,7 +10,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-const showHeader = true;
 
 export const data = [
   {
@@ -177,11 +176,10 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-class PeopleTable extends React.Component {
+class Accounts extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
-    showHeader: 'false',
   };
 
 //Searching logic
@@ -265,7 +263,7 @@ class PeopleTable extends React.Component {
         title: 'Profile Page',
         dataIndex: 'key',
         key: 'key',
-        render: (text,key) => <Link to={{pathname: "/profile", state: {uid: key.key} }}> Profile </Link>
+        render: (text,key) => <Link to={{pathname: "/leadprofile", state: {uid: key.key} }}> Profile </Link>
       },
       {
         title: 'Company',
@@ -330,9 +328,8 @@ class PeopleTable extends React.Component {
                   rowSelection={{type: "checkbox", ...rowSelection,}}
                   title={() => 'Accounts'}
                   onChange={onChange}
-                  {...this.state}
                   />;
   }
 };
 
-export default PeopleTable;
+export default Accounts;

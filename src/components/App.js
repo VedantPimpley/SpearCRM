@@ -1,8 +1,11 @@
 import React from 'react';
-import PeopleTable from './people.js'; 
+import Accounts from './Accounts.js'; 
 import Pipeline from './pipeline.js';
 import Dashboard from './dashboard.js';
 import Profile from './profile.js';
+import Leads from './Leads.js';
+import LeadProfile from './LeadProfile.js'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,7 +24,10 @@ export default function App() {
               <Link to="/dashboard"> Dashboard </Link>
             </li>
             <li>
-              <Link to="/people"> People </Link>
+              <Link to="/accounts"> Accounts </Link>
+            </li>
+            <li>
+              <Link to="/leads"> Leads </Link>
             </li>
             <li>
               <Link to="/pipeline"> Pipeline </Link>
@@ -30,13 +36,17 @@ export default function App() {
         </nav>
 
         <Switch>
-          <Route path="/people">
-            <PeopleTable />
+          <Route path="/accounts">
+            <Accounts />
           </Route>
+          <Route path="/accountprofile" component={Profile} />
+          <Route path='/leads'>
+            <Leads />
+          </Route>
+          <Route path="/leadprofile" component={LeadProfile} />
           <Route path="/pipeline">
             <Pipeline />
           </Route>
-          <Route path="/profile" component={Profile} />
           <Route path="/">
             <Dashboard />
           </Route>
