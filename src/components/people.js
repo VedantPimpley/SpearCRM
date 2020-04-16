@@ -10,6 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+const showHeader = true;
 
 export const data = [
   {
@@ -180,6 +181,7 @@ class PeopleTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
+    showHeader: 'false',
   };
 
 //Searching logic
@@ -309,7 +311,7 @@ class PeopleTable extends React.Component {
       {
         title: 'Email',
         dataIndex: 'email',
-        render: text => <a>{text} &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style={{fontSize:20, float:'right'}}>&#9993;</span> </a>,
+        render: text => <a>{text} <span style={{fontSize:20, float:'right'}}>&#9993;</span> </a>,
         key: 'email',
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ['descend'],
@@ -328,6 +330,7 @@ class PeopleTable extends React.Component {
                   rowSelection={{type: "checkbox", ...rowSelection,}}
                   title={() => 'Accounts'}
                   onChange={onChange}
+                  {...this.state}
                   />;
   }
 };

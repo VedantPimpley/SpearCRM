@@ -2,16 +2,23 @@
   max-width: 60%;
   float: left;
 }
+
+nav {
+  height: 50px;
+}
+
 nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  height: inherit;
 }
 
 nav ul li {
   float: left;
+  height: inherit;
   /* border-right:1px solid #bbb; */
 }
 

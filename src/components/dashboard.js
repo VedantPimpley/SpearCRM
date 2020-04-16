@@ -2,11 +2,12 @@ import React from 'react';
 import './styles/dashboard.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
+import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'
 
 export default function Dashboard() {
 	return(
     <div className="grid-container">
-  		<PieChart />
+  		<TopOpportunitiesWidget />
 			<LineChart />
       <FunnelChart />
   	  <UpcomingTasksWidget />
