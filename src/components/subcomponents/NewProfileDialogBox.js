@@ -6,7 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {data} from "../Accounts"
+import {data} from '../Accounts.js';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -31,42 +31,70 @@ export default function NewTaskDialogBox() {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        +
+        + New Profile
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add New Task</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add New Customer</DialogTitle>
         <DialogContent>
-        <Autocomplete
-            options={data}
-            getOptionLabel={data => data.name}
-            style={{ width: 300 }}
-            renderInput={params => (
-              <TextField {...params} label="Customer" variant="outlined" />
-            )}
-          />
+          {console.log(data.title)}
 
-          <MaterialUIPickers />
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Task"
-            type="email"
+            label="Name"
+            type="text"
+            variant="outlined"
+            fullWidth
+          />
+
+          <div className='age-inputs'>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="age"
+              label="Age"
+              type="number"
+              variant="outlined"
+            />
+            <span> &nbsp; &nbsp; </span>
+            <MaterialUIPickers />
+          </div>
+
+          <TextField
+            autoFocus
+            margin="dense"
+            id="job"
+            label="Job"
+            type="text"
+            variant="outlined"
             fullWidth
           />
 
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Details"
-            type="email"
+            id="phoneNumber"
+            label="Phone Number"
+            type="number"
+            variant="outlined"
             fullWidth
           />
+
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+          />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -102,12 +130,10 @@ function MaterialUIPickers() {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
-          disableToolbar
           variant="inline"
           format="MM/dd/yyyy"
-          margin="normal"
           id="date-picker-inline"
-          label="Date picker inline"
+          label="Birth date"
           value={selectedDate}
           onChange={handleDateChange}
           KeyboardButtonProps={{

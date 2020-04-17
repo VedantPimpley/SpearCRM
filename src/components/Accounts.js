@@ -10,6 +10,8 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import './styles/Leads.css'
+import NewProfileDialogBox from './subcomponents/NewProfileDialogBox'
 
 export const data = [
   {
@@ -324,12 +326,18 @@ class Accounts extends React.Component {
       },
     ];
 
-    return <Table columns={columns}
-                  dataSource={data}
-                  rowSelection={{type: "checkbox", ...rowSelection,}}
-                  title={() => 'Accounts'}
-                  onChange={onChange}
-                  />;
+    return(
+    <>
+      <Table 
+        columns={columns}
+        dataSource={data}
+        rowSelection={{type: "checkbox", ...rowSelection,}}
+        title={() => 'Leads'}
+        onChange={onChange}
+      />
+      <div className="add-profile-button"> <NewProfileDialogBox /> </div>
+    </>
+    ); 
   }
 };
 

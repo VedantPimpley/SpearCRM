@@ -9,7 +9,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import NewTaskDialogBox from './subcomponents/NewTaskDialogBox'
+import NewProfileDialogBox from './subcomponents/NewProfileDialogBox'
 import './styles/Leads.css'
 
 export const data = [
@@ -332,9 +332,8 @@ export default class Accounts extends React.Component {
           rowSelection={{type: "checkbox", ...rowSelection,}}
           title={() => 'Leads'}
           onChange={onChange}
-          // style={{zIndex:0}}
         />
-        <div className="add-profile-button"> <NewTaskDialogBox /> </div>
+        <div className="add-profile-button"> <NewProfileDialogBox /> </div>
       </>
     );
   }

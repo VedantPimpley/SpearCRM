@@ -179,7 +179,7 @@ class UpcomingTasksWidget extends React.Component {
   render() {
     return(
       <div className="upcoming-tasks-widget">
-        <h1 className='tasks-widget-title'> &nbsp; Tasks <span className="new-task-button"> <NewTaskDialogBox /> </span> </h1>
+        <div className='tasks-widget-title'> &nbsp; Tasks <span className="new-task-button"> <NewTaskDialogBox /> </span> </div>
         <hr />
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">
