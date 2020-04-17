@@ -66,6 +66,7 @@ export default class ActivityTracker extends React.Component {
           handleDateChange={this.handleDateChange} 
           onSubmit={this.onSubmit}
         />
+        <EmailAutomator />
         <NextSteps />
         <PastActivity />
       </div>
@@ -78,6 +79,27 @@ function PastActivity() {
     <PrettyList />
     // with listItems as the recent history of client-customer interactions
   );
+}
+
+class EmailAutomator extends React.Component {
+  render() {
+    let emailTo = "testing@gmail.com";
+    let emailSubject = "Testing whether email automation could work well";
+    let emailBody = "It seems that email automation could work well. I can't guarantee it, but this solution is great."
+    let emailHref = ("https://mail.google.com/mail?view=cm&fs=1" +
+      (emailTo ? ("&to=" + encodeURIComponent(emailTo)) : "") +
+      (emailSubject ? ("&su=" + encodeURIComponent(emailSubject)) : "") +
+      (emailBody ? ("&body=" + encodeURIComponent(emailBody)) : ""));
+    //cc and bcc are parameters that are also available
+    return(
+      <>
+        <div> 
+          <a style={{fontSize:24}} href={emailHref} target="_blank"> &#9993; Draft automated email  
+          </a>
+        </div>
+      </>
+    );
+  }
 }
 
 //Date selector/component
