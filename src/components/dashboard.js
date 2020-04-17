@@ -4,6 +4,7 @@ import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
 import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'
 import NewTaskDialogBox from './subcomponents/NewTaskDialogBox';
+import {Link} from 'react-router-dom';
 
 export default function Dashboard() {
 	return(
@@ -177,8 +178,6 @@ class FunnelChart extends React.Component {
 class UpcomingTasksWidget extends React.Component {
   render() {
     return(
-			// TODO: Make this a checkbox
-			// DONE: Make the tasks not overflow
       <div className="upcoming-tasks-widget">
         <h1 className='tasks-widget-title'> &nbsp; Tasks <span className="new-task-button"> <NewTaskDialogBox /> </span> </h1>
         <hr />
@@ -186,14 +185,17 @@ class UpcomingTasksWidget extends React.Component {
     			<ul className="tasks-list">
 						{tasksList.map( (element,i) => {
 							return (							
-									<div key={i}>
-										<li className="task-title">
-											&nbsp; 
-											<input type="checkbox" />
-											&nbsp; {element.taskTitle}  <span className="task-date">  {element.taskDate} </span> 
-										</li>
-										<li className="task-body"> &nbsp; {element.taskBody} </li>
-									</div>
+								<div key={i}>
+									<li className="task-title">		
+									&nbsp; <input type="checkbox" />
+									{/* TODO: Create linking logic from task entry to lead/customer */}
+									<Link to={{ pathname: '/accountprofile', state:{uid:""} }}>
+										&nbsp; {element.taskTitle}                      
+									</Link>
+										  <span className="task-date">  {element.taskDate} </span> 
+									</li>
+									<li className="task-body"> &nbsp; {element.taskBody} </li>
+								</div>
 							);
 						})
 						}
@@ -237,5 +239,3 @@ const tasksList = [
 	},
 	
 ];
-
-// [ .. { taskTitle:'', taskBody:'', taskDate:''} .. ]

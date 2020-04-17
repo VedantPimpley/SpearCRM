@@ -306,6 +306,7 @@ class Accounts extends React.Component {
         onFilter: (value, record) => record.name.indexOf(value) === 0,
       },
 //TODO: Filtering returns null records, fix this
+//TODO: Sorting should work; columns width should not change
       {
         title: 'Email',
         dataIndex: 'email',

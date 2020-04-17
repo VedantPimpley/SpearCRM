@@ -1,4 +1,3 @@
-
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Radio, Divider, Input, Button } from 'antd';
@@ -10,6 +9,8 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import NewTaskDialogBox from './subcomponents/NewTaskDialogBox'
+import './styles/Leads.css'
 
 export const data = [
   {
@@ -176,7 +177,7 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-class Accounts extends React.Component {
+export default class Accounts extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -323,13 +324,18 @@ class Accounts extends React.Component {
       },
     ];
 
-    return <Table columns={columns}
-                  dataSource={data}
-                  rowSelection={{type: "checkbox", ...rowSelection,}}
-                  title={() => 'Accounts'}
-                  onChange={onChange}
-                  />;
+    return (
+      <>
+        <Table 
+          columns={columns}
+          dataSource={data}
+          rowSelection={{type: "checkbox", ...rowSelection,}}
+          title={() => 'Leads'}
+          onChange={onChange}
+          // style={{zIndex:0}}
+        />
+        <div className="add-profile-button"> <NewTaskDialogBox /> </div>
+      </>
+    );
   }
 };
-
-export default Accounts;
