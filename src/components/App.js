@@ -1,8 +1,8 @@
 import React from 'react';
+import Pipeline from './Pipeline.js';
+import Dashboard from './Dashboard.js';
 import Accounts from './Accounts.js'; 
-import Pipeline from './pipeline.js';
-import Dashboard from './dashboard.js';
-import Profile from './profile.js';
+import AccountProfile from './AccountProfile.js';
 import Leads from './Leads.js';
 import LeadProfile from './LeadProfile.js'
 
@@ -36,20 +36,12 @@ export default function App() {
         </nav>
 
         <Switch>
-          <Route path="/accounts">
-            <Accounts />
-          </Route>
-          <Route path="/accountprofile" component={Profile} />
-          <Route path='/leads'>
-            <Leads />
-          </Route>
+          <Route path="/accounts" component={Accounts} />
+          <Route path="/accountprofile" component={AccountProfile} />
+          <Route path="/leads" component={Leads} />
           <Route path="/leadprofile" component={LeadProfile} />
-          <Route path="/pipeline">
-            <Pipeline />
-          </Route>
-          <Route path="/">
-            <Dashboard />
-          </Route>
+          <Route path="/pipeline" component={Pipeline} />
+          <Route path="/" component={Dashboard} />
         </Switch>
       </div>
     </Router>

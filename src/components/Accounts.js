@@ -10,7 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import './styles/Leads.css'
+import './styles/Accounts.css'
 import NewProfileDialogBox from './subcomponents/NewProfileDialogBox'
 
 export const data = [
@@ -178,7 +178,7 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-class Accounts extends React.Component {
+export default class Accounts extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -343,5 +343,3 @@ class Accounts extends React.Component {
     ); 
   }
 };
-
-export default Accounts;

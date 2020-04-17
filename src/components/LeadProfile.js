@@ -1,10 +1,10 @@
 import React from 'react';
-import './styles/profile.css';
+import './styles/AccountProfile.css'; //styling of both AccountProfile and LeadProfile pages is the same
 import FieldsContainer from "./subcomponents/FieldsContainer";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import LeadProfileHeader from "./subcomponents/LeadProfileHeader";
 
-export default class Profile extends React.Component {
+export default class LeadProfile extends React.Component {
   componentDidMount() {
     const { uid } = this.props.location.state;
     console.log("UID is " + uid);

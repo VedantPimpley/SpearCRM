@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/dashboard.css';
+import './styles/Dashboard.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
 import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'

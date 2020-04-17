@@ -1,10 +1,10 @@
 import React from 'react';
-import './styles/profile.css';
+import './styles/AccountProfile.css';
 import FieldsContainer from "./subcomponents/FieldsContainer";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import ProfileHeader from "./subcomponents/ProfileHeader";
 
-export default class Profile extends React.Component {
+export default class AccountProfile extends React.Component {
   componentDidMount() {
     const { uid } = this.props.location.state;
     console.log("UID is " + uid);

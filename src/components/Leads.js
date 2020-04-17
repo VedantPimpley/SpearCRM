@@ -10,7 +10,7 @@ import {
   Link
 } from "react-router-dom";
 import NewProfileDialogBox from './subcomponents/NewProfileDialogBox'
-import './styles/Leads.css'
+import './styles/Accounts.css' //both Accounts and Leads pages have the same styling
 
 export const data = [
   {
@@ -177,7 +177,7 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-export default class Accounts extends React.Component {
+export default class Leads extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
