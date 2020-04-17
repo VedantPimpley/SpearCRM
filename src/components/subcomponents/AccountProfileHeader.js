@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/ProfileHeader.css';
+import '../styles/AccountProfileHeader.css';
 
-export default class ProfileHeader extends React.Component {
+export default class AccountProfileHeader extends React.Component {
   onTickClick() {
     //if (n==3)
     //turn all 3 into green background

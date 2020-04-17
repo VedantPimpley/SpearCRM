@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/AccountProfile.css';
 import FieldsContainer from "./subcomponents/FieldsContainer";
 import ActivityTracker from "./subcomponents/ActivityTracker";
-import ProfileHeader from "./subcomponents/ProfileHeader";
+import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
 
 export default class AccountProfile extends React.Component {
   componentDidMount() {
@@ -14,7 +14,7 @@ export default class AccountProfile extends React.Component {
     return(
       <div className="profile-page-grid-container">
         <div className='profile-header-container'>
-          <ProfileHeader />
+          <AccountProfileHeader />
         </div>
         <FieldsContainer fields={sample_data}/> 
         <FieldsContainer fields={sample_data}/>

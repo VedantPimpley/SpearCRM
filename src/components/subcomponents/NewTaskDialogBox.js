@@ -45,7 +45,7 @@ export default function NewTaskDialogBox() {
             getOptionLabel={data => data.name}
             style={{ width: 300 }}
             renderInput={params => (
-              <TextField {...params} label="Customer" variant="outlined" />
+              <TextField {...params} label="Lead/Account" variant="outlined" />
             )}
           />
 

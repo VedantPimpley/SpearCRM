@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ProfileHeader.css';
+import '../styles/AccountProfileHeader.css'; //AccountProfileHeader and LeadProfileHeader have the same styling
 
 export default class LeadProfileHeader extends React.Component {
   onTickClick() {
