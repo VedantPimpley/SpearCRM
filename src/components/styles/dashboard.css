@@ -48,6 +48,7 @@
 	font-family:'Times New Roman';
 	font-size:24px;
 	cursor: pointer;
+
 }
 
 li {
@@ -56,4 +57,14 @@ li {
 
 .line-chart-container {
 	width:95%;
+}
+
+.tasks-list{
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.new-task-button{
+	float:right;
+	padding: 10px;
 }

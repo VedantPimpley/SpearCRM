@@ -2,6 +2,7 @@ import React from 'react'
 import '../styles/ActivityTracker.css'
 import ManualLogger from './ManualLogger.js'
 import PrettyList from './PrettyList.js'
+import NextSteps from './NextSteps'
 
 export default class ActivityTracker extends React.Component {
   constructor(props) {
@@ -65,18 +66,11 @@ export default class ActivityTracker extends React.Component {
           handleDateChange={this.handleDateChange} 
           onSubmit={this.onSubmit}
         />
-        <NextStep />
+        <NextSteps />
         <PastActivity />
       </div>
     );
   }  
-}
-
-function NextStep() {
-  return(
-    <PrettyList />
-    // with listItems as the one recommendation made by AI Core from backend
-  );
 }
 
 function PastActivity() {

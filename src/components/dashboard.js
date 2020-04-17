@@ -3,6 +3,7 @@ import './styles/dashboard.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
 import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'
+import NewTaskDialogBox from './subcomponents/NewTaskDialogBox';
 
 export default function Dashboard() {
 	return(
@@ -177,18 +178,22 @@ class UpcomingTasksWidget extends React.Component {
   render() {
     return(
 			// TODO: Make this a checkbox
-			// TODO: Make the tasks not overflow
+			// DONE: Make the tasks not overflow
       <div className="upcoming-tasks-widget">
-        <h1 className='tasks-widget-title'> &nbsp; Tasks </h1>
+        <h1 className='tasks-widget-title'> &nbsp; Tasks <span className="new-task-button"> <NewTaskDialogBox /> </span> </h1>
         <hr />
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">
 						{tasksList.map( (element,i) => {
-							return (
-								<div key={i}>
-									<li className="task-title"> {element.taskTitle} <span className="task-date"> {element.taskDate} </span> </li>
-									<li className="task-body"> {element.taskBody} </li>
-								</div>
+							return (							
+									<div key={i}>
+										<li className="task-title">
+											&nbsp; 
+											<input type="checkbox" />
+											&nbsp; {element.taskTitle}  <span className="task-date">  {element.taskDate} </span> 
+										</li>
+										<li className="task-body"> &nbsp; {element.taskBody} </li>
+									</div>
 							);
 						})
 						}
@@ -202,33 +207,33 @@ class UpcomingTasksWidget extends React.Component {
 const tasksList = [
 	{
 		taskTitle: "Call X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
+		taskBody: "Encourage them to buy MSFT",
+		taskDate: "Nov. 8",
 	},
 	{
 		taskTitle: "Call Y",
-		taskBody: "Nov. 9",
-		taskDate: "Encourage them to buy AMZN",
+		taskDate: "Nov. 9",
+		taskBody: "Encourage them to buy AMZN",
 	},
 	{
 		taskTitle: "Call Z",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy IBM",
+		taskBody: "Encourage them to buy IBM",
+		taskDate: "Nov. 8",
 	},
 	{
 		taskTitle: "Call Company X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
+		taskBody: "Encourage them to buy MSFT",
+		taskDate: "Nov. 8",
 	},
 	{
 		taskTitle: "Call Company X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
+		taskBody: "Encourage them to buy MSFT",
+		taskDate: "Nov. 8",
 	},
 	{
 		taskTitle: "Call Company X",
-		taskBody: "Nov. 8",
-		taskDate: "Encourage them to buy MSFT",
+		taskBody: "Encourage them to buy MSFT",
+		taskDate: "Nov. 8",
 	},
 	
 ];
