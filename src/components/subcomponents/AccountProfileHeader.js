@@ -1,5 +1,7 @@
 import React from 'react';
 import '../styles/AccountProfileHeader.css';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { Tooltip } from '@material-ui/core';
 
 export default class AccountProfileHeader extends React.Component {
   onTickClick() {
@@ -28,7 +30,9 @@ export default class AccountProfileHeader extends React.Component {
             <span className="stage-name"> Transacted </span>
           </span>  
 
-          <span className="success-checkmark"> </span>
+          <Tooltip title="Successful transaction">
+            <CheckCircleIcon />
+          </Tooltip> 
         </span> 
       </>
     );

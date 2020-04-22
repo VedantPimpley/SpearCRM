@@ -14,12 +14,14 @@
   padding-bottom: 40px;
   padding-right: 40px;
   border: 1px solid gray;
+  cursor: pointer;
 }
 
 .stage2{
   clip-path: polygon(75% 25%, 95% 50%, 75% 75%, 0 75%, 20% 50%, 0 25%);
   padding: 40px;
   border: 1px solid gray;
+  cursor: pointer;
 }
 
 .stage3{
@@ -29,6 +31,7 @@
   padding-bottom: 40px;
   padding-right: 15px;
   border: 1px solid gray;
+  cursor: pointer;
 }
 
 .stage-name {

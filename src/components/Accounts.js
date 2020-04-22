@@ -307,14 +307,12 @@ export default class Accounts extends React.Component {
         ],
         onFilter: (value, record) => record.name.indexOf(value) === 0,
       },
-//TODO: Filtering returns null records, fix this
-//TODO: Sorting should work; columns width should not change
       {
         title: 'Email',
         dataIndex: 'email',
         render: text => <a target="_blank" href={`https://mail.google.com/mail/u/0/?view=cm&fs=1&to=${text}`}>
                           {text} 
-                        <span style={{fontSize:20, float:'right'}}>&#9993;</span> 
+                          <span style={{fontSize:20, float:'right'}}>&#9993;</span> 
                         </a>,
         key: 'email',
         sorter: (a, b) => a.name.length - b.name.length,

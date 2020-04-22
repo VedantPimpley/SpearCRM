@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -15,18 +14,9 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import {Link} from 'react-router-dom';
 import '../styles/TopOpportunitiesWidget.css'
 
-function generate(element) {
-  return [0, 1, 2, 3, 4].map(value =>
-    React.cloneElement(element, {
-      key: value
-    })
-  );
-}
-
 export default function TopOpportunitiesWidget() {
   const [alignment, setAlignment] = useState("leads");
-  const [opportunities, setOpportunities] = useState("");
-
+  
   const handleAlignment = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
@@ -46,7 +36,6 @@ export default function TopOpportunitiesWidget() {
         onChange={handleAlignment}
         aria-label="toggling"
       >
-        {console.log(opportunities)}
         <ToggleButton value="leads" aria-label="people">
           <PeopleOutlineIcon />
           <div> &nbsp; Leads</div>
@@ -60,30 +49,29 @@ export default function TopOpportunitiesWidget() {
       <div className="material-ui-list">
         <List dense={true}>
           {sample_opps[alignment].map( (element,i) => {
-              console.log("Hi!" );
-              return(
-                <div key={element.id}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <div> {i+1} </div>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={element.name}
-                      secondary={element.hotness}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <Link to={{ pathname: (alignment === "customers" ? '/accountprofile' : '/leadprofile'), state:{uid:element.id} }}>
-                            <OpenInNewIcon/>
-                        </Link>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </div>
-              );
-              })}
+            return(
+              <div key={element.id}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <div> {i+1} </div>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={element.name}
+                    secondary={element.hotness}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete">
+                      <Link to={{ pathname: (alignment === "customers" ? '/accountprofile' : '/leadprofile'), state:{uid:element.id} }}>
+                          <OpenInNewIcon/>
+                      </Link>
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </div>
+            );
+          })}
         </List>
       </div>
     </div>
@@ -99,7 +87,7 @@ const sample_opps = {
     // {"id":"5", "name":"Sagar", "hotness":"Very Likely"},
   ],
   "customers" : [
-    {"id":"6", "name":"Kanksha", "hotness":"High" },
+    {"id":"6", "name":"Kanksha", "hotness":"Moderate" },
     {"id":"7", "name":"Devang", "hotness":"High" },
     {"id":"8", "name":"Vishal", "hotness":"Moderate" },
     // {"id":"9", "name":"Rahul", "hotness":"Moderate" },

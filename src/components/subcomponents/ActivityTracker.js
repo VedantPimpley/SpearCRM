@@ -9,12 +9,11 @@ export default class ActivityTracker extends React.Component {
     super(props);
     this.state= {
       type: "call", //other type is task
+      //In JSON post: if type=="call", activityTitle="Logged a call", activityBody={draftInput}, activityDate={draftDate}
       draftInput: "",
       draftDate: new Date().toJSON().slice(0,10),
     };
   }
-
-  // TODO:GROUP TOGETHER ALL CHANGLE HANDLERS
 
   onTabChange = event => {
     this.setState({
@@ -105,3 +104,17 @@ class EmailAutomator extends React.Component {
 //Date selector/component
 //Text Input
 //State is stored in segmentedControl
+
+
+
+// "1234": {"name":"Amol", "age": "21"
+//           "userCreatedActivity":[
+            
+//             { activityTitle:"call", activityBody: "Meeting with XYZ", taskDate:"2020-10.."},
+//             { activityTitle:"event", activityBody: "Meeting with XYZ", taskDate:"2020-10.."},
+//           ]
+// }
+
+// { type:"airecommendedstep", taskBody:"Confirm the order with XYZ", taskDate:" "}
+
+// Activity: uid, title(Logged a call, Task/Event), Date, Body

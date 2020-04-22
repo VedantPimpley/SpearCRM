@@ -14,7 +14,6 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-
 export default function NewTaskDialogBox() {
   const [open, setOpen] = React.useState(false);
 
@@ -107,18 +106,7 @@ export default function NewTaskDialogBox() {
   );
 }
 
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: "Pulp Fiction", year: 1994 }
-];
-
 function MaterialUIPickers() {
-  // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(new Date().toJSON().slice(0,10));
 
   const handleDateChange = (date) => {

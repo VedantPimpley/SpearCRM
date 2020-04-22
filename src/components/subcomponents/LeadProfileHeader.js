@@ -11,17 +11,26 @@ export default class LeadProfileHeader extends React.Component {
   }
 
   render() {
-    let n = 1;
     return(
       <>
         <span className="profile-name"> John Brown </span>
         <span className="stage-indicator">
-          <span className="stage1" style={ n===2 ? {backgroundColor:"green"} : {backgroundColor:"blue"} }>
-            <span className="stage-name"> Unopened </span>
+          <span 
+           className="stage1" 
+           onClick={this.props.onClick} 
+           id="uncontacted"
+           style={ this.props.leadStatus==="contacted" ? {backgroundColor:"forestgreen"} : {backgroundColor:"blue"} }
+          >
+            <span id="uncontacted" className="stage-name"> Uncontacted </span>
           </span>  
 
-          <span className="stage2" style={ n===2 ? {backgroundColor:"blue"} : {backgroundColor:"gray"} }> 
-            <span className="stage-name"> Contacted </span>
+          <span 
+           className="stage2" 
+           onClick={this.props.onClick} 
+           id="contacted"
+           style={ this.props.leadStatus==="contacted" ? {backgroundColor:"blue"} : {backgroundColor:"gray"} }
+          > 
+            <span id="contacted" className="stage-name"> Contacted </span>
           </span>  
 
           <span className="success-checkmark"> </span>

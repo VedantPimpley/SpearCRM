@@ -11,9 +11,6 @@ export default class ManualLogger extends React.Component {
     console.log(this.props);
   }
 
-  //TODO:Create backend logic. Submitting new task with elapsed date (i.e. date that has already passed) sends it to past activity in the backend.
-  //Refer notebook notes.
-
   render(){
     return(
       <div className="manual-logger">

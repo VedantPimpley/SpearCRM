@@ -5,16 +5,29 @@ import ActivityTracker from "./subcomponents/ActivityTracker";
 import LeadProfileHeader from "./subcomponents/LeadProfileHeader";
 
 export default class LeadProfile extends React.Component {
+
+  state = {
+    status: "contacted" //contacted or uncontacted
+  };
+
   componentDidMount() {
     const { uid } = this.props.location.state;
     console.log("UID is " + uid);
+  }
+
+  componentDidUpdate() {
+    console.log("Status is " + this.state.status);
+  }
+
+  onDivClick = event => {
+    this.setState({ status:event.target.id });
   }
 
   render(){
     return(
       <div className="profile-page-grid-container">
         <div className='profile-header-container'>
-          <LeadProfileHeader />
+          <LeadProfileHeader onClick={this.onDivClick} leadStatus={this.state.status} />
         </div>
         <FieldsContainer fields={sample_data}/> 
         <FieldsContainer fields={sample_data}/>

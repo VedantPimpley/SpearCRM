@@ -116,7 +116,6 @@ class LineChart extends React.Component {
 					{ x: 10, y: 66 },
 					{ x: 11, y: 69 },
 					{ x: 12, y: 64 },
-					{ x: 13, y: 68 },
 				]
 			}]
 		}
@@ -146,11 +145,10 @@ class FunnelChart extends React.Component {
 				indexLabelPlacement: "inside",
 				indexLabel: "{label} ({percentage}%)",
 				dataPoints: [
-					{ y: 1400, label: "Leads" },
-					{ y: 1212, label: "Clients Interested" },
-					{ y: 1080, label: "Negotiation" },
-					{ y: 665,  label: "Order Received" },
-					{ y: 578, label: "Payment" }
+					{ y: 5, label: "Leads and Accounts Contacted" },
+					{ y: 3, label: "Customers interested" },
+					{ y: 2,  label: "Customers who transacted" },
+					{ y: 1, label: "Payment" }
 				]
 			}]
 		}
@@ -188,7 +186,6 @@ class UpcomingTasksWidget extends React.Component {
 								<div key={i}>
 									<li className="task-title">		
 									&nbsp; <input type="checkbox" />
-									{/* TODO: Create linking logic from task entry to lead/customer */}
 									<Link to={{ pathname: '/accountprofile', state:{uid:""} }}>
 										&nbsp; {element.taskTitle}                      
 									</Link>
@@ -208,16 +205,19 @@ class UpcomingTasksWidget extends React.Component {
 
 const tasksList = [
 	{
+		uid:"",
 		taskTitle: "Call X",
 		taskBody: "Encourage them to buy MSFT",
 		taskDate: "Nov. 8",
 	},
 	{
+		uid:"",
 		taskTitle: "Call Y",
 		taskDate: "Nov. 9",
 		taskBody: "Encourage them to buy AMZN",
 	},
 	{
+		uid:"",
 		taskTitle: "Call Z",
 		taskBody: "Encourage them to buy IBM",
 		taskDate: "Nov. 8",
