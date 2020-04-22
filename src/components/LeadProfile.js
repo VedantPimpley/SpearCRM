@@ -28,7 +28,7 @@ export default class LeadProfile extends React.Component {
     return(
       <div className="profile-page-grid-container">
         <div className='profile-header-container'>
-          <LeadProfileHeader onClick={this.onDivClick} leadStatus={this.state.status} />
+          <LeadProfileHeader onClick={this.onDivClick} leadStatus={this.state.status}/>
         </div>
         <FieldsContainer fields={sample_data}/> 
         <FieldsContainer fields={sample_data}/>

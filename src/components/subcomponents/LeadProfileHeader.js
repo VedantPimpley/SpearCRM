@@ -7,11 +7,14 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import {Link} from 'react-router-dom';
 
 export default class LeadProfileHeader extends React.Component {
   state = {
     open: false,
+    submitted: false,
   }
 
   handleClickOpen = () => {
@@ -22,6 +25,15 @@ export default class LeadProfileHeader extends React.Component {
 
   handleClose = () => {
     this.setState({ open:false });
+  };
+
+  handleModalClose = () => {
+    this.setState({ submitted:false });
+  }
+
+  redirectorModalInput = () => {
+    this.setState({ open:false });
+    this.setState({ submitted: true });
   };
 
   render() {
@@ -54,6 +66,8 @@ export default class LeadProfileHeader extends React.Component {
           </span>
         </span> 
 
+        {/* Form dialog */}
+
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -74,11 +88,41 @@ export default class LeadProfileHeader extends React.Component {
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.redirectorModalInput} color="primary">
+            {/* TODO: Validate the input somehow */}
             Confirm
           </Button>
         </DialogActions>
         </Dialog>
+
+        <Dialog
+          open={this.state.submitted}
+          onClose={this.handleModalClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title"> Redirect </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Proceed to new Account Profile or return to Leads page?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Link to={{pathname:'./leads'}}>
+              <Button onClick={this.handleModalClose} color="primary">
+                Return
+              </Button>
+            </Link>
+            <Link to={{pathname:'./AccountProfile', state:{ uid:this.props.uid }}}>
+              {/* TODO: Correct the logic to redirect with correct account id */}
+              <Button onClick={this.handleModalClose} color="primary" autoFocus>
+                Proceed
+              </Button>
+            </Link>
+          </DialogActions>
+        </Dialog>
+
+
       </>
     );
   }  
