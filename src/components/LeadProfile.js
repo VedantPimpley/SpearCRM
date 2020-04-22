@@ -20,6 +20,7 @@ export default class LeadProfile extends React.Component {
   }
 
   onDivClick = event => {
+    //TODO:POST REQUEST. IF RESPONSE OKAY:
     this.setState({ status:event.target.id });
   }
 

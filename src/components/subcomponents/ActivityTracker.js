@@ -1,76 +1,93 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import '../styles/ActivityTracker.css'
 import ManualLogger from './ManualLogger.js'
 import PrettyList from './PrettyList.js'
 import NextSteps from './NextSteps'
 
-export default class ActivityTracker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state= {
-      type: "call", //other type is task
-      //In JSON post: if type=="call", activityTitle="Logged a call", activityBody={draftInput}, activityDate={draftDate}
-      draftInput: "",
-      draftDate: new Date().toJSON().slice(0,10),
-    };
-  }
+export default function ActivityTracker() {
+  const [activityType, setActivityType] = useState("future"); //past or future
+  const [activityTitle, setActivityTitle] = useState("");
+  const [activityBody, setActivityBody] = useState("");
+  const [activityDate, setActivityDate] = useState(new Date().toJSON().slice(0,10));
 
-  onTabChange = event => {
-    this.setState({
-      type: event.target.id
-    }); 
-  }
-
-  handleDateChange = event => {
-    this.setState({
-      draftDate: event.target.value
-    });
-  }
-
-  handleChange = event => {
-    this.setState({
-      draftInput: event.target.value
-    });
-  }
-
-  onSubmit = () => {
-    const activity = this.state;
-    const response = fetch('/add_activity', {
-      method: 'POST',
-      headers: {
-        'Content-Type': "application/json"
-      },
-      body: JSON.stringify()
-    });
-
-    if (response.ok) {
-      console.log("Response to add_activity worked");
+  const handleActivityType = (event, newActivityType) => {
+    if (newActivityType !== null) {
+      setActivityType(newActivityType);
     }
-  }
+  };
 
-  componentDidUpdate() {
-    console.log(this.state);
-  }
+  const handleChangeInBody = (event) => {
+    setActivityBody(event.target.value);
+  };
 
-  render() {
-    return(
-      <div className="activity-tracker-container">
-        <h3> Activity Tracker</h3>
-        <ManualLogger 
-          draftDate={this.state.draftDate}
-          draftInput={this.state.draftInput}
-          type={this.state.type} 
-          onClick={this.onTabChange} 
-          handleChange={this.handleChange} 
-          handleDateChange={this.handleDateChange} 
-          onSubmit={this.onSubmit}
-        />
-        <EmailAutomator />
-        <NextSteps />
-        <PastActivity />
-      </div>
-    );
-  }  
+  const handleChangeInTitle = (event) => {
+    setActivityTitle(event.target.value);
+  };
+
+  const handleChangeInDate = (event) => {
+    setActivityDate(event);
+  };
+  // onToggle = event => {
+  //   this.setState({
+  //     activityType: event.target.id
+  //   }); 
+  // }
+
+  // handleToggle = (event, newActivityType) => {
+  //   if (newActivityType !== null) {
+  //     this.setState{( ActivityType:newActivityType )};
+  //   }
+  // };
+
+  // handleDateChange = event => {
+  //   this.setState({
+  //     draftDate: event.target.value
+  //   });
+  // }
+
+  // handleChange = event => {
+  //   this.setState({
+  //     draftBody: event.target.value
+  //   });
+  // }
+
+  // onSubmit = () => {
+  //   //check draftDate and type match
+  //   const activity = this.state;
+  //   const response = fetch('/add_activity', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': "application/json"
+  //     },
+  //     body: JSON.stringify()
+  //   });
+  //   if (response.ok) {
+  //     console.log("Response to add_activity worked");
+  //   }
+  // }
+
+  // componentDidUpdate() {
+  //   console.log(this.state);
+  // }
+  
+  return(
+    <div className="activity-tracker-container">
+      <h3> Activity Tracker</h3>
+      <ManualLogger 
+        draftType={activityType} 
+        draftTitle={activityTitle}
+        draftDate={activityDate}
+        draftBody={activityBody}
+        onToggle={handleActivityType}
+        handleChangeInBody={handleChangeInBody}
+        handleChangeInTitle={handleChangeInTitle}
+        handleChangeInDate={handleChangeInDate}
+      />
+      <EmailAutomator />
+      <NextSteps />
+      <PastActivity />
+    </div>
+  ); 
 }
 
 function PastActivity() {
@@ -100,21 +117,3 @@ class EmailAutomator extends React.Component {
     );
   }
 }
-
-//Date selector/component
-//Text Input
-//State is stored in segmentedControl
-
-
-
-// "1234": {"name":"Amol", "age": "21"
-//           "userCreatedActivity":[
-            
-//             { activityTitle:"call", activityBody: "Meeting with XYZ", taskDate:"2020-10.."},
-//             { activityTitle:"event", activityBody: "Meeting with XYZ", taskDate:"2020-10.."},
-//           ]
-// }
-
-// { type:"airecommendedstep", taskBody:"Confirm the order with XYZ", taskDate:" "}
-
-// Activity: uid, title(Logged a call, Task/Event), Date, Body
