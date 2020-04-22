@@ -30,9 +30,11 @@ export default class AccountProfileHeader extends React.Component {
             <span className="stage-name"> Transacted </span>
           </span>  
 
-          <Tooltip title="Successful transaction">
-            <CheckCircleIcon />
-          </Tooltip> 
+          <span style={{ verticalAlign: "middle" }}>
+            <Tooltip title="Successful transaction">
+              <CheckCircleIcon />
+            </Tooltip> 
+          </span>
         </span> 
       </>
     );
