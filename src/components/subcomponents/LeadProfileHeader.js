@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/AccountProfileHeader.css'; //AccountProfileHeader and LeadProfileHeader have the same styling
+import '../styles/LeadProfileHeader.css';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Tooltip } from '@material-ui/core';
 import Button from "@material-ui/core/Button";
@@ -121,8 +121,6 @@ export default class LeadProfileHeader extends React.Component {
             </Link>
           </DialogActions>
         </Dialog>
-
-
       </>
     );
   }  
