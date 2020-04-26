@@ -5,9 +5,18 @@ import ActivityTracker from "./subcomponents/ActivityTracker";
 import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
 
 export default class AccountProfile extends React.Component {
+  state = {
+    accountData: {},
+  };
+
   componentDidMount() {
-    const { uid } = this.props.location.state;
-    console.log("UID is " + uid);
+    const { cid } = this.props.location.state; //named cid temporarily
+    console.log("CID is " + cid);
+    fetch(`/main/display_acc/{cid}`).then(response =>
+      response.json().then(data => {
+        this.setState({ accountData: data });
+      })
+    );
   }
 
   render(){

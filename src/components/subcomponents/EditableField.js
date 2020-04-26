@@ -25,7 +25,6 @@ export default class EditableField extends React.Component {
       fieldDataComponent = <input type="text" name={this.props.name} defaultValue={this.props.fieldData} onChange={this.props.onChange}/>;
       editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#10003; </button>;
     }
-
     return(
       <div className="editable-field-component">
         <p> {this.props.fieldName} </p>
