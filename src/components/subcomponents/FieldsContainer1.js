@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 
-export default class FieldsContainer extends React.Component {
+export default class FieldsContainer1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

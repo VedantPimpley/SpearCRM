@@ -24,7 +24,7 @@ export default class AccountProfile extends React.Component {
     );
   }
 
-  updateAccountProfileAPICall() {
+  updateAccountProfileAPICall = () => {
     fetch(`/main/display_acc/${this.state.accountData.account_id}`).then(response =>
       response.json().then(data => {
         data["account_id"] = data["account_id"]["$oid"];
@@ -32,7 +32,6 @@ export default class AccountProfile extends React.Component {
       })
     );
   }
-
   render(){
     let fields_set1 = {
       account_id: this.state.accountData.account_id,
@@ -58,8 +57,8 @@ export default class AccountProfile extends React.Component {
         <div className='profile-header-container'>
           <AccountProfileHeader name= {this.state.accountData.name}furthestStage={this.state.accountData.latest_order_stage} updateAccountProfile={this.updateAccountProfileAPICall}/>
         </div>
-        <FieldsContainer fields={generic_fields} updateAccountProfile={this.updateAccountProfileAPICall}/>
-        <FieldsContainer fields={specific_fields} updateAccountProfile={this.updateAccountProfileAPICall}/>
+        <FieldsContainer1 fields={fields_set1} updateAccountProfile={this.updateAccountProfileAPICall}/>
+        <FieldsContainer2 fields={fields_set2} updateAccountProfile={this.updateAccountProfileAPICall}/>
         <ActivityTracker updateAccountProfile={this.updateAccountProfileAPICall}/>
       </div>     
     );
