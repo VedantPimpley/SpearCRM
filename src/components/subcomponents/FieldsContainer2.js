@@ -70,6 +70,7 @@ export default class FieldsContainer2 extends React.Component {
     if (response.ok) {
       console.log("response worked!");
       console.log(response);
+      this.props.updateAccountProfile();
     }
     //POST current state with account_id
     //overwrite received props object with state variables of same name

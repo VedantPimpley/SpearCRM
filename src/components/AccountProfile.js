@@ -58,7 +58,12 @@ export default class AccountProfile extends React.Component {
     return(
       <div className="profile-page-grid-container">
         <div className='profile-header-container'>
-          <AccountProfileHeader name= {this.state.accountData.name}furthestStage={this.state.accountData.latest_order_stage} updateAccountProfile={this.updateAccountProfileAPICall}/>
+          <AccountProfileHeader 
+            name = {fields_set.name} 
+            furthestStage = {fields_set.latest_order_stage} 
+            updateAccountProfile = {this.updateAccountProfileAPICall}
+            account_id_json = { {"account_id": fields_set.account_id} }
+          />
         </div>
         <FieldsContainer1 fields={fields_set} updateAccountProfile={this.updateAccountProfileAPICall}/>
         <FieldsContainer2 fields={fields_set} updateAccountProfile={this.updateAccountProfileAPICall}/>
