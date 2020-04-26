@@ -49,7 +49,7 @@ export default function NewTaskDialogBox() {
             fullWidth
           />
 
-          <div className='age-inputs'>
+          {/* <div className='age-inputs'>
             <TextField
               autoFocus
               margin="dense"
@@ -60,13 +60,13 @@ export default function NewTaskDialogBox() {
             />
             <span> &nbsp; &nbsp; </span>
             <MaterialUIPickers />
-          </div>
+          </div> */}
 
           <TextField
             autoFocus
             margin="dense"
-            id="job"
-            label="Job"
+            id="company"
+            label="Company"
             type="text"
             variant="outlined"
             fullWidth
@@ -75,9 +75,19 @@ export default function NewTaskDialogBox() {
           <TextField
             autoFocus
             margin="dense"
-            id="phoneNumber"
-            label="Phone Number"
-            type="number"
+            id="city"
+            label="City"
+            type="text"
+            variant="outlined"
+            fullWidth
+          />
+
+          <TextField
+            autoFocus
+            margin="dense"
+            id="job_type"
+            label="Job Type"
+            type="text"
             variant="outlined"
             fullWidth
           />
@@ -92,6 +102,15 @@ export default function NewTaskDialogBox() {
             fullWidth
           />
 
+          <TextField
+            autoFocus
+            margin="dense"
+            id="phone_number"
+            label="Phone Number"
+            type="number"
+            variant="outlined"
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
