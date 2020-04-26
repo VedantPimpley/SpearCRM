@@ -1,6 +1,8 @@
 .pretty-list {
   border: 2px solid black;
-	border-radius:2px;
+  border-radius:5px;
+  padding: 2px;
+  overflow: auto;
 }
 
 /* Experiences */
@@ -52,6 +54,10 @@ ul.experiences li {
   margin-top: 0.5em;
 }
 
+input.largerCheckbox { 
+	transform : scale(1.25); 
+} 
+
 
 /* BORDERS AND BULLETS */
 
@@ -94,3 +100,4 @@ ul.experiences li:last-child:before {
   /* last li's line */
  height: 6px; /* shorten the line so it goes only up to the bullet. Is equal to first-child:before's top */
 }
+

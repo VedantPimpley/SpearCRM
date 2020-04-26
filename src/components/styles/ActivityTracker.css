@@ -1,4 +1,3 @@
-/* .activity-tracker-container {
-  height: 10% doesn't change anything 
+.activity-tracker-container > *{
+  margin: 2px;
 }
-*/

@@ -25,45 +25,51 @@ export default class ManualLogger extends React.Component {
       <div className="manual-logger">
 
         {/* type input */}
-        <ToggleButtonGroup
-          value={this.props.draftType}
-          exclusive
-          onChange={this.props.onToggle}
-          aria-label="toggling"
-        >
-          <ToggleButton value="past">
-            <div> &nbsp; Log past activity</div>
-          </ToggleButton>
-          <ToggleButton value="future">
-            <div> &nbsp; Schedule future activity or TODO</div>
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <div className="togglebutton">
+          <ToggleButtonGroup
+            value={this.props.draftType}
+            exclusive
+            onChange={this.props.onToggle}
+            aria-label="toggling"
+          >
+            <ToggleButton value="past">
+              <div> &nbsp; Log past activity</div>
+            </ToggleButton>
+            <ToggleButton value="future">
+              <div> &nbsp; Schedule future activity or TODO</div>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
 
         {/* title input */}
-        <TextField
-          autoFocus
-          margin="dense"
-          id="activityTitle"
-          label="Title"
-          type="text"
-          variant="outlined"
-          value={this.props.draftTitle}
-          onChange={this.props.handleChangeInTitle}
-          fullWidth
-        />
+        <div style={{ width: 400}}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="activityTitle"
+            label="Title"
+            type="text"
+            variant="outlined"
+            value={this.props.draftTitle}
+            onChange={this.props.handleChangeInTitle}
+            fullWidth
+          />
+        </div>
 
-        {/* body input */}
-        <TextField
-          autoFocus
-          margin="dense"
-          id="activityBody"
-          label="Body"
-          type="text"
-          variant="outlined"
-          value={this.props.draftBody}
-          onChange={this.props.handleChangeInBody}
-          fullWidth
-        />
+        <div style={{ width: 400}}>
+          {/* body input */}
+          <TextField
+            autoFocus
+            margin="dense"
+            id="activityBody"
+            label="Body"
+            type="text"
+            variant="outlined"
+            value={this.props.draftBody}
+            onChange={this.props.handleChangeInBody}
+            fullWidth
+          />
+        </div>
 
         {/* date input */}
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

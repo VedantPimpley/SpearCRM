@@ -30,8 +30,8 @@ export default class LeadProfile extends React.Component {
         <div className='profile-header-container'>
           <LeadProfileHeader onClick={this.onDivClick} leadStatus={this.state.status}/>
         </div>
-        <FieldsContainer fields={sample_data}/> 
-        <FieldsContainer fields={sample_data}/>
+        <FieldsContainer fields={sample_data} container="Generic"/> 
+        <FieldsContainer fields={sample_data} container="Specific"/>
         <ActivityTracker />
       </div>     
     );

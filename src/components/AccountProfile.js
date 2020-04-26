@@ -16,8 +16,8 @@ export default class AccountProfile extends React.Component {
         <div className='profile-header-container'>
           <AccountProfileHeader />
         </div>
-        <FieldsContainer fields={sample_data}/> 
-        <FieldsContainer fields={sample_data}/>
+        <FieldsContainer fields={sample_data} container="Generic"/>
+        <FieldsContainer fields={sample_data} container="Specific"/>
         <ActivityTracker />
       </div>     
     );

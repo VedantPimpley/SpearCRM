@@ -72,7 +72,8 @@ export default function ActivityTracker() {
   
   return(
     <div className="activity-tracker-container">
-      <h3> Activity Tracker</h3>
+      <h2 style={{ textAlign: "center"}}> Activity Tracker</h2>
+      <EmailAutomator />
       <ManualLogger 
         draftType={activityType} 
         draftTitle={activityTitle}
@@ -83,7 +84,6 @@ export default function ActivityTracker() {
         handleChangeInTitle={handleChangeInTitle}
         handleChangeInDate={handleChangeInDate}
       />
-      <EmailAutomator />
       <NextSteps />
       <PastActivity />
     </div>
@@ -92,8 +92,10 @@ export default function ActivityTracker() {
 
 function PastActivity() {
   return(
-    <PrettyList />
-    // with listItems as the recent history of client-customer interactions
+    <>
+      <h2> Past Activity </h2>
+      <PrettyList />
+    </>
   );
 }
 
@@ -110,7 +112,7 @@ class EmailAutomator extends React.Component {
     return(
       <>
         <div> 
-          <a style={{fontSize:24}} href={emailHref} target="_blank"> &#9993; Draft automated email  
+          <a style={{fontSize:20}} href={emailHref} target="_blank"> &#9993; Draft automated email  
           </a>
         </div>
       </>

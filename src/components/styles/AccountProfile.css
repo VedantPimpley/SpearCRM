@@ -18,5 +18,6 @@
 }
 
 .profile-page-grid-container > * {
-  border: 1px solid green;
+  border: 1px solid rgb(64,64,64)  ;
+  padding: 5px;
 }

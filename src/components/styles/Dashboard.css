@@ -71,3 +71,7 @@ li {
 	float:right;
 	padding-right: 10px;
 }
+
+input.largerCheckbox { 
+	transform : scale(1.25); 
+} 

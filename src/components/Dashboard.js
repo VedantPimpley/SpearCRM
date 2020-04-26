@@ -185,7 +185,7 @@ class UpcomingTasksWidget extends React.Component {
 							return (							
 								<div key={i}>
 									<li className="task-title">		
-									&nbsp; <input type="checkbox" />
+									&nbsp; <input type="checkbox" className="largerCheckbox" />
 									<Link to={{ pathname: '/accountprofile', state:{uid:""} }}>
 										&nbsp; {element.taskTitle}                      
 									</Link>
