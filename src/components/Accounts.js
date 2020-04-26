@@ -182,9 +182,18 @@ export default class Accounts extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
+    fetchedData: [],
   };
 
 //Searching logic
+
+  componentDidMount() {
+    fetch("/main/show_accounts").then(response =>
+      response.json().then(data => {
+        this.setState({ fetchedData: data });
+      })
+    );
+  }
 
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -263,8 +272,8 @@ export default class Accounts extends React.Component {
       },
       {
         title: 'Profile Page',
-        dataIndex: 'key',
-        key: 'key',
+        dataIndex: '_id', //used to be 'key'
+        key: '_id',
         render: (text,key) => <Link to={{pathname: "/accountprofile", state: {uid: key.key} }}> Profile </Link>
       },
       {
@@ -284,28 +293,28 @@ export default class Accounts extends React.Component {
         sortDirections: ['descend'],
       },
       {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        filters: [
-          {
-            text: 'Individual',
-            value: 'Individual',
-          },
-          {
-            text: 'Small Business',
-            value: 'Small Business',
-          },
-          {
-            text: 'Mid-market',
-            value: 'Mid-market',
-          },
-          {
-            text: 'Enterprise',
-            value: 'Enterprise',
-          },
-        ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        title: 'Job Type',
+        dataIndex: 'job_type',
+        key: 'job_type',
+        // filters: [
+        //   {
+        //     text: 'Individual',
+        //     value: 'Individual',
+        //   },
+        //   {
+        //     text: 'Small Business',
+        //     value: 'Small Business',
+        //   },
+        //   {
+        //     text: 'Mid-market',
+        //     value: 'Mid-market',
+        //   },
+        //   {
+        //     text: 'Enterprise',
+        //     value: 'Enterprise',
+        //   },
+        // ],
+        // onFilter: (value, record) => record.name.indexOf(value) === 0,
       },
       {
         title: 'Email',
@@ -320,8 +329,8 @@ export default class Accounts extends React.Component {
       },
       {
         title: 'Phone No.',
-        dataIndex: 'phoneNumber',
-        key: 'phoneNumber',
+        dataIndex: 'phone_number', // used to be phoneNumber
+        key: 'phone_number',
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ['descend'],
       },
@@ -331,7 +340,7 @@ export default class Accounts extends React.Component {
     <>
       <Table 
         columns={columns}
-        dataSource={data}
+        dataSource={this.state.fetchedData}
         rowSelection={{type: "checkbox", ...rowSelection,}}
         title={() => 'Accounts'}
         onChange={onChange}
