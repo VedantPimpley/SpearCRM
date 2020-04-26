@@ -39,6 +39,12 @@ export default class FieldsContainer2 extends React.Component {
     );
   }  
 
+  submitChangedFields = async () => {
+    //POST current state with account_id
+    //overwrite received props object with state variables of same name
+    //post the resulting object
+  }
+
   handleChange = e => {
     console.log(`handleChange ${e.target.name}`);
     this.setState({

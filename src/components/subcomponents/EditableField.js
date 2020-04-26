@@ -20,10 +20,10 @@ export default class EditableField extends React.Component {
 
   render() {
     let fieldDataComponent = <div> {this.props.fieldData} </div>;
-    let editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#9999; </button>;
+    let editButton = <button className="DataEditButton" onClick={this.alternateViews} > &#9999; </button>;
     if(this.state.isBeingEdited) {
       fieldDataComponent = <input type="text" name={this.props.name} defaultValue={this.props.fieldData} onChange={this.props.onChange}/>;
-      editButton = <button className="DataEditButton" onClick={this.alternateViews.bind(this)} > &#10003; </button>;
+      editButton = <button className="DataEditButton" onClick={this.props.submitChangedFields} > &#10003; </button>;
     }
     return(
       <div className="editable-field-component">
@@ -36,7 +36,15 @@ export default class EditableField extends React.Component {
     );
   }
 
-  alternateViews() {
+  alternateViews = () => {
+    this.setState({
+      isBeingEdited: !this.state.isBeingEdited
+    });
+  }
+
+  submitChangedFieldsAndAlternateViews = () => {
+    this.props.submitChangedFields();
+    //is it successful?
     this.setState({
       isBeingEdited: !this.state.isBeingEdited
     });

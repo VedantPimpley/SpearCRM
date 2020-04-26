@@ -18,7 +18,7 @@ export default class AccountProfile extends React.Component {
     console.log("CID is " + cid);
     fetch(`/main/display_acc/${cid}`).then(response =>
       response.json().then(data => {
-        data["account_id"] = data["account_id"]["$oid"];
+        data["account_id"] = data["account_id"]["$oid"]; //TODO:verify source
         this.setState({ accountData: data });
       })
     );
@@ -27,29 +27,31 @@ export default class AccountProfile extends React.Component {
   updateAccountProfileAPICall = () => {
     fetch(`/main/display_acc/${this.state.accountData.account_id}`).then(response =>
       response.json().then(data => {
-        data["account_id"] = data["account_id"]["$oid"];
+        data["account_id"] = data["account_id"]["$oid"]; //TODO:verify source
         this.setState({ accountData: data });
       })
     );
   }
+  
   render(){
-    let fields_set1 = {
-      account_id: this.state.accountData.account_id,
+    let fields_set = {
+      account_id: this.state.accountData.account_id, //The one starting with "A" 
+      contact_comm_type: this.state.accountData.contact_comm_type,
       name: this.state.accountData.name,
+      dob: this.state.accountData.name, //needs sorting out on Amol's side
       company: this.state.accountData.company,
       education: this.state.accountData.education,
       city: this.state.accountData.city,
       state: this.state.accountData.state,
       country: this.state.accountData.country,
-    };
-
-    let fields_set2 = {
       last_contact: this.state.accountData.last_contact,
       trading_accno: this.state.accountData.trading_accno,
+      demat_accno: this.state.accountData.demat_accno,
       job_type: this.state.accountData.job_type,
       marital_status: this.state.accountData.marital_status,
       email: this.state.accountData.email,
       phone_number: this.state.accountData.phone_number,
+      latest_order_stage: this.state.accountData.latest_order_stage,
     };
 
     return(
@@ -57,8 +59,8 @@ export default class AccountProfile extends React.Component {
         <div className='profile-header-container'>
           <AccountProfileHeader name= {this.state.accountData.name}furthestStage={this.state.accountData.latest_order_stage} updateAccountProfile={this.updateAccountProfileAPICall}/>
         </div>
-        <FieldsContainer1 fields={fields_set1} updateAccountProfile={this.updateAccountProfileAPICall}/>
-        <FieldsContainer2 fields={fields_set2} updateAccountProfile={this.updateAccountProfileAPICall}/>
+        <FieldsContainer1 fields={fields_set} updateAccountProfile={this.updateAccountProfileAPICall}/>
+        <FieldsContainer2 fields={fields_set} updateAccountProfile={this.updateAccountProfileAPICall}/>
         <ActivityTracker updateAccountProfile={this.updateAccountProfileAPICall}/>
       </div>     
     );
