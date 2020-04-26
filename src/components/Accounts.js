@@ -260,6 +260,7 @@ export default class Accounts extends React.Component {
   };
 
   render() {
+    console.log(this.state.fetchedData);
     const columns = [
       {
         title: 'Name',
