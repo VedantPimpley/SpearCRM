@@ -35,7 +35,7 @@ export default class AccountProfile extends React.Component {
   
   render(){
     let fields_set = {
-      account_id: this.state.accountData.account_id, //The one starting with "A" 
+      account_id: this.state.accountData.account_id, 
       contact_comm_type: this.state.accountData.contact_comm_type,
       name: this.state.accountData.name,
       dob: this.state.accountData.name, //needs sorting out on Amol's side
@@ -53,6 +53,7 @@ export default class AccountProfile extends React.Component {
       phone_number: this.state.accountData.phone_number,
       latest_order_stage: this.state.accountData.latest_order_stage,
     };
+    //alternative to fields_set is NOT this.state.accountData because orders, activity is not reqd. in FieldContainer
 
     return(
       <div className="profile-page-grid-container">

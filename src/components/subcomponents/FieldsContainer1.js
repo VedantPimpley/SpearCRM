@@ -12,7 +12,7 @@ export default class FieldsContainer1 extends React.Component {
       company: this.props.fields.company,
       education: this.props.fields.education,
       city: this.props.fields.city,
-      state: this.props.fields.state,
+      state: this.props.fields.state, //could lead to bugs, reserved word
       country: this.props.fields.country,
     };
   }
@@ -54,6 +54,25 @@ export default class FieldsContainer1 extends React.Component {
 
 
   postFields = async () => {
+    let allFields = this.props.fields;
+    allFields["name"] = this.state.name;
+    allFields["company"] = this.state.company;
+    allFields["education"] = this.state.education;
+    allFields["city"] = this.state.city;
+    allFields["state"] = this.state.state;
+    allFields["country"] = this.state.country;
+    const response = await fetch("/main/edit_account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(allFields)
+    });
+    
+    if (response.ok) {
+      console.log("response worked!");
+      console.log(response);
+    }
     //POST current state with account_id
     //overwrite received props object with state variables of same name
     //post the resulting object

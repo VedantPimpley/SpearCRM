@@ -5,7 +5,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import {data} from '../Accounts.js';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -19,19 +18,19 @@ export default class NewTaskDialogBox extends React.Component{
     city: "",
     company: "",
     country: "",
-    dematAccno: "",
-    dob: new Date().toJSON().slice(0,10),
+    demat_accno: "",
+    dob: new Date().toJSON(),
     education: "",
     email: "",
-    jobType: "",
-    lastContact: null,
-    latestOrderStage: 0,
+    job_type: "",
+    last_contact: null,
+    latest_order_stage: 0,
     name: "",
-    locnState: "",
-    phoneNumber: "",
-    maritalStatus: "",
-    tradingAccno: "",
-    contactCommType : "Email",
+    state: "",
+    phone_number: "",
+    marital_status: "",
+    trading_accno: "",
+    contact_comm_type : "Email",
   }
 
   componentDidUpdate() {
@@ -167,7 +166,7 @@ export default class NewTaskDialogBox extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id="phoneNumber"
+              id="phone_number"
               label="Phone Number"
               type="number"
               variant="outlined"
@@ -191,7 +190,7 @@ export default class NewTaskDialogBox extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id="jobType"
+              id="job_type"
               label="Job Type"
               type="text"
               variant="outlined"
@@ -202,7 +201,7 @@ export default class NewTaskDialogBox extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id="maritalStatus"
+              id="marital_status"
               label="Marital Status"
               type="text"
               variant="outlined"
@@ -213,7 +212,7 @@ export default class NewTaskDialogBox extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id="tradingAccNo"
+              id="trading_accno"
               label="Trading Account No."
               type="number"
               variant="outlined"
@@ -224,7 +223,7 @@ export default class NewTaskDialogBox extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id="dematAccno"
+              id="demat_accno"
               label="Demat Account No."
               type="number"
               variant="outlined"

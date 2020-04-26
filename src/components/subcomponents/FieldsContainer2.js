@@ -52,6 +52,25 @@ export default class FieldsContainer2 extends React.Component {
   }  
 
   postFields = async () => {
+    let allFields = this.props.fields;
+    allFields["last_contact"] = this.state.last_contact;
+    allFields["trading_accno"] = this.state.trading_accno;
+    allFields["job_type"] = this.state.job_type;
+    allFields["marital_status"] = this.state.marital_status;
+    allFields["email"] = this.state.email;
+    allFields["phone_number"] = this.state.phone_number;
+    const response = await fetch("/main/edit_account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(allFields)
+    });
+    
+    if (response.ok) {
+      console.log("response worked!");
+      console.log(response);
+    }
     //POST current state with account_id
     //overwrite received props object with state variables of same name
     //post the resulting object
