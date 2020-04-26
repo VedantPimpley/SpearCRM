@@ -22,24 +22,36 @@ export default class FieldsContainer2 extends React.Component {
       <div>
         <h2 style={{ textAlign: "center"}}> {this.props.container} fields </h2>
           <List>
-            <ListItem><EditableField name="last_contact" fieldName="Last Contact" fieldData={this.state.name} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="last_contact" fieldName="Last Contact" fieldData={this.state.name} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
-            <ListItem><EditableField name="trading_accno" fieldName="Trading Account No." fieldData={this.state.company} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="trading_accno" fieldName="Trading Account No." fieldData={this.state.company} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
-            <ListItem><EditableField name="job_type" fieldName="Job type" fieldData={this.state.type} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="job_type" fieldName="Job type" fieldData={this.state.type} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
-            <ListItem><EditableField name="marital_status" fieldName="Marital Status" fieldData={this.state.city} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="marital_status" fieldName="Marital Status" fieldData={this.state.city} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
-            <ListItem><EditableField name="email" fieldName="Email" fieldData={this.state.phoneNumber} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="email" fieldName="Email" fieldData={this.state.phoneNumber} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
-            <ListItem><EditableField name="phone_number" this fieldName="Phone Number" fieldData={this.state.email} onChange={this.handleChange}/></ListItem>
+            <ListItem>
+              <EditableField name="phone_number" this fieldName="Phone Number" fieldData={this.state.email} onChange={this.handleChange} onSubmit={this.postFields}/>
+            </ListItem>
             <Divider />
           </List>
       </div>
     );
   }  
 
-  submitChangedFields = async () => {
+  postFields = async () => {
     //POST current state with account_id
     //overwrite received props object with state variables of same name
     //post the resulting object

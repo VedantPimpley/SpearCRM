@@ -195,6 +195,14 @@ export default class Accounts extends React.Component {
     );
   }
 
+  updateAccountsAPICall = () => {
+    fetch("/main/show_accounts").then(response =>
+      response.json().then(data => {
+        this.setState({ fetchedData: data });
+      })
+    );
+  }
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -346,7 +354,7 @@ export default class Accounts extends React.Component {
         title={() => 'Accounts'}
         onChange={onChange}
       />
-      <div className="add-profile-button"> <NewProfileDialogBox /> </div>
+      <div className="add-profile-button"> <NewProfileDialogBox updateAccounts={this.updateAccountsAPICall}/> </div>
     </>
     ); 
   }

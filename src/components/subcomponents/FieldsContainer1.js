@@ -23,27 +23,27 @@ export default class FieldsContainer1 extends React.Component {
         <h2 style={{ textAlign: "center"}}> Fields 1</h2>
           <List>
             <ListItem>
-              <EditableField name="name" fieldName="Name" fieldData={this.state.name} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="name" fieldName="Name" fieldData={this.state.name} onChange={this.handleChange} onSubmit={this.postFields}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="company" fieldName="Company" fieldData={this.state.company} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="company" fieldName="Company" fieldData={this.state.company} onChange={this.handleChange} onSubmit={this.postFields}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="education" fieldName="Education" fieldData={this.state.type} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="education" fieldName="Education" fieldData={this.state.type} onChange={this.handleChange} onSubmit={this.postFields}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="city" fieldName="City" fieldData={this.state.city} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="city" fieldName="City" fieldData={this.state.city} onChange={this.handleChange} onSubmit={this.postFields}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="state" fieldName="State" fieldData={this.state.phoneNumber} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="state" fieldName="State" fieldData={this.state.phoneNumber} onChange={this.handleChange} onSubmit={this.postFields}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="country" this fieldName="Country" fieldData={this.state.email} onChange={this.handleChange} onSubmit={this.submitChangedFields}/>
+              <EditableField name="country" this fieldName="Country" fieldData={this.state.email} onChange={this.handleChange} onSubmit={this.postFields}/>
              </ListItem>
             <Divider />
           </List>
@@ -53,7 +53,7 @@ export default class FieldsContainer1 extends React.Component {
 
 
 
-  submitChangedFields = async () => {
+  postFields = async () => {
     //POST current state with account_id
     //overwrite received props object with state variables of same name
     //post the resulting object
