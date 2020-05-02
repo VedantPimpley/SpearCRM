@@ -190,6 +190,9 @@ export default class Accounts extends React.Component {
   componentDidMount() {
     fetch("/main/show_accounts").then(response =>
       response.json().then(data => {
+        data.forEach( (entry) => {
+          entry["account_id"] = entry["account_id"]["$oid"];
+        });
         this.setState({ fetchedData: data });
       })
     );
@@ -198,6 +201,9 @@ export default class Accounts extends React.Component {
   updateAccountsAPICall = () => {
     fetch("/main/show_accounts").then(response =>
       response.json().then(data => {
+        data.forEach( (entry) => {
+          entry["account_id"] = entry["account_id"]["$oid"];
+        });
         this.setState({ fetchedData: data });
       })
     );
@@ -281,8 +287,8 @@ export default class Accounts extends React.Component {
       },
       {
         title: 'Profile Page',
-        dataIndex: '_id', //used to be 'key'
-        key: '_id',
+        dataIndex: 'account_id', //used to be 'key'
+        key: 'account_id',
         render: (text,key) => <Link to={{pathname: "/accountprofile", state: {uid: key.key} }}> Profile </Link>
       },
       {
