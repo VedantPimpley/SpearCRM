@@ -5,90 +5,41 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 
 export default class FieldsContainer2 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      last_contact: this.props.fields.last_contact,
-      trading_accno: this.props.fields.trading_accno,
-      job_type: this.props.fields.job_type,
-      marital_status: this.props.fields.marital_status,
-      email: this.props.fields.email,
-      phone_number: this.props.fields.phone_number,
-    };
+  componentDidMount() {
+    console.log(this.props.fields);
   }
-  
+
   render() {
     return(
       <div>
-        <h2 style={{ textAlign: "center"}}> {this.props.container} fields </h2>
+        <h2 style={{ textAlign: "center"}}> Fields 2</h2>
           <List>
             <ListItem>
-              <EditableField name="last_contact" fieldName="Last Contact" fieldData={this.state.name} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="last_contact" fieldName="Last Contact" fieldData={this.props.fields.last_contact} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="trading_accno" fieldName="Trading Account No." fieldData={this.state.company} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="trading_accno" fieldName="Trading Account No." fieldData={this.props.fields.trading_accno} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="job_type" fieldName="Job type" fieldData={this.state.type} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="job_type" fieldName="Job type" fieldData={this.props.fields.job_type} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="marital_status" fieldName="Marital Status" fieldData={this.state.city} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="marital_status" fieldName="Marital Status" fieldData={this.props.fields.marital_status} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="email" fieldName="Email" fieldData={this.state.phoneNumber} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="email" fieldName="Email" fieldData={this.props.fields.email} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
             <ListItem>
-              <EditableField name="phone_number" this fieldName="Phone Number" fieldData={this.state.email} onChange={this.handleChange} onSubmit={this.postFields}/>
+              <EditableField name="phone_number" fieldName="Phone Number" fieldData={this.props.fields.phone_number} onChange={this.props.handleChange} onSubmit={this.props.onSubmit}/>
             </ListItem>
             <Divider />
           </List>
       </div>
     );
   }  
-
-  postFields = async () => {
-    let allFields = this.props.fields;
-    allFields["last_contact"] = this.state.last_contact;
-    allFields["trading_accno"] = this.state.trading_accno;
-    allFields["job_type"] = this.state.job_type;
-    allFields["marital_status"] = this.state.marital_status;
-    allFields["email"] = this.state.email;
-    allFields["phone_number"] = this.state.phone_number;
-    const response = await fetch("/main/edit_account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(allFields)
-    });
-    
-    if (response.ok) {
-      console.log("response worked!");
-      console.log(response);
-      this.props.updateAccountProfile();
-    }
-    //POST current state with account_id
-    //overwrite received props object with state variables of same name
-    //post the resulting object
-  }
-
-  handleChange = e => {
-    console.log(`handleChange ${e.target.name}`);
-    this.setState({
-      [e.target.name] : e.target.value
-    });
-  }
-
-  componentDidMount() {
-    console.log(this.props.fields);
-  }
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
 }
