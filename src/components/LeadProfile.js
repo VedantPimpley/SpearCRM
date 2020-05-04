@@ -83,9 +83,20 @@ export default class LeadProfile extends React.Component {
             updateLeadProfile = {this.updateLeadProfileAPICall}
           />
         </div>
-        <FieldsContainer1 fields={sample_data}/> 
-        <FieldsContainer2 fields={sample_data}/>
-        <ActivityTracker />
+        <FieldsContainer1 
+          fields={this.state.leadData}
+          handleChange={this.handleChange} 
+          onSubmit={this.postFields}
+        /> 
+        <FieldsContainer2
+          fields={this.state.leadData}
+          handleChange={this.handleChange} 
+          onSubmit={this.postFields}
+        /> 
+        <ActivityTracker 
+          _id = {this.props.location.state.cid}
+          lead = {1}
+        />
       </div>     
     );
   }
