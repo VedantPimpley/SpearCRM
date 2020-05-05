@@ -17,7 +17,7 @@ export default class LeadProfile extends React.Component {
     fetch(`/main/display_lead/${cid}`).then(response =>
       response.json().then(data => {
         this.setState({ leadData: data });
-        console.log(data);
+        console.log(this.state.leadData);
       })
     );
   }
@@ -40,7 +40,8 @@ export default class LeadProfile extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("Status is " + this.state.status);
+    console.log("Status is " + this.state.leadData.status);
+    console.log(this.state.leadData);
   }
 
   onDivClick = (event) => {
@@ -48,12 +49,12 @@ export default class LeadProfile extends React.Component {
     deepClone.status = event.target.id; //used to be event.target.value
     this.setState({ 
       leadData: deepClone
-    });
-    this.postFields();
+    }, () => {this.postFields()} );
   }
 
   postFields = async () => {
     const leadDataObj = this.state.leadData;
+    console.log("POSTFIELD CALLED");
     console.log(leadDataObj);
     const response = await fetch("/main/edit_lead", {
       method: "POST",
@@ -64,8 +65,8 @@ export default class LeadProfile extends React.Component {
     });
     
     if (response.ok) {
+      console.log(leadDataObj);
       console.log("response worked!");
-      console.log(response);
       this.updateLeadProfileAPICall();
     }
   }
@@ -73,7 +74,6 @@ export default class LeadProfile extends React.Component {
   render(){
     return(
       <div className="profile-page-grid-container">
-        {console.log(this.state.leadData)}
         <div className='profile-header-container'>
           <LeadProfileHeader
             onClick = {this.onDivClick} 

@@ -35,12 +35,12 @@ export default class LeadProfileHeader extends React.Component {
 
   transitionLeadToAccount = async () => {
     const fields = {
-      demat_accno: this.state.demat_accno,
-      trading_accno: this.state.trading_accno,
+      demat_accno: parseInt(this.state.demat_accno),
+      trading_accno: parseInt(this.state.trading_accno),
       _id : this.props._id,
       contact_comm_type: "Email",
       latest_order_stage: 0,
-      last_contact: Date.now()
+      last_contact: new Date()
     }
     console.log(fields);
 
@@ -73,10 +73,10 @@ export default class LeadProfileHeader extends React.Component {
           <span 
            className="stage1" 
            onClick={this.props.onClick} 
-           id="Open"
+           id="Uncontacted"
            style={ this.props.leadStatus==="Contacted" ? {backgroundColor:"forestgreen"} : {backgroundColor:"blue"} }
           >
-            <span id="Open" className="stage-name"> &nbsp; &nbsp; Open  &nbsp; &nbsp; </span>
+            <span id="Uncontacted" className="stage-name"> Uncontacted </span>
           </span>  
 
           <span 
@@ -112,6 +112,7 @@ export default class LeadProfileHeader extends React.Component {
               type="number"
               variant="outlined"
               fullWidth
+              onChange={this.handleChange}
             />
 
             <TextField
@@ -122,6 +123,7 @@ export default class LeadProfileHeader extends React.Component {
               type="number"
               variant="outlined"
               fullWidth
+              onChange={this.handleChange}
             />
             
           </DialogContent>
