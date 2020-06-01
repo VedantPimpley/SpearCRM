@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react'
 import '../styles/PrettyList.css'
+import {convertIsoDateToDateString} from "../Dashboard.js"
+
 
 export default function NextSteps(props) {
-  useEffect (() => {
-    console.log(props);
-  })
 
-  const transitionActivity = async (activityId) => {
+  const transitionActivity = async (activityId, isAiActivity) => {
     const activityToTransition = {
       "_id" : activityId,
       "activity_type" : "past"
@@ -21,11 +20,32 @@ export default function NextSteps(props) {
     });
 
     if (response.ok) {
-      console.log("response worked!");
-      console.log(response);
-      props.updateActivityTracker();
+      if (isAiActivity && props.lead === 0) {
+        props.fetchAccountDataAndOrdersAndActivities();
+      }
+      //isAiActivity is 1 for activities generated through automation. 
+      //Deleting an AI generated activity might involve deletion of corresponding order and updating activity data
+      //props.lead indicates the grandparent page. prop.lead===0 being true means AccountProfile is the grandparent.
+      else {
+        props.fetchActivities();
+      }
+      //User generated activities can be deleted without updating orders and activities.
+      //an AI generated activity can cause wider changes than user generated activity upon transition.
     }
   }
+
+  const deleteActivity = (activityId, isAiActivity) => {
+		fetch(`/main/delete_activity/${activityId}`)
+		.then( () => {
+      if (isAiActivity) {
+        props.fetchAccountDataAndOrdersAndActivities();
+      }
+      //isAiActivity is 1 for activities generated through automation
+      else {
+        props.fetchActivities();
+      }
+    });
+	}
 
   return(
     <> 
@@ -36,10 +56,26 @@ export default function NextSteps(props) {
           {props.activitiesList.map( (element, i) => {
             return (
               <li className="blue" key={i}>
-                <input className="largerCheckbox" type="checkbox" onClick={() => {transitionActivity(element._id)}}/>
-                <div className="where"> {element.title} </div>
-                <div className="when"> {element.date} </div>
-                <p className="description"> {element.body} </p>
+                <input 
+                  className="largerCheckbox" 
+                  type="checkbox" 
+                  checked={false}
+                  onClick={() => {transitionActivity(element._id, element.ai_activity)}}
+                />
+
+                <div className="where"> 
+                  {element.title} 
+                </div>
+
+                <span onClick={() => {deleteActivity(element._id, element.ai_activity)}}> &times; </span>
+
+                <div className="when"> 
+                  {convertIsoDateToDateString(element.date)} 
+                </div>
+
+                <p className="description"> 
+                  {element.body} 
+                </p>
              </li>
             );
           })

@@ -4,16 +4,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import '../styles/FieldsContainer.css'
+import {convertIsoDateToDateString} from "../Dashboard.js"
 
 export default class FieldsContainer2 extends React.Component {
-  componentDidMount() {
-    console.log(this.props.fields);
-  }
-
   render() {
     let fieldsBasedOnParentComponent = null;
     
-    if (this.props.lead === 0) {
+    if (this.props.lead === 1) {
       fieldsBasedOnParentComponent = (
         <ListItem>
           <EditableField 
@@ -30,31 +27,18 @@ export default class FieldsContainer2 extends React.Component {
       fieldsBasedOnParentComponent = (
         <>
           <ListItem>
-            <EditableField 
-              name="demat_accno" 
-              fieldName="Demat Account Number" 
-              fieldData={this.props.fields.demat_accno} 
-              onChange={this.props.handleChange} 
-              onSubmit={this.props.onSubmit}
-            />
+            <div className="noneditable-field-component">
+              <p> Account turnover till date </p>
+              <div> Rs. {parseInt(this.props.accountTurnover.turnover)} </div>
+            </div>  
           </ListItem>
           <Divider />
-          
-          <ListItem>
-            <EditableField 
-              name="trading_accno" 
-              fieldName="Trading Account Number" 
-              fieldData={this.props.fields.trading_accno} 
-              onChange={this.props.handleChange} 
-              onSubmit={this.props.onSubmit}
-            />
-          </ListItem>
 
           {/* Last Contacted value is immutable */}
           <ListItem>
             <div className="noneditable-field-component">
               <p> Last Contacted </p>
-              <div> {this.props.fields.last_contact} </div>;
+              <div> {convertIsoDateToDateString(this.props.fields.last_contact)} </div>
             </div>  
           </ListItem>
         </>
@@ -121,6 +105,7 @@ export default class FieldsContainer2 extends React.Component {
             <Divider />
 
             {fieldsBasedOnParentComponent}
+            <Divider />
 
           </List>
       </div>

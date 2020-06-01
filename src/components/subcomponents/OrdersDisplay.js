@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -14,11 +14,20 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import '../styles/OrdersDisplay.css'
 
 export default function OrdersDisplay (props) {
   const [open, setOpen] = useState(false);
+  const [openSpinner, setOpenSpinner] = useState(false);
+
+  const _isMounted = useRef(true);
+  useEffect( () => {
+    return () => _isMounted.current = false;
+  }, []);
+  //isMounted is used to prevent rendering after unmount. Here, related to async calls.
 
   const handleOpen = () => {
     setOpen(true);
@@ -29,16 +38,19 @@ export default function OrdersDisplay (props) {
   }
 
   const deleteOrder = (orderId) => {
-    fetch(`main/delete_order/${orderId}`).then(response =>
-      response.json().then(data => {
-        if (data==="Order Deleted"){
-          this.props.updateActivityTracker()
-          .then( () => this.props.updateAccountProfile())
-          .catch( () => console.log("deleteOrder chaining error"));
-          //chained together promises
-        }
-      })
-    );
+    fetch(`main/delete_order/${orderId}`)
+    .then( () => props.fetchAccountDataAndOrdersAndActivities() );
+  }
+
+  const priceCheckFinalizedOrders = () => {
+    setOpenSpinner(true);
+    fetch("/main/convert_finalized_orders")
+    .then( () => {
+      if (_isMounted.current) {
+        setOpenSpinner(false);
+        props.fetchAccountDataAndOrdersAndActivities();
+      }
+    });  
   }
 
   return (
@@ -51,16 +63,26 @@ export default function OrdersDisplay (props) {
       </span>
       {/* button opens the below dialogbox */}
 
+
+      
+
       <Dialog
         open={open}
         onClose={handleClose}
       >
+        
+
         <DialogTitle id="form-dialog-title">
           View all orders 
           <span style={{ right: 5 }}> 
             <IconButton aria-label="close" onClick={handleClose}>
               <CloseIcon />
             </IconButton>  
+
+            <IconButton aria-label="close" onClick={priceCheckFinalizedOrders}>
+              <RefreshIcon />
+            </IconButton> 
+            
           </span>
         </DialogTitle>
           
@@ -70,14 +92,15 @@ export default function OrdersDisplay (props) {
 
               {/* Display non-archived orders here */}
               {
-                props.ordersList.map( (order, i) => {
-                  let iconContent = (order.trans_type === "Buy" ? "B" : "S" );
+                props.ordersList.filter( (order) => order.stage !== 0 ).map( (order, i) => {
+                  
+                  let iconContent = ( (order.trans_type).toLowerCase() === "buy" ? "B" : "S" );
                   let orderLane = (
-                    order.stage === 3 ? "Initiated" :
+                    order.stage === 3 ? "To-be-transacted" :
                     order.stage === 2 ? "Finalized" : 
-                    order.stage === 1 ? "To-be-transacted" : 
-                    order.stage === 0 ? "Transacted" : ""
+                    order.stage === 1 ? "Received" : ""
                   );
+
                   return(
                     <div key={i}>
                       <ListItem>
@@ -100,7 +123,7 @@ export default function OrdersDisplay (props) {
 
                           <IconButton 
                             edge="end"
-                            onClick={deleteOrder(order._id)}  
+                            onClick={() => deleteOrder(order._id)}  
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -117,7 +140,7 @@ export default function OrdersDisplay (props) {
               {/* Display archived orders here */}
               {
                 props.ordersList.filter( (order) => order.stage === 0 ).map( (order, i) => {
-                  let iconContent = (order.trans_type === "Buy" ? "B" : "S" );
+                  let iconContent = ( (order.trans_type).toLowerCase() === "buy" ? "B" : "S" );
                   return(
                     <div key={i}>
                       <ListItem>
@@ -148,6 +171,11 @@ export default function OrdersDisplay (props) {
             </List>
           </div>  
         </DialogContent>
+
+        <Backdrop className="spinner-backdrop" open={openSpinner}>
+          <CircularProgress color="inherit"/>
+        </Backdrop> 
+        
       </Dialog>
     </>
   );

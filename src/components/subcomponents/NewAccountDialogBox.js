@@ -17,18 +17,18 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
 
-export default class NewTaskDialogBox extends React.Component{
+export default class NewAccountDialogBox extends React.Component{
   state = {
     open: false,
     city: "",
     company: "",
     country: "",
     demat_accno: 0,
-    dob: new Date().toJSON(),
+    dob: new Date(),
     education: "",
     email: "",
     job_type: "",
-    last_contact: new Date().toJSON(),
+    last_contact: new Date(),
     latest_order_stage: 0,
     name: "",
     state: "",
@@ -38,13 +38,16 @@ export default class NewTaskDialogBox extends React.Component{
     contact_comm_type : "Email",
   }
 
-  componentDidUpdate() {
-    console.log(this.state);
+  componentDidMount() {
+    this._isMounted = true;
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+
   handleChange = (event) => {
-    console.log(event);
-    console.log(event.target.value);
     this.setState({
       [event.target.id || event.target.name] : event.target.value
       //takes the first truthy value
@@ -54,7 +57,6 @@ export default class NewTaskDialogBox extends React.Component{
   }
 
   handleChangeInDate = (event) => {
-    console.log(event);
     this.setState({ dob: event });
   }
 
@@ -68,7 +70,10 @@ export default class NewTaskDialogBox extends React.Component{
 
   postNewProfile = async () => {
     const newProfile = this.state;
-    delete newProfile["open"];
+    delete newProfile.open;
+    //date and last_contact are sent as date objects
+    //all other fields are sent as strings
+
     const response = await fetch("/main/create_account", {
       method: "POST",
       headers: {
@@ -77,9 +82,7 @@ export default class NewTaskDialogBox extends React.Component{
       body: JSON.stringify(newProfile)
     });
     
-    if (response.ok) {
-      console.log("response worked!");
-      console.log(response);
+    if (response.ok && this._isMounted) {
       this.setState({ open:false });
       this.props.updateAccounts();
     }
@@ -89,7 +92,7 @@ export default class NewTaskDialogBox extends React.Component{
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          + New Profile
+          + New Account
         </Button>
         <Dialog
           open={this.state.open}
@@ -169,7 +172,7 @@ export default class NewTaskDialogBox extends React.Component{
               margin="dense"
               id="phone_number"
               label="Phone Number"
-              type="number"
+              type="text"
               variant="outlined"
               fullWidth
               onChange={this.handleChange}

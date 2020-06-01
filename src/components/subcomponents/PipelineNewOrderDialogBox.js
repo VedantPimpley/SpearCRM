@@ -9,20 +9,38 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import AddIcon from '@material-ui/icons/Add';
+
 import '../styles/NewOrderDialogBox.css'
 
 
-export default class NewOrderDialogBox extends React.Component{
+export default class PipelineNewOrderDialogBox extends React.Component{
   state = {
     open: false,
     company: "",
     trans_type: "",
     no_of_shares: 0,
-    cost_of_share: "",
+    cost_of_share: 0,
+    selectOptions : [], //value is only set on first load
+    account_id : 0,
   };
 
   componentDidMount() {
     this._isMounted = true;
+
+    fetch("/main/get_all_account_names").then(response =>
+      response.json().then(data => {
+        let menuItems = [<MenuItem value="" key={0}> <em>None</em> </MenuItem>] ;
+        data.forEach( (entry, i) => {
+          menuItems.push(<MenuItem value={entry._id} key={i+1}> {entry.name} </MenuItem>);
+        //existing None MenuItem has key=0, these entries have key=i+1
+        });
+        
+        if (this._isMounted) {
+          this.setState({ selectOptions: menuItems });
+        }
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -49,10 +67,9 @@ export default class NewOrderDialogBox extends React.Component{
   postNewOrder = async () => {
     const newOrder = this.state;
     newOrder.stage = 2;
-    newOrder.account_id = this.props.account_id;
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
-
+    delete newOrder.selectOptions;
     const response = await fetch("/main/create_order", {
       method: "POST",
       headers: {
@@ -61,11 +78,9 @@ export default class NewOrderDialogBox extends React.Component{
       body: JSON.stringify(newOrder)
     });
     
-    if (response.ok) {
-      if (this._isMounted) {
-        this.setState({ open:false });
-      }
-      this.props.fetchAccountDataAndOrders();
+    if (response.ok && this._isMounted) {
+      this.setState({ open:false });
+      this.props.updatePipeline();
     }
   }
   
@@ -73,8 +88,14 @@ export default class NewOrderDialogBox extends React.Component{
     return (
       <>
         <span>
-          <Button className="add-new-order-button" variant="outlined" color="primary" onClick={this.handleOpen}>
-            + Add New Order
+          <Button 
+            className="add-new-order-button" 
+            variant="contained" 
+            color="primary" 
+            onClick={this.handleOpen}
+            startIcon={<AddIcon />}
+          >
+            Add New Order
           </Button>
         </span>
         <Dialog
@@ -85,16 +106,18 @@ export default class NewOrderDialogBox extends React.Component{
           <DialogTitle id="form-dialog-title">Add New Order</DialogTitle>
           <DialogContent>
 
-            <TextField
-              autoFocus
-              margin="dense"
-              id="company"
-              label="Company"
-              type="text"
-              fullWidth
-              onChange={this.handleChange}
-              helperText="Enter valid security ID or symbol of the company."
-            />
+
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel>Account</InputLabel>
+              <Select
+                value={this.state.account_id}
+                onChange={this.handleChange}
+                label="Account"
+                name="account_id"
+              >
+                {this.state.selectOptions}
+              </Select>
+            </FormControl>
 
             <FormControl variant="outlined" fullWidth>
               <InputLabel>Transaction Type</InputLabel>
@@ -109,6 +132,17 @@ export default class NewOrderDialogBox extends React.Component{
                 <MenuItem value={"sell"}>Sell</MenuItem>
               </Select>
             </FormControl>
+
+            <TextField
+              autoFocus
+              margin="dense"
+              id="company"
+              label="Company"
+              type="text"
+              fullWidth
+              onChange={this.handleChange}
+              helperText="Enter valid security ID or symbol of the company."
+            />
 
             <TextField
               autoFocus

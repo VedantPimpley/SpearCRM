@@ -17,9 +17,18 @@ export default class LeadProfileHeader extends React.Component {
     submitted: false,
     demat_accno: 0,
     trading_accno: 0,
+    newId: 0, //set after lead converts to account
   }
 
-  handleClickOpen = () => {
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  handleOpen = () => {
     if (this.props.leadStatus == "Contacted") {
       this.setState({ open:true });
     }
@@ -29,22 +38,21 @@ export default class LeadProfileHeader extends React.Component {
     this.setState({ open:false });
   };
 
-  handleModalClose = () => {
+  handleCloseSecondary = () => {
     this.setState({ submitted:false });
   }
 
   transitionLeadToAccount = async () => {
     const fields = {
-      demat_accno: parseInt(this.state.demat_accno),
-      trading_accno: parseInt(this.state.trading_accno),
+      demat_accno: this.state.demat_accno,
+      trading_accno: this.state.trading_accno,
       _id : this.props._id,
       contact_comm_type: "Email",
       latest_order_stage: 0,
-      last_contact: new Date()
+      last_contact: new Date(),
     }
-    console.log(fields);
 
-    const response = await fetch("/main/lead_to_account", {
+    const response = await fetch("/main/convert_lead_to_account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -52,10 +60,15 @@ export default class LeadProfileHeader extends React.Component {
       body: JSON.stringify(fields)
     });
 
-    if (response.ok) {
-      console.log("response worked!");
+    if (response.ok && this._isMounted) {
       this.setState({ open:false });
       this.setState({ submitted: true });
+
+      response.text().then( text => {
+        if(this._isMounted) {
+          this.setState({ newId: text });
+        }
+      });
     }
   };
 
@@ -72,7 +85,7 @@ export default class LeadProfileHeader extends React.Component {
         <span className="stage-indicator">
           <span 
            className="stage1" 
-           onClick={this.props.onClick} 
+           onClick={this.props.onDivClick} 
            id="Uncontacted"
            style={ this.props.leadStatus==="Contacted" ? {backgroundColor:"forestgreen"} : {backgroundColor:"blue"} }
           >
@@ -81,7 +94,7 @@ export default class LeadProfileHeader extends React.Component {
 
           <span 
            className="stage2" 
-           onClick={this.props.onClick} 
+           onClick={this.props.onDivClick} 
            id="Contacted"
            style={ this.props.leadStatus==="Contacted" ? {backgroundColor:"blue"} : {backgroundColor:"gray"} }
           > 
@@ -90,7 +103,7 @@ export default class LeadProfileHeader extends React.Component {
 
           <span style={{ verticalAlign: "middle" }}>
             <Tooltip title="Lead created account">
-              <CheckCircleIcon onClick={this.handleClickOpen} />
+              <CheckCircleIcon onClick={this.handleOpen} />
             </Tooltip>
           </span>
         </span> 
@@ -139,7 +152,7 @@ export default class LeadProfileHeader extends React.Component {
 
         <Dialog
           open={this.state.submitted}
-          onClose={this.handleModalClose}
+          onClose={this.handleCloseSecondary}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -151,12 +164,12 @@ export default class LeadProfileHeader extends React.Component {
           </DialogContent>
           <DialogActions>
             <Link to={{pathname:'./leads'}}>
-              <Button onClick={this.handleModalClose} color="primary">
+              <Button onClick={this.handleCloseSecondary} color="primary">
                 Return
               </Button>
             </Link>
-            <Link to={{pathname:'./AccountProfile', state:{ cid:this.props._id }}}>
-              <Button onClick={this.handleModalClose} color="primary" autoFocus>
+            <Link to={{pathname:'./AccountProfile', state:{ cid:this.state.newId }}}>
+              <Button onClick={this.handleCloseSecondary} color="primary" autoFocus>
                 Proceed
               </Button>
             </Link>
