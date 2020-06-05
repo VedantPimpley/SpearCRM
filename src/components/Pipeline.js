@@ -176,7 +176,9 @@ export default class Pipeline extends React.Component {
         />
         
         <div className="add-order-button"> 
-          <PipelineNewOrderDialogBox updatePipeline={this.updatePipelineAPICall} /> 
+          <PipelineNewOrderDialogBox 
+            updatePipeline={this.updatePipelineAPICall} 
+          /> 
         </div>
 
         <div className="complete-orders-button">
@@ -185,6 +187,7 @@ export default class Pipeline extends React.Component {
             color="primary"
             onClick={this.markToBeTransactedOrdersAsTransacted}
             startIcon={<SendIcon />}
+            fullWidth
           >
             Mark Orders as transacted
           </Button>
@@ -196,16 +199,15 @@ export default class Pipeline extends React.Component {
             color="primary"
             onClick={this.priceCheckFinalizedOrders}
             startIcon={<ShowChartIcon />}
+            fullWidth
           >
             Check share price & update
           </Button>
-
-          <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
-            <CircularProgress color="inherit" />
-          </Backdrop>
         </div>
 
-
+        <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </>
     );
   }

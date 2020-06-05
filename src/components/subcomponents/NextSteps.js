@@ -46,36 +46,30 @@ export default function NextSteps(props) {
         props.updateActivities();
       }
     });
-  }
-  
-  const dummyActivities = [
-    {"_id": "5eaade1967f5adbdd24460a7", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type": "future", "user_id": "5ea58fbc63e50fc607cf6a10", "elapsed": 0, "ai_activity": 1},
-    {"_id":"5eaade2467f5adbdd24460a9", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type":"past", "user_id": "5ea51dfc0498e7340c7c7225", "elapsed": 1, "ai_activity": 1},
-    {"_id":"5eaade2467f5adbdd2446010", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type":"past", "user_id": "5ea51dfc0498e7340c7c7225", "elapsed": 1, "ai_activity": 0},
-    {"_id":"5eaade2467f5adbdd2446011", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type":"past", "user_id": "5ea51dfc0498e7340c7c7225", "elapsed": 1, "ai_activity": 0},
-    {"_id":"5eaade2467f5adbdd2446012", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type":"past", "user_id": "5ea51dfc0498e7340c7c7225", "elapsed": 1, "ai_activity": 1},
-  ];
+	}
 
   return(
     <> 
+      {console.log(props.activitiesList)}
       <h2> Next Steps </h2>
       <div className="pretty-list">
         
         <ul className="experiences">
-          {dummyActivities.map( (element, i) => {
+          {props.activitiesList.map( (element, i) => {
             return (
               <li className="blue" key={i}>
-                
-              	{element.ai_activity ?
-                  <div style={{color: "#1976d2" }}>
-                    <span className='ai-tag'> 
+
+                {element.ai_activity ?
+                  <div className='ai-tag'>
+                    <span className='ai-tag-star-icon'> 
                       <StarRateIcon />   
                     </span>
                     <span>
                       AI Generated
                     </span>
                   </div>
-                  : null
+                  :
+                  null
                 }
 
                 <input 
@@ -88,7 +82,6 @@ export default function NextSteps(props) {
                 <div className="where"> 
                   {element.title} 
                 </div>
-
 
                 <span className="when"> 
                   {convertIsoDateToDateString(element.date)} 

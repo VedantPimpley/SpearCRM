@@ -6,6 +6,8 @@ import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'
 import NewActivityDialogBox from './subcomponents/NewActivityDialogBox';
 import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
@@ -111,6 +113,7 @@ const pieOptions = {
   },
   fontName: "Roboto"
 };
+
 class PieChart extends React.Component {
   state = {
     chartImageURI: ""
@@ -155,16 +158,16 @@ class PieChart extends React.Component {
           data = {this.transformOrdersToDataPoints(this.props.pieChartData)}
           
           // [
-					// 	['Stage', 'Volume'],
-					//   ['Received', 5],
-					//   ['Finalized', 29],
-					//   ['To-be-transacted', 56],
-					// 	 ['Transacted', 8],
-					// ]
+          // 	['Stage', 'Volume'],
+          //   ['Received', 5],
+          //   ['Finalized', 29],
+          //   ['To-be-transacted', 56],
+          // 	 ['Transacted', 8],
+          // ]
           options = {pieOptions}
           graph_id = "Distribution of orders currently"
-          width = {"100%"}
-          height = {"100%"}
+          width = {"95%"}
+          height = {"95%"}
           legend_toggle
         />
       </div>
@@ -236,7 +239,7 @@ class LineChart extends React.Component {
 	}
 } 
 
-export class UpcomingTasksWidget extends React.Component {
+class UpcomingTasksWidget extends React.Component {
 	transitionActivity = async (activityId) => {
 		const activityToTransition = {
       "_id" : activityId,
@@ -259,15 +262,9 @@ export class UpcomingTasksWidget extends React.Component {
 	deleteActivity = (activityId) => {
 		fetch(`/main/delete_activity/${activityId}`)
 		.then( () => this.props.updateDashboard());
-  }
-  
-
+	}
 
   render() {
-    const dummyActivities = [
-      {"_id": "5eaade1967f5adbdd24460a7", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type": "future", "user_id": "5ea58fbc63e50fc607cf6a10", "elapsed": 0},
-      {"_id":"5eaade2467f5adbdd24460a8", "title": "Finalize Amol's order", "body": "eh", "date": "2020-02-04T15:08:56.000Z", "activity_type":"past", "user_id": "5ea51dfc0498e7340c7c7225", "elapsed": 1}
-    ];
     return(
       <div className="upcoming-tasks-widget">
 
@@ -278,22 +275,26 @@ export class UpcomingTasksWidget extends React.Component {
 					</span> 
 				</div>
 
-        {/* <Divider /> */}
-
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">
 						{
-							dummyActivities.map( (element,i) => {
+							this.props.activitiesList.map( (element,i) => {
 								return(							
-									<div key={i}>
-										<div style={{color: "grey" }}>
-                      <span className='ai-tag'> 
-                        <StarRateIcon />   
-                      </span>
-                      <span>
-                        AI Generated
-                      </span>
-                    </div>
+									<div key={i} >
+										
+                    
+                    {element.ai_activity ? 
+                      <div className='ai-tag'>
+                        <span className='ai-tag-star-icon'> 
+                          <StarRateIcon />   
+                        </span>
+                        <span>
+                          AI Generated
+                        </span>
+                      </div>
+                      :
+                      <p> &nbsp; </p>
+                    }
 
 										<li>
                       &nbsp; 
@@ -311,7 +312,7 @@ export class UpcomingTasksWidget extends React.Component {
                       </Link>  
 
                       <span className="task-date">  {convertIsoDateToDateString(element.date)} </span> 
-                      <span className="cross" onClick={() => {this.deleteActivity(element._id)}}> &times; </span>
+                      <span className="cross" onClick={() => {this.deleteActivity(element._id)}}> <CloseIcon /> </span>
 										</li>
 
 										<li className="task-body"> &nbsp; &nbsp; &nbsp; &nbsp;{element.body} </li>

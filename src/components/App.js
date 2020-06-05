@@ -31,7 +31,7 @@ export default function App() {
   }, []);
 
   return(
-    <Router forceRefresh={true}>
+    <Router>
       <div>
         <nav>
           <ul>
