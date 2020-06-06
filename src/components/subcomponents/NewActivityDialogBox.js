@@ -146,6 +146,7 @@ export default function NewActivityDialogBox(props) {
           <FormControl 
             variant="outlined" 
             fullWidth
+            style = {{ marginTop: 5, marginBottom: 10}}
           >
             <InputLabel>Lead/Account</InputLabel>
             <Select
@@ -158,7 +159,10 @@ export default function NewActivityDialogBox(props) {
             </Select>
           </FormControl>
 
-          <MaterialUIPickers date={activityDate} handleChangeInDate={ event => setActivityDate(event) } />
+          <MaterialUIPickers 
+            date={activityDate} 
+            handleChangeInDate={ event => setActivityDate(event) } 
+          />
 
           <TextField
             autoFocus
@@ -168,6 +172,7 @@ export default function NewActivityDialogBox(props) {
             type="text"
             fullWidth
             onChange={ event => setActivityTitle(event.target.value) }
+            variant="outlined"
           />
 
           <TextField
@@ -178,6 +183,7 @@ export default function NewActivityDialogBox(props) {
             type="text"
             fullWidth
             onChange={ event => setActivityBody(event.target.value) }
+            variant="outlined"
           />
 
         </DialogContent>
@@ -217,6 +223,7 @@ function MaterialUIPickers(props) {
           label="Task Date"
           disablePast
           minDate={minDate}
+          fullWidth
         />
       </MuiPickersUtilsProvider>
     );

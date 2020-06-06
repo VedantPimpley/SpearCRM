@@ -278,7 +278,8 @@ class UpcomingTasksWidget extends React.Component {
     		<div className="tasks-scroller-container">
     			<ul className="tasks-list">
 						{
-							this.props.activitiesList.map( (element,i) => {
+              this.props.activitiesList.sort( (a,b) => new Date(b.date) - new Date(a.date) ) //sort by most recent
+              .map( (element,i) => {
 								return(							
 									<div key={i} >
 										

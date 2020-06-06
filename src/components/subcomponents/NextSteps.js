@@ -55,7 +55,8 @@ export default function NextSteps(props) {
       <div className="pretty-list">
         
         <ul className="experiences">
-          {props.activitiesList.map( (element, i) => {
+          {props.activitiesList.sort( (a,b) => new Date(b.date) - new Date(a.date) ) //sort by most recent
+          .map( (element, i) => {
             return (
               <li className="blue" key={i}>
 

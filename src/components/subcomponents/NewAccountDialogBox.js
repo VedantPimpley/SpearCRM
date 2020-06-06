@@ -278,6 +278,7 @@ function MaterialUIPickers(props) {
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
+          fullWidth
         />
     </MuiPickersUtilsProvider>
   );

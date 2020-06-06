@@ -9,7 +9,8 @@ export default function PastActivity(props) {
       <h2> Past Activity</h2>
       <div className="pretty-list">
         <ul className="experiences">
-          {props.activitiesList.map( (element, i) => {
+          {props.activitiesList.sort( (a,b) => new Date(b.date) - new Date(a.date) ) //sort by most recent
+          .map( (element, i) => {
             let cross = null;
             if (element.elapsed) {
               cross=<span> &#10006; </span>

@@ -25,6 +25,7 @@ import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 // function onChange(pagination, filters, sorter, extra) {
 //   console.log('params', pagination, filters, sorter, extra);
 // }
+const API = process.env.REACT_APP_API
 
 export default class Accounts extends React.Component {
   state = {
@@ -34,12 +35,13 @@ export default class Accounts extends React.Component {
     selectedRowEmails: [],
   };
 
+  
 //Searching logic
 
   componentDidMount() {
     this._isMounted = true;
 
-    fetch("/main/show_all_accounts").then(response =>
+    fetch(`${API}/main/show_all_accounts`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });
@@ -53,7 +55,7 @@ export default class Accounts extends React.Component {
   }
 
   updateAccountsAPICall = () => {
-    fetch("/main/show_all_accounts").then(response =>
+    fetch(`${API}//main/show_all_accounts`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });

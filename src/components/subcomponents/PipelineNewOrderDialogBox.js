@@ -107,7 +107,11 @@ export default class PipelineNewOrderDialogBox extends React.Component{
           <DialogContent>
 
 
-            <FormControl variant="outlined" fullWidth>
+            <FormControl 
+              variant="outlined" 
+              style={{ marginBottom: 10 }}  
+              fullWidth
+            >
               <InputLabel>Account</InputLabel>
               <Select
                 value={this.state.account_id}
@@ -142,6 +146,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
               fullWidth
               onChange={this.handleChange}
               helperText="Enter valid security ID or symbol of the company."
+              variant="outlined"
             />
 
             <TextField
@@ -152,6 +157,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
               type="number"
               fullWidth
               onChange={this.handleChange}
+              variant="outlined"
             />
 
             <TextField
@@ -163,6 +169,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
               type="text"
               fullWidth
               onChange={this.handleChange}
+              variant="outlined"
             />
 
           </DialogContent>

@@ -99,6 +99,7 @@ export default class NewOrderDialogBox extends React.Component{
 
             <FormControl 
               variant="outlined" 
+              style= {{ marginTop: 5}}
               fullWidth
             >
               <InputLabel>Transaction Type</InputLabel>
