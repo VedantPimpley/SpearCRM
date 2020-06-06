@@ -41,7 +41,7 @@ export default class Accounts extends React.Component {
   componentDidMount() {
     this._isMounted = true;
 
-    fetch(`${API}/main/show_all_accounts`).then(response =>
+    fetch(`https://cors-anywhere.herokuapp.com/${API}/main/show_all_accounts`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });
@@ -55,7 +55,7 @@ export default class Accounts extends React.Component {
   }
 
   updateAccountsAPICall = () => {
-    fetch(`${API}//main/show_all_accounts`).then(response =>
+    fetch(`${API}/main/show_all_accounts`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });
