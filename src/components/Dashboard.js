@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CloseIcon from '@material-ui/icons/Close';
 
+const api_key = process.env.STOCKPRICE_API_KEY
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
@@ -16,7 +17,6 @@ export default function Dashboard() {
 	const [pieChartData, setPieChartData] = useState([]);
 	const [lineChartData, setLineChartData] = useState([]);
 
-  const api_key = process.env.STOCKPRICE_API_KEY
   const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS",];
 
   useEffect( () => {
