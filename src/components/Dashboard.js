@@ -16,10 +16,11 @@ export default function Dashboard() {
 	const [pieChartData, setPieChartData] = useState([]);
 	const [lineChartData, setLineChartData] = useState([]);
 
-  const api_key = process.env.STOCKPRICE_API_KEY ;
+  const api_key = process.env.STOCKPRICE_API_KEY
   const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS",];
 
   useEffect( () => {
+    console.log(api_key);
     const getStockPrice = async (symbol) => {
       const stock = symbol;
       let price = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
@@ -38,6 +39,7 @@ export default function Dashboard() {
   }, []);
 
   useEffect( () => {
+    console.log(api_key);
     const getStockPrice2 = async (symbol) => {
       const stock = symbol;
       let price = await fetch(`https://cors-anywhere.herokuapp.com/https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
