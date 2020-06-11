@@ -16,7 +16,7 @@ export default function Dashboard() {
 	const [pieChartData, setPieChartData] = useState([]);
 	const [lineChartData, setLineChartData] = useState([]);
 
-  const api_key = process.env.REACT_APP_API ;
+  const api_key = process.env.STOCKPRICE_API_KEY ;
   const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS",];
 
   useEffect( () => {
