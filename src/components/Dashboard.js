@@ -8,7 +8,11 @@ import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CloseIcon from '@material-ui/icons/Close';
 
-const api_key = process.env.REACT_STOCKPRICE_API_KEY
+const api_key = process.env.REACT_STOCKPRICE_API_KEY;
+let stockprice_api_key = process.env.REACT_STOCKPRICE_API_KEY;
+
+console.log(api_key);
+console.log(stockprice_api_key);
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
@@ -19,8 +23,12 @@ export default function Dashboard() {
 
   const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS",];
 
+  console.log(api_key);
+  console.log(stockprice_api_key);
+
   useEffect( () => {
     console.log(api_key);
+    console.log(stockprice_api_key);
     const getStockPrice = async (symbol) => {
       const stock = symbol;
       let price = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
