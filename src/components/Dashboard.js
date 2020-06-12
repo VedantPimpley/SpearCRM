@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CloseIcon from '@material-ui/icons/Close';
 
-const api_key = process.env.STOCKPRICE_API_KEY
+const api_key = process.env.REACT_STOCKPRICE_API_KEY
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
