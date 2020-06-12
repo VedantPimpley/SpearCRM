@@ -27,12 +27,6 @@ import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 // }
 const API = process.env.REACT_APP_API
 
-const api_key = process.env.REACT_STOCKPRICE_API_KEY;
-let stockprice_api_key = process.env.REACT_STOCKPRICE_API_KEY;
-
-console.log(api_key);
-console.log(stockprice_api_key);
-
 export default class Accounts extends React.Component {
   state = {
     searchText: '',
@@ -44,9 +38,6 @@ export default class Accounts extends React.Component {
 //Searching logic
 
   componentDidMount() {
-    console.log(api_key);
-    console.log(stockprice_api_key);
-
     this._isMounted = true;
 
     fetch(`${API}/main/show_all_accounts`).then(response =>

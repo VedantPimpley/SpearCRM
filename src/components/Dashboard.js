@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CloseIcon from '@material-ui/icons/Close';
 
-var api_key = process.env.REACT_STOCKS_KEY;
+var api_key = process.env.REACT_STOCKS_KEY || "brhln8nrh5ra2pui7160";
 console.log(api_key);
 
 export default function Dashboard() {
