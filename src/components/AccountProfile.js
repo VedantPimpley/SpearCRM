@@ -5,6 +5,8 @@ import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
 
+const API = process.env.REACT_APP_API
+
 export default class AccountProfile extends React.Component {
   state = {
     accountData: {},
@@ -18,10 +20,10 @@ export default class AccountProfile extends React.Component {
     const { cid } = this.props.location.state;
 
     Promise.all([
-      fetch(`/main/display_account/${cid}`), 
-      fetch(`/main/show_user_activities/${cid}`),
-      fetch(`/main/display_account_orders/${cid}`),
-      fetch(`/main/get_account_turnover/${cid}`)
+      fetch(`${API}/main/display_account/${cid}`), 
+      fetch(`${API}/main/show_user_activities/${cid}`),
+      fetch(`${API}/main/display_account_orders/${cid}`),
+      fetch(`${API}/main/get_account_turnover/${cid}`)
     ])
     .then(responses => {
       if(this._isMounted) {
@@ -41,10 +43,10 @@ export default class AccountProfile extends React.Component {
   //and also used by markToBeTransactedOrdersAsTransacted in AccountProfileHeader
   updateAccountDataAndOrdersAndActivitiesAPICall = () => {
     Promise.all([
-      fetch(`/main/display_account/${this.state.accountData._id}`), 
-      fetch(`/main/show_user_activities/${this.state.accountData._id}`),
-      fetch(`/main/display_account_orders/${this.state.accountData._id}`),
-      fetch(`/main/get_account_turnover/${this.state.accountData._id}`)
+      fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
+      fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`),
+      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`),
+      fetch(`${API}/main/get_account_turnover/${this.state.accountData._id}`)
     ])
     .then(responses => {
       if(this._isMounted) {
@@ -59,8 +61,8 @@ export default class AccountProfile extends React.Component {
   //function used by NewOrderDialogBox after POSTing new order
   updateAccountDataAndOrdersAPICall = () => {
     Promise.all([
-      fetch(`/main/display_account/${this.state.accountData._id}`), 
-      fetch(`/main/display_account_orders/${this.state.accountData._id}`)
+      fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
+      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`)
     ])
     .then(responses => {
       if(this._isMounted) {
@@ -72,7 +74,7 @@ export default class AccountProfile extends React.Component {
 
   //function used by FieldContainer1 and FieldContainer2 after POSTing new fields
   updateAccountDataAPICall = () => {
-    fetch(`/main/display_account/${this.state.accountData._id}`).then(response =>
+    fetch(`${API}/main/display_account/${this.state.accountData._id}`).then(response =>
       response.json().then(data => {
         if(this._isMounted) {
           this.setState({ accountData: data });
@@ -83,7 +85,7 @@ export default class AccountProfile extends React.Component {
 
   //function used by ManualLogger after POSTing new order
   updateActivitiesAPICall = () => {
-    fetch(`/main/show_user_activities/${this.state.accountData._id}`).then(response =>
+    fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`).then(response =>
       response.json().then(data => {
         if(this._isMounted) {
           this.setState({ activitiesList: data });
@@ -121,7 +123,7 @@ export default class AccountProfile extends React.Component {
     //date and last_contact are sent as date objects
     //all other fields are sent as strings
 
-    const response = await fetch("/main/edit_account", {
+    const response = await fetch(`${API}/main/edit_account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

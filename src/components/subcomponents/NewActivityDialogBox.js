@@ -20,6 +20,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
+const API = process.env.REACT_APP_API
+
 export default function NewActivityDialogBox(props) {
   //manual logger related hooks
   const [activityTitle, setActivityTitle] = useState("");
@@ -34,7 +36,7 @@ export default function NewActivityDialogBox(props) {
 
   const _isMounted = useRef(true);
   useEffect( () => {
-    Promise.all( [fetch(`/main/get_all_account_names`), fetch(`/main/get_all_lead_names`)] )
+    Promise.all( [fetch(`${API}/main/get_all_account_names`), fetch(`${API}/main/get_all_lead_names`)] )
     .then(values => {
 
       //using if condition here to avoid unnecessary computation if component is unmounted
@@ -98,6 +100,8 @@ export default function NewActivityDialogBox(props) {
   };
 
   const postNewActivity = async () => {
+    props.setOpenSpinnerInDashboard(true);
+
     const newActivity = {
       "user_id": selectedCustomerId,
       "title": activityTitle,
@@ -105,7 +109,7 @@ export default function NewActivityDialogBox(props) {
       "date": new Date( Date.parse(activityDate) ),
       "activity_type": "future",
     };
-    const response = await fetch("/main/create_activity", {
+    const response = await fetch(`${API}/main/create_activity`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

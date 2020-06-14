@@ -9,6 +9,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+const API = process.env.REACT_APP_API
+
 export default class AccountProfileHeader extends React.Component {
   state = {
     openDialog : false
@@ -30,7 +32,7 @@ export default class AccountProfileHeader extends React.Component {
     }
 
     console.log("Completion triggered");
-    const response = await fetch("/main/complete_account_orders", {
+    const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

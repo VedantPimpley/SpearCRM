@@ -8,7 +8,7 @@ import OrdersDisplay from './OrdersDisplay'
 import Button from "@material-ui/core/Button";
 import EmailIcon from '@material-ui/icons/Email';
 
-
+const API = process.env.REACT_APP_API
 
 export default function ActivityTracker(props) {
   const [activityType, setActivityType] = useState("past"); //past or future
@@ -58,7 +58,7 @@ export default function ActivityTracker(props) {
       "date": new Date( Date.parse(activityDate) ),
       "activity_type": activityType,
     };
-    const response = await fetch("/main/create_activity", {
+    const response = await fetch(`${API}/main/create_activity`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

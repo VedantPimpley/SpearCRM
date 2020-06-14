@@ -19,6 +19,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import '../styles/OrdersDisplay.css'
 
+const API = process.env.REACT_APP_API
+
 export default function OrdersDisplay (props) {
   const [open, setOpen] = useState(false);
   const [openSpinner, setOpenSpinner] = useState(false);
@@ -38,13 +40,13 @@ export default function OrdersDisplay (props) {
   }
 
   const deleteOrder = (orderId) => {
-    fetch(`main/delete_order/${orderId}`)
+    fetch(`${API}/main/delete_order/${orderId}`)
     .then( () => props.updateAccountDataAndOrdersAndActivities() );
   }
 
   const priceCheckFinalizedOrders = () => {
     setOpenSpinner(true);
-    fetch("/main/convert_finalized_orders")
+    fetch(`${API}/main/convert_finalized_orders`)
     .then( () => {
       if (_isMounted.current) {
         setOpenSpinner(false);

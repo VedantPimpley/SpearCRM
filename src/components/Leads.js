@@ -12,6 +12,7 @@ import NewLeadDialogBox from './subcomponents/NewLeadDialogBox'
 import './styles/Accounts.css' //both Accounts and Leads pages have the same styling
 
 
+const API = process.env.REACT_APP_API
 
 // rowSelection object indicates the need for row selection
 
@@ -41,7 +42,7 @@ export default class Leads extends React.Component {
   componentDidMount() {
     this._isMounted = true;
 
-    fetch("/main/show_all_leads").then(response =>
+    fetch(`${API}/main/show_all_leads`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });
@@ -55,7 +56,7 @@ export default class Leads extends React.Component {
   }
 
   updateLeadsAPICall = () => {
-    fetch("/main/show_all_leads").then(response =>
+    fetch(`${API}/main/show_all_leads`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });

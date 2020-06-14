@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
+const API = process.env.REACT_APP_API
 
 export default class NewAccountDialogBox extends React.Component{
   state = {
@@ -74,7 +75,7 @@ export default class NewAccountDialogBox extends React.Component{
     //date and last_contact are sent as date objects
     //all other fields are sent as strings
 
-    const response = await fetch("/main/create_account", {
+    const response = await fetch(`${API}/main/create_account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

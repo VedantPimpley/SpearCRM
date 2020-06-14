@@ -1,8 +1,10 @@
 import React from 'react'
 import '../styles/PrettyList.css'
 import {convertIsoDateToDateString} from "../Dashboard.js"
-import CloseIcon from '@material-ui/icons/Close';
 import StarRateIcon from '@material-ui/icons/StarRate';
+import CancelIcon from '@material-ui/icons/Cancel';
+
+const API = process.env.REACT_APP_API
 
 export default function NextSteps(props) {
 
@@ -12,7 +14,7 @@ export default function NextSteps(props) {
       "activity_type" : "past"
     };
 
-    const response = await fetch("/main/change_activity_type", {
+    const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -36,7 +38,7 @@ export default function NextSteps(props) {
   }
 
   const deleteActivity = (activityId, isAiActivity) => {
-		fetch(`/main/delete_activity/${activityId}`)
+		fetch(`${API}/main/delete_activity/${activityId}`)
 		.then( () => {
       if (isAiActivity) {
         props.updateAccountDataAndOrdersAndActivities();
@@ -88,7 +90,7 @@ export default function NextSteps(props) {
                   {convertIsoDateToDateString(element.date)} 
                 </span>
 
-                <span  className="cross" onClick={() => {deleteActivity(element._id, element.ai_activity)}}> <CloseIcon /> </span>
+                <span className="delete-icon" onClick={() => {deleteActivity(element._id, element.ai_activity)}}> <CancelIcon /> </span>
 
                 <p className="description"> 
                   {element.body} 

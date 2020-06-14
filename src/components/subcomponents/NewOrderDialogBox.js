@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import '../styles/NewOrderDialogBox.css'
 
+const API = process.env.REACT_APP_API
 
 export default class NewOrderDialogBox extends React.Component{
   state = {
@@ -53,7 +54,7 @@ export default class NewOrderDialogBox extends React.Component{
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
 
-    const response = await fetch("/main/create_order", {
+    const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

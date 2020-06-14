@@ -26,6 +26,7 @@ import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 //   console.log('params', pagination, filters, sorter, extra);
 // }
 const API = process.env.REACT_APP_API
+console.log(process.env.REACT_APP_STOCK_API_KEY)
 
 export default class Accounts extends React.Component {
   state = {

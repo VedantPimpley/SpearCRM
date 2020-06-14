@@ -5,6 +5,8 @@ import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import LeadProfileHeader from "./subcomponents/LeadProfileHeader";
 
+const API = process.env.REACT_APP_API
+
 export default class LeadProfile extends React.Component {
   state = {
     leadData: {},
@@ -17,8 +19,8 @@ export default class LeadProfile extends React.Component {
     const { cid } = this.props.location.state;
 
     Promise.all([
-      fetch(`/main/display_lead/${cid}`), 
-      fetch(`/main/show_user_activities/${cid}`)
+      fetch(`${API}/main/display_lead/${cid}`), 
+      fetch(`${API}/main/show_user_activities/${cid}`)
     ])
     .then(responses => {
       if (this._isMounted) {
@@ -33,7 +35,7 @@ export default class LeadProfile extends React.Component {
   }
 
   updateLeadDataAPICall = () => {
-    fetch(`/main/display_lead/${this.state.leadData._id}`).then(response =>
+    fetch(`${API}/main/display_lead/${this.state.leadData._id}`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ leadData: data });
@@ -43,7 +45,7 @@ export default class LeadProfile extends React.Component {
   }
 
   updateActivitiesAPICall = () => {
-    fetch(`/main/show_user_activities/${this.state.leadData._id}`).then(response =>
+    fetch(`${API}/main/show_user_activities/${this.state.leadData._id}`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ activitiesList: data });
@@ -84,7 +86,7 @@ export default class LeadProfile extends React.Component {
   postFields = async () => {
     const leadDataObj = this.state.leadData;
     leadDataObj.dob = new Date( Date.parse(leadDataObj.dob) );
-    const response = await fetch("/main/edit_lead", {
+    const response = await fetch(`${API}/main/edit_lead`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -6,10 +6,13 @@ import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js'
 import NewActivityDialogBox from './subcomponents/NewActivityDialogBox';
 import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
-import CloseIcon from '@material-ui/icons/Close';
+import CancelIcon from '@material-ui/icons/Cancel';
 
-var api_key = process.env.REACT_STOCKS_KEY || "brhln8nrh5ra2pui7160";
-console.log(api_key);
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const API = process.env.REACT_APP_API
+// var api_key = process.env.REACT_STOCKS_KEY || "brhln8nrh5ra2pui7160";
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
@@ -17,57 +20,54 @@ export default function Dashboard() {
 	const [allActivities, setAllActivities] = useState([]);
 	const [pieChartData, setPieChartData] = useState([]);
 	const [lineChartData, setLineChartData] = useState([]);
+  const [openSpinner, setOpenSpinner] = useState(false);
 
-  const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS"];
+  // const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS"];
 
-  console.log(api_key);
+  // useEffect( () => {
+  //   const getStockPrice = async (symbol) => {
+  //     const stock = symbol;
+  //     let price = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
+  //     .then( response => response.json().then( data => data.c ) ) //returns symbol's price
+  //     .catch( err => console.log(err) );
+  //     let stockPrice = {company: stock, price: price};
+  //     return(stockPrice);
+  //   }
 
-  useEffect( () => {
-    console.log(api_key);
-    const getStockPrice = async (symbol) => {
-      const stock = symbol;
-      let price = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
-      .then( response => response.json().then( data => data.c ) ) //returns symbol's price
-      .catch( err => console.log(err) );
-      let stockPrice = {[stock]: price};
-      return(stockPrice);
-    }
+  //   Promise.all( symbols.map(individual_symbol => getStockPrice(individual_symbol)) )
+  //   .then( stockPrices => {
+  //     console.log("as it is");
+  //     stockPrices.forEach( stockPrice => console.log(stockPrice));
+  //   })
 
-    Promise.all( symbols.map(individual_symbol => getStockPrice(individual_symbol)) )
-    .then( stockPrices => {
-      console.log("as it is");
-      stockPrices.forEach( stockPrice => console.log(stockPrice));
-    })
+  // }, []);
 
-  }, []);
+  // useEffect( () => {
+  //   const getStockPrice2 = async (symbol) => {
+  //     const stock = symbol;
+  //     let price = await fetch(`https://cors-anywhere.herokuapp.com/https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
+  //     .then( response => response.json().then( data => data.c ) ) //returns symbol's price
+  //     .catch( err => console.log(err) );
+  //     let stockPrice = {[stock]: price};
+  //     return(stockPrice);
+  //   }
 
-  useEffect( () => {
-    console.log(api_key);
-    const getStockPrice2 = async (symbol) => {
-      const stock = symbol;
-      let price = await fetch(`https://cors-anywhere.herokuapp.com/https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
-      .then( response => response.json().then( data => data.c ) ) //returns symbol's price
-      .catch( err => console.log(err) );
-      let stockPrice = {[stock]: price};
-      return(stockPrice);
-    }
+  //   Promise.all( symbols.map(individual_symbol => getStockPrice2(individual_symbol)) )
+  //   .then( stockPrices => {
+  //     console.log("with cors anywhere");
+  //     stockPrices.forEach( stockPrice => console.log(stockPrice));
+  //   })
 
-    Promise.all( symbols.map(individual_symbol => getStockPrice2(individual_symbol)) )
-    .then( stockPrices => {
-      console.log("with cors anywhere");
-      stockPrices.forEach( stockPrice => console.log(stockPrice));
-    })
-
-  }, []);
+  // }, []);
 
   const _isMounted = useRef(true);
 	useEffect( () => {
 		Promise.all([
-      fetch("/main/top_leads"),
-      fetch("/main/top_accounts"),
-      fetch("/main/show_all_activities"),
-      fetch("/main/get_line_graph_data"),
-      fetch("/main/get_pie_chart_data")
+      fetch(`${API}/main/top_leads`),
+      fetch(`${API}/main/top_accounts`),
+      fetch(`${API}/main/show_all_activities`),
+      fetch(`${API}/main/get_line_graph_data`),
+      fetch(`${API}/main/get_pie_chart_data`)
     ])
 		.then(responses => {
       if (_isMounted.current) {
@@ -84,11 +84,11 @@ export default function Dashboard() {
 
 	const updateDashboardAPICall = () => {
 		Promise.all([
-      fetch("/main/top_leads"),
-      fetch("/main/top_accounts"),
-      fetch("/main/show_all_activities"),
-      fetch("/main/get_line_graph_data"),
-      fetch("/main/get_pie_chart_data")
+      fetch(`${API}/main/top_leads`),
+      fetch(`${API}/main/top_accounts`),
+      fetch(`${API}/main/show_all_activities`),
+      fetch(`${API}/main/get_line_graph_data`),
+      fetch(`${API}/main/get_pie_chart_data`)
     ])
 		.then(responses => {
 			if (_isMounted.current) {
@@ -97,6 +97,8 @@ export default function Dashboard() {
         responses[2].json().then( data => setAllActivities(data) );
         responses[3].json().then( data => setLineChartData(data) );
         responses[4].json().then( data => setPieChartData(data) );
+
+        setOpenSpinner(false);
       }
 		})
 	}
@@ -107,16 +109,24 @@ export default function Dashboard() {
 				topLeads = {topLeads} 
 				topAccounts = {topAccounts}
 			/>
+      
       <LineChart 
         lineChartData = {lineChartData}
       />
+      
       <PieChart 
         pieChartData = {pieChartData}
       />
-			<UpcomingTasksWidget 
+			
+      <UpcomingTasksWidget 
 				updateDashboard = {updateDashboardAPICall}
-				activitiesList = {allActivities.filter( activity => activity["activity_type"] === "future" )}
+        activitiesList = {allActivities.filter( activity => activity["activity_type"] === "future" )}
+        setOpenSpinnerInDashboard = {(bool) => setOpenSpinner(bool)}
 			/>
+
+      <Backdrop className="spinner-backdrop" open={openSpinner}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
 	); 
 } 
@@ -285,12 +295,14 @@ class LineChart extends React.Component {
 
 class UpcomingTasksWidget extends React.Component {
 	transitionActivity = async (activityId) => {
-		const activityToTransition = {
+    this.props.setOpenSpinnerInDashboard(true);
+    
+    const activityToTransition = {
       "_id" : activityId,
       "activity_type" : "past",
 		};
 
-		const response = await fetch("/main/change_activity_type", {
+		const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -304,70 +316,77 @@ class UpcomingTasksWidget extends React.Component {
 	}
 	
 	deleteActivity = (activityId) => {
-		fetch(`/main/delete_activity/${activityId}`)
+    this.props.setOpenSpinnerInDashboard(true);
+
+		fetch(`${API}/main/delete_activity/${activityId}`)
 		.then( () => this.props.updateDashboard());
 	}
 
   render() {
     return(
-      <div className="upcoming-tasks-widget">
+      <>
+        <div className="upcoming-tasks-widget">
 
-        <div className='tasks-widget-title'> 
-					&nbsp; Upcoming Tasks 
-					<span className="new-task-button"> 
-						<NewActivityDialogBox updateDashboard = {this.props.updateDashboard} /> 
-					</span> 
-				</div>
+          <div className='tasks-widget-title'> 
+  					&nbsp; Upcoming Tasks 
+  					<span className="new-task-button"> 
+              <NewActivityDialogBox 
+                updateDashboard = {this.props.updateDashboard} 
+                setOpenSpinnerInDashboard = {this.props.setOpenSpinnerInDashboard} 
+              /> 
+  					</span> 
+  				</div>
 
-    		<div className="tasks-scroller-container">
-    			<ul className="tasks-list">
-						{
-              this.props.activitiesList.sort( (a,b) => new Date(b.date) - new Date(a.date) ) //sort by most recent
-              .map( (element,i) => {
-								return(							
-									<div key={i} >
-										
-                    
-                    {element.ai_activity ? 
-                      <div className='ai-tag'>
-                        <span className='ai-tag-star-icon'> 
-                          <StarRateIcon />   
-                        </span>
-                        <span>
-                          AI Generated
-                        </span>
-                      </div>
-                      :
-                      <p> &nbsp; </p>
-                    }
+      		<div className="tasks-scroller-container">
+      			<ul className="tasks-list">
+  						{
+                this.props.activitiesList.sort( (a,b) => new Date(b.date) - new Date(a.date) ) //sort by most recent
+                .map( (element,i) => {
+  								return(							
+  									<div key={i} >
+  										
+                      
+                      {element.ai_activity ? 
+                        <div className='ai-tag'>
+                          <span className='ai-tag-star-icon'> 
+                            <StarRateIcon />   
+                          </span>
+                          <span>
+                            AI Generated
+                          </span>
+                        </div>
+                        :
+                        <p> &nbsp; </p>
+                      }
 
-										<li>
-                      &nbsp; 
-                      <input 
-                        type="checkbox" 
-                        className="largerCheckbox" 
-                        checked={false}
-                        onClick={() => {this.transitionActivity(element._id)}} 
-                      />
+  										<li>
+                        &nbsp; 
+                        <input 
+                          type="checkbox" 
+                          className="largerCheckbox" 
+                          checked={false}
+                          onClick={() => {this.transitionActivity(element._id)}} 
+                        />
 
-                      <Link to={ {pathname: "/accountprofile", state: {cid: element.user_id}} } >
-                        <span className="task-title">
-                          &nbsp; {element.title}                      
-                        </span>
-                      </Link>  
+                        <Link to={ {pathname: "/accountprofile", state: {cid: element.user_id}} } >
+                          <span className="task-title">
+                            &nbsp; {element.title}                      
+                          </span>
+                        </Link>  
 
-                      <span className="task-date">  {convertIsoDateToDateString(element.date)} </span> 
-                      <span className="cross" onClick={() => {this.deleteActivity(element._id)}}> <CloseIcon /> </span>
-										</li>
+                        <span className="task-date">  {convertIsoDateToDateString(element.date)} </span> 
+                        <span className="delete-icon" onClick={() => {this.deleteActivity(element._id)}}> <CancelIcon /> </span>
+  										</li>
 
-										<li className="task-body"> &nbsp; &nbsp; &nbsp; &nbsp;{element.body} </li>
-									</div>
-								);
-							})
-						}
-    			</ul>
+  										<li className="task-body"> &nbsp; &nbsp; &nbsp; &nbsp;{element.body} </li>
+  									</div>
+  								);
+  							})
+  						}
+      			</ul>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -11,6 +11,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {Link} from 'react-router-dom';
 
+const API = process.env.REACT_APP_API
+
 export default class LeadProfileHeader extends React.Component {
   state = {
     open: false,
@@ -52,7 +54,7 @@ export default class LeadProfileHeader extends React.Component {
       last_contact: new Date(),
     }
 
-    const response = await fetch("/main/convert_lead_to_account", {
+    const response = await fetch(`${API}/main/convert_lead_to_account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

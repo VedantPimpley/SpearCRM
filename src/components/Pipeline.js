@@ -8,6 +8,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles/Pipeline.css';
 
+const API = process.env.REACT_APP_API
+
 export default class Pipeline extends React.Component {
   state = {
     fetchedOrders : [],
@@ -17,7 +19,7 @@ export default class Pipeline extends React.Component {
   componentDidMount() {
     this._isMounted = true;
 
-    fetch("/main/show_all_orders").then(response =>
+    fetch(`${API}/main/show_all_orders`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedOrders: data });
@@ -32,7 +34,7 @@ export default class Pipeline extends React.Component {
 
   updatePipelineAPICall = () => {
     console.log("Update triggered");
-    fetch("/main/show_all_orders").then(response =>
+    fetch(`${API}/main/show_all_orders`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedOrders: data });
@@ -107,7 +109,7 @@ export default class Pipeline extends React.Component {
         "stage" : toLaneId
       };
 
-      const response = await fetch("/main/order_stage_change", {
+      const response = await fetch(`${API}/main/order_stage_change`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -130,7 +132,7 @@ export default class Pipeline extends React.Component {
   }
 
   deleteCard = (cardId, laneId) => {
-    fetch(`main/delete_order/${cardId}`).then( () => {this.updatePipelineAPICall()} );
+    fetch(`${API}/main/delete_order/${cardId}`).then( () => {this.updatePipelineAPICall()} );
   }
 
   linkToAccountProfile = (cardId, metadata, laneId) => {
@@ -142,7 +144,7 @@ export default class Pipeline extends React.Component {
 
   markToBeTransactedOrdersAsTransacted = () => {
     this.setState({ openSpinner: true});
-    fetch("/main/complete_all_orders")
+    fetch(`${API}/main/complete_all_orders`)
     .then( () => {
       if(this._isMounted) {
         this.setState({ openSpinner: false});
@@ -155,7 +157,7 @@ export default class Pipeline extends React.Component {
   //may move an order to to-be-transacted stage accordingly
   priceCheckFinalizedOrders = () => {
     this.setState({ openSpinner: true});
-    fetch("/main/convert_finalized_orders")
+    fetch(`${API}/main/convert_finalized_orders`)
     .then( () => {
       if(this._isMounted) {
         this.setState({ openSpinner: false});

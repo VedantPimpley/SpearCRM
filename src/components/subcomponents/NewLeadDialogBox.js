@@ -22,6 +22,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox';
 
+const API = process.env.REACT_APP_API
+
 export default class NewLeadDialogBox extends React.Component{
   state = {
     open: false,
@@ -91,7 +93,7 @@ export default class NewLeadDialogBox extends React.Component{
     const newLead = this.state;
     delete newLead.open;
     delete newLead.showMlFields;
-    const response = await fetch("/main/create_lead", {
+    const response = await fetch(`${API}/main/create_lead`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

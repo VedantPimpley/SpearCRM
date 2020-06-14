@@ -14,10 +14,12 @@ import {
 } from "react-router-dom";
 import './styles/App.css';
 
+const API = process.env.REACT_APP_API
+
 export default function App() {
   useEffect( () => {
     let timer = setInterval( () => {
-      fetch("/main/get_order_from_email")
+      fetch(`${API}/main/get_order_from_email`)
       .then( response => 
         response.text()
         .then( text => {
