@@ -37,3 +37,9 @@ nav ul li a {
 nav ul li a:hover:not(.active) {
   background-color: #111;
 }
+
+.spinner-backdrop {
+  z-index: 5 !important;
+  position: absolute;
+  color: 'blue';
+}

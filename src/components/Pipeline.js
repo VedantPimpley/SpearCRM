@@ -17,6 +17,7 @@ export default class Pipeline extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     this._isMounted = true;
 
     fetch(`${API}/main/show_all_orders`).then(response =>
@@ -43,6 +44,8 @@ export default class Pipeline extends React.Component {
     );
   }
 
+  //prepares the input for Board component
+  //AND passes possibly new (uncached) company names to App.js
   transformOrdersToBoardData = (orders) => {
     const board = {
       lanes: [
@@ -90,6 +93,23 @@ export default class Pipeline extends React.Component {
     board.lanes.forEach( (Lane) => {
       Lane.cards = orders.filter(entry => entry.stage === Lane.id);
     });
+
+    
+    let laneOneAndTwoCompanies = new Set();
+    for (let i = 0; i < board.lanes.length; i++) {
+      let Lane = board.lanes[i]
+      Lane.cards = orders.filter(entry => entry.stage === Lane.id);
+
+      //obtain names of companies in lane one and two.
+      if (Lane.id === 1 || 2) {
+        Lane.cards.forEach( card => {
+          laneOneAndTwoCompanies.add(card.company)
+        })
+      }
+    }
+
+    //send certain company names to App.js, to cache their stockprice
+    this.props.receiveCompanyNamesDuringRuntime(laneOneAndTwoCompanies);
 
     return board;
   }

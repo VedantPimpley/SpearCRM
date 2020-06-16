@@ -12,7 +12,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const API = process.env.REACT_APP_API
-// var api_key = process.env.REACT_STOCKS_KEY || "brhln8nrh5ra2pui7160";
+// var api_key = process.env.REACT_STOCKS_KEY
 
 export default function Dashboard() {
 	const [topLeads, setTopLeads] = useState([]);
