@@ -83,7 +83,10 @@ export default class App extends React.Component {
         console.log(allOrders);
         allOrders.map( order => initialCompanies.add(order.company) );
 
-        this.waitingList = initialCompanies;
+        let dummyCompanies = ["ABAN","AAVAS","AARVEEDEN","AARTIIND",
+        "AARTIDRUGS","A2ZINFRA","8KMILES","3IINFOTECH"];
+        
+        this.waitingList = this.union(initialCompanies, new Set(dummyCompanies));
       })
     })
   }
@@ -120,7 +123,7 @@ export default class App extends React.Component {
     if(this.waitingList.size === 0) { return null; }
 
     //therefore, below code executes when elements ARE present in waitingList
-    let n = this.waitingList.size > 30 ? 29 : this.waitingList.size;
+    let n = this.waitingList.size > 30 ? 30 : this.waitingList.size;
 		let ApiInput = [...this.waitingList].slice(0,n);
 		let ApiOutput = {};
     let priceFoundCompanies = new Set();
@@ -142,6 +145,7 @@ export default class App extends React.Component {
       this.waitingList = this.difference(this.waitingList, priceFoundCompanies);
   
       console.log(this.state.cache);
+      console.log(Object.keys(this.state.cache).length);
       //below code disables the loading spinner when all companies prices
       //are done caching during startup
       if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {

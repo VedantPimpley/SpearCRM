@@ -8,7 +8,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles/Pipeline.css';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class Pipeline extends React.Component {
   state = {
@@ -101,14 +101,15 @@ export default class Pipeline extends React.Component {
       Lane.cards = orders.filter(entry => entry.stage === Lane.id);
 
       //obtain names of companies in lane one and two.
-      if (Lane.id === 1 || 2) {
+      if (Lane.id == 1 || 2) {
         Lane.cards.forEach( card => {
           laneOneAndTwoCompanies.add(card.company)
         })
       }
     }
 
-    //send certain company names to App.js, to cache their stockprice
+    //send company names to App.js, to cache their stockprice
+    //only lanes one and two can have new orders
     this.props.receiveCompanyNamesDuringRuntime(laneOneAndTwoCompanies);
 
     return board;

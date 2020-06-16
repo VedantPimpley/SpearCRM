@@ -22,44 +22,6 @@ export default function Dashboard() {
 	const [lineChartData, setLineChartData] = useState([]);
   const [openSpinner, setOpenSpinner] = useState(false);
 
-  // const symbols = ["20MICRONS.NS", "21STCENMGM.NS", "3IINFOTECH.NS", "3MINDIA.NS", "3RDROCK.NS","20MICRONS.NS"];
-
-  // useEffect( () => {
-  //   const getStockPrice = async (symbol) => {
-  //     const stock = symbol;
-  //     let price = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
-  //     .then( response => response.json().then( data => data.c ) ) //returns symbol's price
-  //     .catch( err => console.log(err) );
-  //     let stockPrice = {company: stock, price: price};
-  //     return(stockPrice);
-  //   }
-
-  //   Promise.all( symbols.map(individual_symbol => getStockPrice(individual_symbol)) )
-  //   .then( stockPrices => {
-  //     console.log("as it is");
-  //     stockPrices.forEach( stockPrice => console.log(stockPrice));
-  //   })
-
-  // }, []);
-
-  // useEffect( () => {
-  //   const getStockPrice2 = async (symbol) => {
-  //     const stock = symbol;
-  //     let price = await fetch(`https://cors-anywhere.herokuapp.com/https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${api_key}`)
-  //     .then( response => response.json().then( data => data.c ) ) //returns symbol's price
-  //     .catch( err => console.log(err) );
-  //     let stockPrice = {[stock]: price};
-  //     return(stockPrice);
-  //   }
-
-  //   Promise.all( symbols.map(individual_symbol => getStockPrice2(individual_symbol)) )
-  //   .then( stockPrices => {
-  //     console.log("with cors anywhere");
-  //     stockPrices.forEach( stockPrice => console.log(stockPrice));
-  //   })
-
-  // }, []);
-
   const _isMounted = useRef(true);
 	useEffect( () => {
 		Promise.all([
