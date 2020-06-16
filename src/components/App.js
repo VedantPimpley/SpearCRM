@@ -16,8 +16,8 @@ import {
 } from "react-router-dom";
 import './styles/App.css';
 
-const API = process.env.REACT_APP_API
-const stocksAPI = process.env.REACT_APP_STOCKS_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const stocksAPI = process.env.REACT_APP_STOCKS_API || "brhln8nrh5ra2pui7160"
 
 export default class App extends React.Component {
   state = {
@@ -50,16 +50,19 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.receiveCompanyNamesDuringStartup();
-    console.log(this.waitingList);
-    //timer checks if cacheUpdater should be called every second
-    //as a result, cacheUpdater is called in 1 minute intervals between a response and next call
-    this.timer1 = setInterval( () => {
-      if (Date.now() > this.callCacheUpdaterAt) {
-        this.cacheUpdater()
-        .then( () => this.callCacheUpdaterAt = Date.now() + 60000)
-      }
-    }, 1000)
+    this.receiveCompanyNamesDuringStartup()
+    .then( ()=> {
+      //timer checks if cacheUpdater should be called every second
+      //as a result, cacheUpdater is called in 1 minute intervals between a response and next call
+      this.timer1 = setInterval( () => {
+        if (Date.now() > this.callCacheUpdaterAt 
+            && this.waitingList.size > 0) 
+        {
+          this.cacheUpdater()
+          .then( () => this.callCacheUpdaterAt = Date.now() + 60000)
+        }
+      }, 1000)
+    });
   }
 
   componentWillUnmount(){
@@ -70,18 +73,19 @@ export default class App extends React.Component {
   
   
   //populates  the waitingList on startup
-  receiveCompanyNamesDuringStartup = () => {
+  receiveCompanyNamesDuringStartup = async () => {
     let initialCompanies = new Set();
-    
-    fetch(`${API}/main/show_all_orders`).then(response =>
-      response.json().then(allOrders => {
-        allOrders.map( order => 
-          initialCompanies.add(order.company)
-          );
-        })
-      );
-        
-    this.waitingList = initialCompanies;
+
+    fetch(`${API}/main/show_all_orders`)
+    .then(response => {
+      response.json()
+      .then( allOrders => {
+        console.log(allOrders);
+        allOrders.map( order => initialCompanies.add(order.company) );
+
+        this.waitingList = initialCompanies;
+      })
+    })
   }
       
   receiveCompanyNamesDuringRuntime = companies => {
@@ -116,10 +120,12 @@ export default class App extends React.Component {
     if(this.waitingList.size === 0) { return null; }
 
     //therefore, below code executes when elements ARE present in waitingList
-		let n = this.waitingList.size > 30 ? 29 : this.waitingList.size - 1;
-		let ApiInput = [...this.waitingList].slice(n);
+    let n = this.waitingList.size > 30 ? 29 : this.waitingList.size;
+		let ApiInput = [...this.waitingList].slice(0,n);
 		let ApiOutput = {};
-		let priceFoundCompanies = new Set();
+    let priceFoundCompanies = new Set();
+    console.log(this.waitingList);
+    console.log(ApiInput);
 
     Promise.all( ApiInput.map(elem => this.getPrice(elem)) )
 		.then( responses => {
@@ -135,6 +141,7 @@ export default class App extends React.Component {
       this.cachedCompanies = this.union(this.cachedCompanies, priceFoundCompanies);
       this.waitingList = this.difference(this.waitingList, priceFoundCompanies);
   
+      console.log(this.state.cache);
       //below code disables the loading spinner when all companies prices
       //are done caching during startup
       if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
@@ -143,11 +150,12 @@ export default class App extends React.Component {
     })
   }
 
-  getPrice = company => {
+  getPrice = async(company) => {
     //notice the URL formatting here: .NS appended and toUpperCase applied
-    let price = fetch(`https://finnhub.io/api/v1/quote?symbol=${company.toUpperCase()}.NS&token=${stocksAPI}`)
-    .then( response => response.json().then( data => data.c ) ) //returns company's price
-    .catch( err => null );
+    let promise = fetch(`https://finnhub.io/api/v1/quote?symbol=${company.toUpperCase()}.NS&token=${stocksAPI}`);
+
+     //returns company's price
+    let price = await promise.then( response => response.json().then( data => data.c ) ).catch( err => null );
 
     let output = { company: company, price: price };
     return(output);
