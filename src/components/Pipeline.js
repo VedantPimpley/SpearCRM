@@ -46,7 +46,9 @@ export default class Pipeline extends React.Component {
 
   //prepares the input for Board component
   //AND passes possibly new (uncached) company names to App.js
-  transformOrdersToBoardData = (orders) => {
+  transformOrdersToBoardData = () => {
+    let orders = this.state.fetchedOrders;
+
     const board = {
       lanes: [
         {
@@ -101,7 +103,7 @@ export default class Pipeline extends React.Component {
       Lane.cards = orders.filter(entry => entry.stage === Lane.id);
 
       //obtain names of companies in lane one and two.
-      if (Lane.id == 1 || 2) {
+      if (Lane.id === 1 || 2) {
         Lane.cards.forEach( card => {
           laneOneAndTwoCompanies.add(card.company)
         })
@@ -163,35 +165,74 @@ export default class Pipeline extends React.Component {
     });
   }
 
-  markToBeTransactedOrdersAsTransacted = () => {
+  markToBeTransactedOrdersAsTransacted = async () => {
     this.setState({ openSpinner: true});
-    fetch(`${API}/main/complete_all_orders`)
-    .then( () => {
-      if(this._isMounted) {
-        this.setState({ openSpinner: false});
-      }
-      this.updatePipelineAPICall();     
+
+    let orders = this.state.fetchedOrders;
+    //set all company stock prices using the cache, for stage 3 companies
+    let companyPrices = {};
+    let laneThreeCompanies = orders.filter( order => order.stage === 3);
+
+    for(let i = 0; i < laneThreeCompanies.length; i++) {
+      let companyName = laneThreeCompanies[i].company;
+      companyPrices[`${companyName}`] = this.props.cache[`${companyName}`];
+    }
+    console.log(companyPrices);
+
+    //POST the prices along with the request. The backend will use the stockprice data
+    const response = await fetch(`${API}/main/complete_all_orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(companyPrices)
     });
+    
+    if (response.ok && this._isMounted) {
+      this.setState({ openSpinner:false });
+      this.updatePipelineAPICall();
+    }
   }
 
-  //compares price constraint of order in finalized stage against actual current stock price
-  //may move an order to to-be-transacted stage accordingly
-  priceCheckFinalizedOrders = () => {
+  //POSTs the stock prices of all stage 2 and stage 3 companies to backend
+  //backend then sees if the prices meet the conditions specified in the order price
+  //if yes, it moves order from finalized to to-be-transacted
+  //if no, it does not
+  //if a to-be-transacted order NO LONGER meets the criteria, backend moves it back to finalized
+  convertEligibleFinalizedOrders = async () => {
     this.setState({ openSpinner: true});
-    fetch(`${API}/main/convert_finalized_orders`)
-    .then( () => {
-      if(this._isMounted) {
-        this.setState({ openSpinner: false});
-      }
-      this.updatePipelineAPICall(); 
-    });  
+
+    let orders = this.state.fetchedOrders;
+    //set all company stock prices using the cache, for stage 2 and 3 companies
+    let companyPrices = {};
+    let laneTwoAndThreeCompanies = orders.filter( order => order.stage === 2 || 3);
+
+    for(let i = 0; i < laneTwoAndThreeCompanies.length; i++) {
+      let companyName = laneTwoAndThreeCompanies[i].company;
+      companyPrices[`${companyName}`] = this.props.cache[`${companyName}`];
+    }
+    console.log(companyPrices);
+
+    //POST the prices along with the request. The backend will use the stockprice data
+    const response = await fetch(`${API}/main/convert_finalized_orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(companyPrices)
+    });
+    
+    if (response.ok && this._isMounted) {
+      this.setState({ openSpinner:false });
+      this.updatePipelineAPICall();
+    }
   }
   
   render() {
     return(
       <>
         <Board
-          data={this.transformOrdersToBoardData(this.state.fetchedOrders)}
+          data={this.transformOrdersToBoardData()}
           onCardDelete={this.deleteCard}
           onCardMoveAcrossLanes={this.updateCardStage}
           onCardClick={this.linkToAccountProfile}
@@ -220,7 +261,7 @@ export default class Pipeline extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={this.priceCheckFinalizedOrders}
+            onClick={this.convertEligibleFinalizedOrders}
             startIcon={<ShowChartIcon />}
             fullWidth
           >

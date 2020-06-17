@@ -12,7 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import AddIcon from '@material-ui/icons/Add';
 import '../styles/NewOrderDialogBox.css'
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class PipelineNewOrderDialogBox extends React.Component{
   state = {

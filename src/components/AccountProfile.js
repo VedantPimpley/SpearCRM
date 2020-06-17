@@ -5,7 +5,7 @@ import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class AccountProfile extends React.Component {
   state = {

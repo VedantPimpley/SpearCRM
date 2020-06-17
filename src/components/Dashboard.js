@@ -11,7 +11,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 // var api_key = process.env.REACT_STOCKS_KEY
 
 export default function Dashboard() {

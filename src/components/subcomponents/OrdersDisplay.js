@@ -17,6 +17,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ListIcon from '@material-ui/icons/List';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Tooltip } from '@material-ui/core';
 import '../styles/OrdersDisplay.css'
 
 const API = process.env.REACT_APP_API
@@ -83,7 +84,9 @@ export default function OrdersDisplay (props) {
 
           <span style={{ float: "right" }}> 
             <IconButton aria-label="close" onClick={priceCheckFinalizedOrders}>
-              <RefreshIcon />
+              <Tooltip title="Check share price and update">
+                <RefreshIcon />
+              </Tooltip>
             </IconButton> 
 
             <IconButton aria-label="close" onClick={handleClose}>

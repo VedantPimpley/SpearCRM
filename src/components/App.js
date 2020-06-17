@@ -83,10 +83,7 @@ export default class App extends React.Component {
         console.log(allOrders);
         allOrders.map( order => initialCompanies.add(order.company) );
 
-        let dummyCompanies = ["ABAN","AAVAS","AARVEEDEN","AARTIIND",
-        "AARTIDRUGS","A2ZINFRA","8KMILES","3IINFOTECH"];
-        
-        this.waitingList = this.union(initialCompanies, new Set(dummyCompanies));
+        this.waitingList = initialCompanies;
       })
     })
   }
@@ -200,10 +197,11 @@ export default class App extends React.Component {
 
               <Route 
                 path="/accountprofile" 
-                render = {() => 
+                render = {(props) => 
                   <AccountProfile 
                     cache = {this.state.cache}
                     receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}  
+                    {...props} //this has been added only to allow AccountProfile to use location props (cid)
                   />
                 }
               />
