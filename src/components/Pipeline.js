@@ -99,8 +99,8 @@ export default class Pipeline extends React.Component {
     
     let laneOneAndTwoCompanies = [];
     for (let i = 0; i < board.lanes.length; i++) {
-      let Lane = board.lanes[i]
-      Lane.cards = orders.filter(entry => entry.stage === Lane.id);
+      let Lane = board.lanes[i];
+      Lane.cards = orders.filter(entry => entry.stage === Lane.id).reverse();
 
       //obtain names of companies in lane one and two.
       if (Lane.id === 1 || 2) {
@@ -118,22 +118,25 @@ export default class Pipeline extends React.Component {
   }
 
   updateCardStage = async (fromLaneId, toLaneId, cardId, index) => {
-    this.setState({ openSpinner: true});
-
-    //these are the only permissible drag-and-drop transitions
     if (fromLaneId === toLaneId){
       return null;
     }
     else if(     
+      //these are the only permissible drag-and-drop transitions
          (fromLaneId === 1 && toLaneId === 2)
       || (fromLaneId === 2 && toLaneId === 3)
       || (fromLaneId === 3 && toLaneId === 0)
     ){
+
+      this.setState({ openSpinner: true});
+
       const newCardStage = {
         "_id" : cardId,
         "stage" : toLaneId,
-        "company" : {company: this.props.cache},
+        "company" : this.props.cache,
       };
+
+      console.log(JSON.stringify(newCardStage));
 
       // third attribute company (actually means price)
       const response = await fetch(`${API}/main/order_stage_change`, {
@@ -155,6 +158,7 @@ export default class Pipeline extends React.Component {
       else if(response.ok === false && this._isMounted) {
         this.forceUpdate();
         alert("Server error encountered");
+        this.setState({ openSpinner: false});
       }
     }
     else if(this._isMounted) {
@@ -196,21 +200,37 @@ export default class Pipeline extends React.Component {
       body: JSON.stringify(companyPrices)
     });
     
-    if (response.ok && this._isMounted) {
-      // fetch(`${API}/main/send_email_after_transaction`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(response.json())
-      // })
-      // .then(() => this.updatePipelineAPICall())
-      // .then(() => {
-      //   if(this._isMounted) {
-      //     this.setState({ openSpinner:false })
-      //   }
-      // });
-      console.log(response.json())
+    if (response.ok) {
+      response.text().then( data => {
+        console.log(data);
+
+        let str1 = "No companies to be transacted";
+        let str2 = "Send correct company";
+
+        if(data === str1) {
+          if (this._isMounted) {this.setState({ openSpinner: false})};
+          console.log("No change1");
+        }
+        else if (data === str2) {
+          if (this._isMounted) {this.setState({ openSpinner: false})};
+          console.log("No change2");
+        }
+        else {
+          fetch(`${API}/main/send_email_after_transaction`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: data
+          })
+          .then(() => this.updatePipelineAPICall())
+          .then(() => {
+            if(this._isMounted) {
+              this.setState({ openSpinner:false });
+            }
+          });
+        }
+      })
     }
   }
 
@@ -218,13 +238,11 @@ export default class Pipeline extends React.Component {
   //backend then sees if the prices meet the conditions specified in the order price
   //if yes, it moves order from finalized to to-be-transacted
   //if no, it does not
-  //if a to-be-transacted order NO LONGER meets the criteria, backend moves it back to finalized
-	
+  //if a to-be-transacted order NO LONGER meets the criteria, backend DOES NOT move it back to finalized
   convertEligibleFinalizedOrders = async () => {
     this.setState({ openSpinner: true});
 
     let companyPrices = {company: this.props.cache};
-
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       headers: {
@@ -232,22 +250,12 @@ export default class Pipeline extends React.Component {
       },
       body: JSON.stringify(companyPrices)
     });
-    
-    if (response.ok && this._isMounted) {
-      // fetch(`${API}/main/send_email_after_transaction`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(response.json())
-      // })
-      // .then(() => this.updatePipelineAPICall())
-      // .then(() => {
-      //   if(this._isMounted) {
-      //     this.setState({ openSpinner:false })
-      //   }
-      // });
-      console.log(response.json());
+
+    if (response.ok) {
+      this.updatePipelineAPICall()
+      .then(() => {
+        if(this._isMounted) {this.setState({ openSpinner:false })};
+      });
     }
   }
 
