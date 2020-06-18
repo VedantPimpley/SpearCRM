@@ -4,15 +4,19 @@ import {convertIsoDateToDateString} from "../Dashboard.js"
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CancelIcon from '@material-ui/icons/Cancel';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function NextSteps(props) {
 
   const transitionActivity = async (activityId, isAiActivity) => {
+    props.updateSpinnerInAccountProfile(true);
     const activityToTransition = {
       "_id" : activityId,
-      "activity_type" : "past"
+      "activity_type" : "past",
+      "company" : props.cache,
     };
+
+    console.log(activityToTransition);
 
     const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
@@ -24,13 +28,15 @@ export default function NextSteps(props) {
 
     if (response.ok) {
       if (isAiActivity && props.lead === 0) {
-        props.updateAccountDataAndOrdersAndActivities();
+        props.updateAccountDataAndOrdersAndActivities()
+        .then( () => props.updateSpinnerInAccountProfile(false))
       }
       //isAiActivity is 1 for activities generated through automation. 
       //Deleting an AI generated activity might involve deletion of corresponding order and updating activity data
       //props.lead indicates the grandparent page. prop.lead===0 being true means AccountProfile is the grandparent.
       else {
-        props.updateActivities();
+        props.updateActivities()
+        .then( () => props.updateSpinnerInAccountProfile(false))
       }
       //User generated activities can be deleted without updating orders and activities.
       //an AI generated activity can cause wider changes than user generated activity upon transition.
@@ -38,14 +44,17 @@ export default function NextSteps(props) {
   }
 
   const deleteActivity = (activityId, isAiActivity) => {
+    props.updateSpinnerInAccountProfile(true);
 		fetch(`${API}/main/delete_activity/${activityId}`)
 		.then( () => {
       if (isAiActivity) {
-        props.updateAccountDataAndOrdersAndActivities();
+        props.updateAccountDataAndOrdersAndActivities()
+        .then( () => props.updateSpinnerInAccountProfile(false));
       }
       //isAiActivity is 1 for activities generated through automation
       else {
-        props.updateActivities();
+        props.updateActivities()
+        .then( () => props.updateSpinnerInAccountProfile(false));
       }
     });
 	}

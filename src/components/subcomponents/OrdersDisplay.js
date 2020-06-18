@@ -15,16 +15,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ListIcon from '@material-ui/icons/List';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Tooltip } from '@material-ui/core';
 import '../styles/OrdersDisplay.css'
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function OrdersDisplay (props) {
   const [open, setOpen] = useState(false);
-  const [openSpinner, setOpenSpinner] = useState(false);
 
   const _isMounted = useRef(true);
   useEffect( () => {
@@ -41,19 +38,43 @@ export default function OrdersDisplay (props) {
   }
 
   const deleteOrder = (orderId) => {
+    props.updateSpinnerInAccountProfile(true);
     fetch(`${API}/main/delete_order/${orderId}`)
-    .then( () => props.updateAccountDataAndOrdersAndActivities() );
+    .then( () => props.updateAccountDataAndOrdersAndActivities() )
+    .then( () => props.updateSpinnerInAccountProfile(false));
   }
 
-  const priceCheckFinalizedOrders = () => {
-    setOpenSpinner(true);
-    fetch(`${API}/main/convert_finalized_orders`)
-    .then( () => {
-      if (_isMounted.current) {
-        setOpenSpinner(false);
-        props.updateAccountDataAndOrdersAndActivities();
-      }
-    });  
+  const convertEligibleFinalizedOrders = async () => {
+    props.updateSpinnerInAccountProfile(true);
+
+    let companyPrices = {company: props.cache};
+
+    const response = await fetch(`${API}/main/convert_finalized_orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(companyPrices)
+    });
+    
+    if (response.ok && _isMounted) {
+      props.updateAccountDataAndOrdersAndActivities()
+      .then( () => props.updateSpinnerInAccountProfile(false) );
+      // fetch(`${API}/main/send_email_after_transaction`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(response.json())
+      // })
+      // .then(() => this.updatePipelineAPICall())
+      // .then(() => {
+      //   if(this._isMounted) {
+      //     this.setState({ openSpinner:false })
+      //   }
+      // });
+      console.log(response.json());
+    }
   }
 
   return (
@@ -83,7 +104,7 @@ export default function OrdersDisplay (props) {
           <span> View all orders </span>
 
           <span style={{ float: "right" }}> 
-            <IconButton aria-label="close" onClick={priceCheckFinalizedOrders}>
+            <IconButton aria-label="close" onClick={convertEligibleFinalizedOrders}>
               <Tooltip title="Check share price and update">
                 <RefreshIcon />
               </Tooltip>
@@ -188,11 +209,6 @@ export default function OrdersDisplay (props) {
             </List>
           </div>  
         </DialogContent>
-
-        <Backdrop className="spinner-backdrop" open={openSpinner}>
-          <CircularProgress color="inherit"/>
-        </Backdrop> 
-        
       </Dialog>
     </>
   );

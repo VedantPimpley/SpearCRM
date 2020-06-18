@@ -70,6 +70,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
     delete newOrder.selectOptions;
+
     const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
       headers: {
@@ -79,8 +80,10 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     });
     
     if (response.ok && this._isMounted) {
-      this.setState({ open:false });
-      this.props.updatePipeline();
+      this.props.updatePipeline()
+      .then( () => {
+        this.setState({ open:false });
+      });
     }
   }
   

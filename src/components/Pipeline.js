@@ -33,7 +33,7 @@ export default class Pipeline extends React.Component {
     this._isMounted = false;
   }
 
-  updatePipelineAPICall = () => {
+  updatePipelineAPICall = async () => {
     console.log("Update triggered");
     fetch(`${API}/main/show_all_orders`).then(response =>
       response.json().then(data => {
@@ -118,6 +118,8 @@ export default class Pipeline extends React.Component {
   }
 
   updateCardStage = async (fromLaneId, toLaneId, cardId, index) => {
+    this.setState({ openSpinner: true});
+
     //these are the only permissible drag-and-drop transitions
     if (fromLaneId === toLaneId){
       return null;
@@ -129,9 +131,11 @@ export default class Pipeline extends React.Component {
     ){
       const newCardStage = {
         "_id" : cardId,
-        "stage" : toLaneId
+        "stage" : toLaneId,
+        "company" : {company: this.props.cache},
       };
 
+      // third attribute company (actually means price)
       const response = await fetch(`${API}/main/order_stage_change`, {
         method: "POST",
         headers: {
@@ -141,8 +145,13 @@ export default class Pipeline extends React.Component {
       });
       
       if (response.ok) {
-        this.updatePipelineAPICall();
-      } 
+        this.updatePipelineAPICall()
+        .then(() => {
+          if(this._isMounted) {
+            this.setState({ openSpinner:false })
+          }
+        });
+      }
       else if(response.ok === false && this._isMounted) {
         this.forceUpdate();
         alert("Server error encountered");
@@ -155,7 +164,14 @@ export default class Pipeline extends React.Component {
   }
 
   deleteCard = (cardId, laneId) => {
-    fetch(`${API}/main/delete_order/${cardId}`).then( () => {this.updatePipelineAPICall()} );
+    this.setState({ openSpinner: true});
+    fetch(`${API}/main/delete_order/${cardId}`)
+    .then( () => this.updatePipelineAPICall() )
+    .then( () => {
+      if(this._isMounted) {
+        this.setState({ openSpinner:false })
+      }
+    });
   }
 
   linkToAccountProfile = (cardId, metadata, laneId) => {
@@ -168,17 +184,9 @@ export default class Pipeline extends React.Component {
   markToBeTransactedOrdersAsTransacted = async () => {
     this.setState({ openSpinner: true});
 
-    let orders = this.state.fetchedOrders;
-    //set all company stock prices using the cache, for stage 3 companies
-    let companyPrices = {};
-    let laneThreeCompanies = orders.filter( order => order.stage === 3);
+    let companyPrices = {company: this.props.cache};
 
-    for(let i = 0; i < laneThreeCompanies.length; i++) {
-      let companyName = laneThreeCompanies[i].company;
-      companyPrices[`${companyName}`] = this.props.cache[`${companyName}`];
-    }
     console.log(companyPrices);
-
     //POST the prices along with the request. The backend will use the stockprice data
     const response = await fetch(`${API}/main/complete_all_orders`, {
       method: "POST",
@@ -189,31 +197,34 @@ export default class Pipeline extends React.Component {
     });
     
     if (response.ok && this._isMounted) {
-      this.setState({ openSpinner:false });
-      this.updatePipelineAPICall();
+      // fetch(`${API}/main/send_email_after_transaction`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(response.json())
+      // })
+      // .then(() => this.updatePipelineAPICall())
+      // .then(() => {
+      //   if(this._isMounted) {
+      //     this.setState({ openSpinner:false })
+      //   }
+      // });
+      console.log(response.json())
     }
   }
 
-  //POSTs the stock prices of all stage 2 and stage 3 companies to backend
+  //POSTs the stock prices of all companies to backend
   //backend then sees if the prices meet the conditions specified in the order price
   //if yes, it moves order from finalized to to-be-transacted
   //if no, it does not
   //if a to-be-transacted order NO LONGER meets the criteria, backend moves it back to finalized
+	
   convertEligibleFinalizedOrders = async () => {
     this.setState({ openSpinner: true});
 
-    let orders = this.state.fetchedOrders;
-    //set all company stock prices using the cache, for stage 2 and 3 companies
-    let companyPrices = {};
-    let laneTwoAndThreeCompanies = orders.filter( order => order.stage === 2 || 3);
+    let companyPrices = {company: this.props.cache};
 
-    for(let i = 0; i < laneTwoAndThreeCompanies.length; i++) {
-      let companyName = laneTwoAndThreeCompanies[i].company;
-      companyPrices[`${companyName}`] = this.props.cache[`${companyName}`];
-    }
-    console.log(companyPrices);
-
-    //POST the prices along with the request. The backend will use the stockprice data
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       headers: {
@@ -223,11 +234,23 @@ export default class Pipeline extends React.Component {
     });
     
     if (response.ok && this._isMounted) {
-      this.setState({ openSpinner:false });
-      this.updatePipelineAPICall();
+      // fetch(`${API}/main/send_email_after_transaction`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(response.json())
+      // })
+      // .then(() => this.updatePipelineAPICall())
+      // .then(() => {
+      //   if(this._isMounted) {
+      //     this.setState({ openSpinner:false })
+      //   }
+      // });
+      console.log(response.json());
     }
   }
-  
+
   render() {
     return(
       <>

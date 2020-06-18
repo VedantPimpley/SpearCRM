@@ -8,7 +8,7 @@ import OrdersDisplay from './OrdersDisplay'
 import Button from "@material-ui/core/Button";
 import EmailIcon from '@material-ui/icons/Email';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function ActivityTracker(props) {
   const [activityType, setActivityType] = useState("past"); //past or future
@@ -41,6 +41,8 @@ export default function ActivityTracker(props) {
   };
 
   const postNewActivity = async () => {
+    props.updateSpinnerInAccountProfile(true);
+
     let today = new Date();
     console.log("entered");
     //erroneous and disallowed inputs specified in the below if condition
@@ -69,7 +71,8 @@ export default function ActivityTracker(props) {
     if (response.ok && _isMounted.current) {
       setActivityBody("");
       setActivityTitle("");
-      props.updateActivities();
+      props.updateActivities()
+      .then( ()=> props.updateSpinnerInAccountProfile(false));
     }
   }
 
@@ -86,6 +89,8 @@ export default function ActivityTracker(props) {
         <OrdersDisplay 
           ordersList={props.ordersList} 
           updateAccountDataAndOrdersAndActivities = {props.updateAccountDataAndOrdersAndActivities}
+          updateSpinnerInAccountProfile = {props.updateSpinnerInAccountProfile}
+          cache = {props.cache}
         />
       </>
 
@@ -116,7 +121,9 @@ export default function ActivityTracker(props) {
         activitiesList={props.activitiesList.filter(activity => activity["activity_type"] === "future")} 
         updateAccountDataAndOrdersAndActivities = {props.updateAccountDataAndOrdersAndActivities}
         updateActivities = {props.updateActivities}
+        cache = {props.cache}
         lead = {props.lead}
+        updateSpinnerInAccountProfile = {props.updateSpinnerInAccountProfile}
       />
       <PastActivity
         activitiesList={props.activitiesList.filter(activity => activity["activity_type"] === "past")}

@@ -197,7 +197,7 @@ export default class App extends React.Component {
 
               <Route 
                 path="/accountprofile" 
-                render = {(props) => 
+                render = {props => 
                   <AccountProfile 
                     cache = {this.state.cache}
                     receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}  
@@ -218,10 +218,11 @@ export default class App extends React.Component {
 
               <Route 
                 path="/pipeline" 
-                render = {() => 
+                render = {props => 
                   <Pipeline 
                     cache = {this.state.cache} 
                     receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}
+                    {...props}
                   />
                 }
               />

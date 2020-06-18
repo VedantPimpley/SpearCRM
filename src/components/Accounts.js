@@ -25,7 +25,7 @@ import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 // function onChange(pagination, filters, sorter, extra) {
 //   console.log('params', pagination, filters, sorter, extra);
 // }
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 console.log(process.env.REACT_APP_STOCK_API_KEY)
 
 export default class Accounts extends React.Component {

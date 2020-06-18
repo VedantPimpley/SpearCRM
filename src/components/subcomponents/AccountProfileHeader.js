@@ -9,7 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class AccountProfileHeader extends React.Component {
   state = {
@@ -27,21 +27,26 @@ export default class AccountProfileHeader extends React.Component {
   }
 
   markToBeTransactedOrdersAsTransacted = async () => {
+    this.props.updateSpinnerInAccountProfile(true);
+
     if (this.props.furthestStage !== 3) {
       return null;
     }
 
-    console.log("Completion triggered");
+    let postContents = {"account_id": this.props._id, "company": this.props.cache};
+    
+    console.log(postContents);
     const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({"account_id": this.props._id})
+      body: JSON.stringify(postContents)
     });
-    
+
     if (response.ok) {
-      this.props.updateAccountDataAndOrdersAndActivities();
+      this.props.updateAccountDataAndOrdersAndActivities()
+      .then( () => this.props.updateSpinnerInAccountProfile(false) );
       if(this._isMounted) {
         this.setState({ openDialog: true});
       }

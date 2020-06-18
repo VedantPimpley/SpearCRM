@@ -4,6 +4,8 @@ import FieldsContainer1 from "./subcomponents/FieldsContainer1";
 import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -13,6 +15,7 @@ export default class AccountProfile extends React.Component {
     activitiesList: [],
     ordersList: [],
     accountTurnover: {},
+    openSpinner : false,
   };
 
   componentDidMount() {
@@ -41,7 +44,7 @@ export default class AccountProfile extends React.Component {
 
   //function used by OrdersDisplay and NextSteps in ActivityTracker
   //and also used by markToBeTransactedOrdersAsTransacted in AccountProfileHeader
-  updateAccountDataAndOrdersAndActivitiesAPICall = () => {
+  updateAccountDataAndOrdersAndActivitiesAPICall = async () => {
     Promise.all([
       fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
       fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`),
@@ -59,7 +62,7 @@ export default class AccountProfile extends React.Component {
   }
 
   //function used by NewOrderDialogBox after POSTing new order
-  updateAccountDataAndOrdersAPICall = () => {
+  updateAccountDataAndOrdersAPICall = async () => {
     Promise.all([
       fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
       fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`)
@@ -73,7 +76,7 @@ export default class AccountProfile extends React.Component {
   }
 
   //function used by FieldContainer1 and FieldContainer2 after POSTing new fields
-  updateAccountDataAPICall = () => {
+  updateAccountDataAPICall = async () => {
     fetch(`${API}/main/display_account/${this.state.accountData._id}`).then(response =>
       response.json().then(data => {
         if(this._isMounted) {
@@ -84,7 +87,7 @@ export default class AccountProfile extends React.Component {
   }
 
   //function used by ManualLogger after POSTing new order
-  updateActivitiesAPICall = () => {
+  updateActivitiesAPICall = async () => {
     fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`).then(response =>
       response.json().then(data => {
         if(this._isMounted) {
@@ -136,6 +139,10 @@ export default class AccountProfile extends React.Component {
     }
   }
 
+  updateSpinnerInAccountProfile = (bool) => {
+    this.setState({ openSpinner: bool });
+  }
+
   render(){
     return(
       <div className="profile-page-grid-container">
@@ -145,6 +152,8 @@ export default class AccountProfile extends React.Component {
             furthestStage = {this.state.accountData.latest_order_stage} 
             updateAccountDataAndOrdersAndActivities = {this.updateAccountDataAndOrdersAndActivitiesAPICall}
             _id = {this.state.accountData._id}
+            cache = {this.props.cache}
+            updateSpinnerInAccountProfile = {this.updateSpinnerInAccountProfile}
           />
         </div>
         <FieldsContainer1 
@@ -169,9 +178,15 @@ export default class AccountProfile extends React.Component {
           updateAccountDataAndOrders = {this.updateAccountDataAndOrdersAPICall}
           updateAccountData = {this.updateAccountDataAPICall}
           updateActivities = {this.updateActivitiesAPICall}
+          cache = {this.props.cache}
           lead = {0}
+          updateSpinnerInAccountProfile = {this.updateSpinnerInAccountProfile}
         />
         {/* 'lead = 0' communicates that the parent component is AccountProfile */}
+
+        <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </div>     
     );
   }
