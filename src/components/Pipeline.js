@@ -97,7 +97,7 @@ export default class Pipeline extends React.Component {
     });
 
     
-    let laneOneAndTwoCompanies = new Set();
+    let laneOneAndTwoCompanies = [];
     for (let i = 0; i < board.lanes.length; i++) {
       let Lane = board.lanes[i]
       Lane.cards = orders.filter(entry => entry.stage === Lane.id);
@@ -105,7 +105,7 @@ export default class Pipeline extends React.Component {
       //obtain names of companies in lane one and two.
       if (Lane.id === 1 || 2) {
         Lane.cards.forEach( card => {
-          laneOneAndTwoCompanies.add(card.company)
+          laneOneAndTwoCompanies.push(card.company);
         })
       }
     }

@@ -21,9 +21,16 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     trans_type: "",
     no_of_shares: 0,
     cost_of_share: 0,
-    selectOptions : [], //value is only set on first load
     account_id : 0,
   };
+
+  //value is only set on first load
+  //is made a class property due to bug where selectOptions alone is deleted after successful order addition
+  selectOptions = [];
+
+  componentDidUpdate() {
+    console.log(this.state);
+  }
 
   componentDidMount() {
     this._isMounted = true;
@@ -37,7 +44,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
         });
         
         if (this._isMounted) {
-          this.setState({ selectOptions: menuItems });
+          this.selectOptions = menuItems;
         }
       })
     );
@@ -69,7 +76,8 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     newOrder.stage = 2;
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
-    delete newOrder.selectOptions;
+    this.setState({ account_id: 0});
+    this.setState({ trans_type: ""});
 
     const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
@@ -122,7 +130,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
                 label="Account"
                 name="account_id"
               >
-                {this.state.selectOptions}
+                {this.selectOptions}
               </Select>
             </FormControl>
 

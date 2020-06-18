@@ -81,7 +81,7 @@ export default class App extends React.Component {
       response.json()
       .then( allOrders => {
         console.log(allOrders);
-        allOrders.map( order => initialCompanies.add(order.company) );
+        allOrders.map( order => initialCompanies.add( (order.company).toLowerCase() ) );
 
         this.waitingList = initialCompanies;
       })
@@ -89,11 +89,13 @@ export default class App extends React.Component {
   }
       
   receiveCompanyNamesDuringRuntime = companies => {
-    this.companiesThisSession = this.union(this.companiesThisSession, new Set(companies))
+    let deduplicatedInput = new Set( companies.map(elem => elem.toLowerCase()) );
+
+    this.companiesThisSession = this.union(this.companiesThisSession, deduplicatedInput);
 		// new companies is a misnomer. It consists of new companies AND the companies which were earlier cached 
 		// but were cleared from cachedCompanies because we do that every 5 minutes for freshness of data
-		let newCompanies = this.difference(this.companiesThisSession, this.cachedCompanies)
-		this.waitingList = this.union(this.waitingList, newCompanies)
+		let newCompanies = this.difference(this.companiesThisSession, this.cachedCompanies);
+		this.waitingList = this.union(this.waitingList, newCompanies);
   }
 
   //this function is called after all companies are cached during startup
