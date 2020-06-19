@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import '../styles/NewOrderDialogBox.css'
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class NewOrderDialogBox extends React.Component{
   state = {
@@ -54,6 +54,7 @@ export default class NewOrderDialogBox extends React.Component{
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
 
+    console.log(newOrder);
     const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
       headers: {
@@ -131,7 +132,7 @@ export default class NewOrderDialogBox extends React.Component{
               autoFocus
               margin="dense"
               id="cost_of_share"
-              label="Cost of one share"
+              label="Desired Price"
               helperText="Leave this empty if you wish to transact regardless of the stock price."
               type="text"
               fullWidth

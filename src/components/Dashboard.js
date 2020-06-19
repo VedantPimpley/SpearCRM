@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 // var api_key = process.env.REACT_STOCKS_KEY
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 	const [topLeads, setTopLeads] = useState([]);
 	const [topAccounts, setTopAccounts] = useState([]);
 	const [allActivities, setAllActivities] = useState([]);
@@ -59,11 +59,15 @@ export default function Dashboard() {
         responses[2].json().then( data => setAllActivities(data) );
         responses[3].json().then( data => setLineChartData(data) );
         responses[4].json().then( data => setPieChartData(data) );
-
-        setOpenSpinner(false);
       }
 		})
-	}
+  }
+  
+  const setOpenSpinnerInDashboard = bool => {
+    if (_isMounted.current) {
+      setOpenSpinner(bool);
+    }
+  }
 
 	return(
     <div className="grid-container">
@@ -83,7 +87,8 @@ export default function Dashboard() {
       <UpcomingTasksWidget 
 				updateDashboard = {updateDashboardAPICall}
         activitiesList = {allActivities.filter( activity => activity["activity_type"] === "future" )}
-        setOpenSpinnerInDashboard = {(bool) => setOpenSpinner(bool)}
+        cache = {props.cache}
+        setOpenSpinnerInDashboard = {setOpenSpinnerInDashboard}
 			/>
 
       <Backdrop className="spinner-backdrop" open={openSpinner}>
@@ -240,7 +245,7 @@ class LineChart extends React.Component {
 			},
 			data: [{
 				type: "line",
-				toolTipContent: "Week {x}: Rs. {y}",
+				toolTipContent: "Month {x}: Rs. {y}",
 				dataPoints: this.transformOrdersToDataPoints(this.props.lineChartData)
 			}]
 		}
@@ -262,7 +267,10 @@ class UpcomingTasksWidget extends React.Component {
     const activityToTransition = {
       "_id" : activityId,
       "activity_type" : "past",
-		};
+      "company" : this.props.cache,
+    };
+    
+    console.log(activityToTransition);
 
 		const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
@@ -274,6 +282,7 @@ class UpcomingTasksWidget extends React.Component {
 
 		if (response.ok) {
       this.props.updateDashboard();
+      this.props.setOpenSpinnerInDashboard(false); 
 		}
 	}
 	
@@ -281,7 +290,8 @@ class UpcomingTasksWidget extends React.Component {
     this.props.setOpenSpinnerInDashboard(true);
 
 		fetch(`${API}/main/delete_activity/${activityId}`)
-		.then( () => this.props.updateDashboard());
+    .then( () => this.props.updateDashboard())
+    .then( () => this.props.setOpenSpinnerInDashboard(false))
 	}
 
   render() {

@@ -60,20 +60,6 @@ export default function OrdersDisplay (props) {
     if (response.ok && _isMounted) {
       props.updateAccountDataAndOrdersAndActivities()
       .then( () => props.updateSpinnerInAccountProfile(false) );
-      // fetch(`${API}/main/send_email_after_transaction`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(response.json())
-      // })
-      // .then(() => this.updatePipelineAPICall())
-      // .then(() => {
-      //   if(this._isMounted) {
-      //     this.setState({ openSpinner:false })
-      //   }
-      // });
-      console.log(response.json());
     }
   }
 
@@ -135,11 +121,18 @@ export default function OrdersDisplay (props) {
                         S
                       </Avatar>
                   );
+
                   let orderLane = (
                     order.stage === 3 ? "To-be-transacted" :
                     order.stage === 2 ? "Finalized" : 
                     order.stage === 1 ? "Received" : ""
                   );
+
+                  let costProduct = (
+                    isNaN(order.cost_of_share*order.no_of_shares) ?
+                    `${order.no_of_shares} X ${order.cost_of_share}`:
+                    `${Math.floor( order.cost_of_share*order.no_of_shares )} (${order.no_of_shares} X ${order.cost_of_share})`
+                  )
 
                   return(
                     <div key={i}>
@@ -150,8 +143,8 @@ export default function OrdersDisplay (props) {
                         </ListItemAvatar>  
                       
                         <ListItemText
-                          primary={order.company}
-                          secondary={order.cost_of_share*order.no_of_shares+" ("+order.no_of_shares+"X"+order.cost_of_share+")"}
+                          primary = {order.company}
+                          secondary = {costProduct}
                         />
 
                         <ListItemSecondaryAction>
@@ -178,15 +171,23 @@ export default function OrdersDisplay (props) {
               {/* Display archived orders here */}
               {
                 props.ordersList.filter( (order) => order.stage === 0 ).map( (order, i) => {
-                  let iconContent = ( (order.trans_type).toLowerCase() === "buy" ? "B" : "S" );
+                  let iconAvatar = ( 
+                    (order.trans_type).toLowerCase() === "buy" ? 
+                      <Avatar style={{backgroundColor: "#1976d2"}}>
+                        B
+                      </Avatar> 
+                    :
+                      <Avatar style={{backgroundColor: "#dc004e"}}>
+                        S
+                      </Avatar>
+                  );
+                  
                   return(
                     <div key={i}>
                       <ListItem>
 
                         <ListItemAvatar>
-                          <Avatar>
-                            <div> {iconContent} </div>
-                          </Avatar>
+                          {iconAvatar}
                         </ListItemAvatar>  
                       
                         <ListItemText

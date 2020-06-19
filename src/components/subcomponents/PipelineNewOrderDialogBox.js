@@ -175,7 +175,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
               autoFocus
               margin="dense"
               id="cost_of_share"
-              label="Cost of one share"
+              label="Desired Price"
               helperText="Leave this empty if you wish to transact regardless of the stock price."
               type="text"
               fullWidth

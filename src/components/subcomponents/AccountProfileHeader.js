@@ -27,15 +27,16 @@ export default class AccountProfileHeader extends React.Component {
   }
 
   markToBeTransactedOrdersAsTransacted = async () => {
-    this.props.updateSpinnerInAccountProfile(true);
-
     if (this.props.furthestStage !== 3) {
       return null;
     }
 
+    this.props.updateSpinnerInAccountProfile(true);
+
     let postContents = {"account_id": this.props._id, "company": this.props.cache};
     
     console.log(postContents);
+
     const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       headers: {
@@ -45,11 +46,39 @@ export default class AccountProfileHeader extends React.Component {
     });
 
     if (response.ok) {
-      this.props.updateAccountDataAndOrdersAndActivities()
-      .then( () => this.props.updateSpinnerInAccountProfile(false) );
-      if(this._isMounted) {
-        this.setState({ openDialog: true});
-      }
+      response.text().then( data => {
+        console.log(data);
+
+        let str1 = "No companies to be transacted";
+        let str2 = "Send correct company";
+
+        if(data === str1) {
+          if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
+          console.log("No companies to be transacted");
+        }
+        else if (data === str2) {
+          if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
+          console.log("Send correct company");
+        }
+        else {
+          fetch(`${API}/main/send_email_after_transaction`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: data
+          })
+          .then(() => 
+            this.props.updateAccountDataAndOrdersAndActivities()
+          )
+          .then(() => {
+            if(this._isMounted) {
+              this.props.updateSpinnerInAccountProfile(false);
+              this.setState({ openDialog: true});
+            }
+          });
+        }
+      })
     }
   }
 

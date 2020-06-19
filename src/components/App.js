@@ -105,7 +105,9 @@ export default class App extends React.Component {
   startAdditionalTimers = () => {
     this.timer2 = setInterval( () => {
       //(i)
-      this.cachedCompanies.clear(); 
+      console.log(this.cachedCompanies);
+      this.cachedCompanies.clear();
+      console.log(this.cachedCompanies); 
 
       //(ii)
       fetch(`${API}/main/get_order_from_email`)
@@ -203,7 +205,7 @@ export default class App extends React.Component {
                   <AccountProfile 
                     cache = {this.state.cache}
                     receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}  
-                    {...props} //this has been added only to allow AccountProfile to use location props (cid)
+                    {...props}
                   />
                 }
               />
@@ -231,7 +233,11 @@ export default class App extends React.Component {
 
               <Route 
                 path="/" 
-                component={Dashboard} 
+                render = {() =>
+                  <Dashboard
+                    cache = {this.state.cache}
+                  />
+                }
               />
 
             </Switch>
