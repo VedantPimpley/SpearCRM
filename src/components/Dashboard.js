@@ -270,8 +270,6 @@ class UpcomingTasksWidget extends React.Component {
       "company" : this.props.cache,
     };
     
-    console.log(activityToTransition);
-
 		const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       headers: {

@@ -11,22 +11,7 @@ import { Link } from "react-router-dom";
 import './styles/Accounts.css'
 import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 
-// const rowSelection = {
-//   onChange: (selectedRowKeys, selectedRows) => {
-//     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-//   },
-//   getCheckboxProps: record => ({
-//     disabled: record.name === 'Disabled User',
-//     // Column configuration not to be checked
-//     name: record.name,
-//   }),
-// };
-
-// function onChange(pagination, filters, sorter, extra) {
-//   console.log('params', pagination, filters, sorter, extra);
-// }
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
-console.log(process.env.REACT_APP_STOCK_API_KEY)
 
 export default class Accounts extends React.Component {
   state = {
@@ -138,10 +123,6 @@ export default class Accounts extends React.Component {
     if (this._isMounted) {
       this.setState({ selectedRowEmails: emails });
     }
-  }
-
-  componentDidUpdate() {
-    console.log(this.state);
   }
 
   render() {

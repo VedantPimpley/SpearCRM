@@ -28,10 +28,6 @@ export default class PipelineNewOrderDialogBox extends React.Component{
   //is made a class property due to bug where selectOptions alone is deleted after successful order addition
   selectOptions = [];
 
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-
   componentDidMount() {
     this._isMounted = true;
 

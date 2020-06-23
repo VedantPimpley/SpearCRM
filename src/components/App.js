@@ -6,23 +6,40 @@ import Dashboard from './Dashboard.js';
 import Accounts from './Accounts.js'; 
 import AccountProfile from './AccountProfile.js';
 import Leads from './Leads.js';
-import LeadProfile from './LeadProfile.js'
-
+import LeadProfile from './LeadProfile.js';
+import Login from './Login.js';
+import { AuthProvider } from './Other/AuthContext.js';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import PrivateRoute from './Other/PrivateRoute.js';
 import './styles/App.css';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
-const stocksAPI = process.env.REACT_APP_STOCKS_API || "brhln8nrh5ra2pui7160"
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
+const stocksAPI = process.env.REACT_APP_STOCKS_API || "brhln8nrh5ra2pui7160";
 
 export default class App extends React.Component {
   state = {
     cache : {},
-    isStartupSpinnerOn : true
+    isStartupSpinnerOn : true,
+    authToken : "" || JSON.parse(localStorage.getItem("token")) 
+    //if user reloads the window, they not lose the token
+    //But it won't be retained from previous session. It gets deleted in CWU
+  }
+
+  setToken = (data) => {
+    //passed data will be a string
+    alert("setToken "+data);
+    localStorage.setItem("token", JSON.stringify(data));
+    this.setState({ authToken : data });
+  }
+
+  logOut = () => {
+    localStorage.removeItem("token");
+    this.setState({ authToken : "" });
   }
 
   companiesThisSession = new Set();
@@ -31,6 +48,8 @@ export default class App extends React.Component {
   callCacheUpdaterAt = 0;
   timer1 = 0;
   timer2 = 0;
+
+
 
   //Javascript Set operations
   difference = (setA, setB) => {
@@ -69,6 +88,9 @@ export default class App extends React.Component {
     //clear timers
     clearInterval(this.timer1);
     clearInterval(this.timer2);
+
+    //delete authentication token
+    localStorage.removeItem("token");
   }
   
   
@@ -168,7 +190,7 @@ export default class App extends React.Component {
 
   render() {
     return(
-      <>
+      <AuthProvider value={this.state.authToken}>
         <Backdrop className="spinner-backdrop" open={this.state.isStartupSpinnerOn}>
           <CircularProgress color="inherit" />
           <p style={{ fontWeight: 800 }}> &nbsp; Loading stock prices </p>
@@ -176,74 +198,80 @@ export default class App extends React.Component {
 
         <Router>
           <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/dashboard"> Dashboard </Link>
-                </li>
-                <li>
-                  <Link to="/accounts"> Accounts </Link>
-                </li>
-                <li>
-                  <Link to="/leads"> Leads </Link>
-                </li>
-                <li>
-                  <Link to="/pipeline"> Pipeline </Link>
-                </li>  
-              </ul>  
-            </nav>
+            
+            {this.state.authToken ?
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="/dashboard"> Dashboard </Link>
+                  </li>
+                  <li>
+                    <Link to="/accounts"> Accounts </Link>
+                  </li>
+                  <li>
+                    <Link to="/leads"> Leads </Link>
+                  </li>
+                  <li>
+                    <Link to="/pipeline"> Pipeline </Link>
+                  </li>
+                  <li>
+                    <a href="#" onClick={this.logOut} className="logout-button"> Logout </a>
+                  </li>  
+                </ul>  
+              </nav>
+              :
+              null
+            }
 
             <Switch>
-              <Route 
-                path="/accounts" 
-                component={Accounts} 
-              />
 
-              <Route 
-                path="/accountprofile" 
-                render = {props => 
-                  <AccountProfile 
-                    cache = {this.state.cache}
-                    receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}  
-                    {...props}
-                  />
+              {/* Login is the only public route meaning it doesn't require a successful login */}
+              <Route
+                exact path="/"
+                render={() =>
+                  <Login setToken={this.setToken} />
                 }
               />
 
-              <Route 
+              <PrivateRoute 
+                path="/dashboard" 
+                component={Dashboard}
+                cache = {this.state.cache}
+              />
+
+              <PrivateRoute 
+                path="/accounts" 
+                component={Accounts}
+              />
+
+              <PrivateRoute 
+                path="/accountprofile"
+                component={AccountProfile}
+                cache = {this.state.cache}
+                receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}
+              />
+
+              <PrivateRoute 
                 path="/leads" 
                 component={Leads} 
               />
 
-              <Route 
+              <PrivateRoute 
                 path="/leadprofile" 
                 component={LeadProfile} 
               />
 
-              <Route 
+              <PrivateRoute 
                 path="/pipeline" 
-                render = {props => 
-                  <Pipeline 
-                    cache = {this.state.cache} 
-                    receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}
-                    {...props}
-                  />
-                }
-              />
-
-              <Route 
-                path="/" 
-                render = {() =>
-                  <Dashboard
-                    cache = {this.state.cache}
-                  />
-                }
+                component={Pipeline}  
+                cache = {this.state.cache} 
+                receiveCompanyNamesDuringRuntime = {this.receiveCompanyNamesDuringRuntime}
               />
 
             </Switch>
           </div>
         </Router>
-      </>
+      </AuthProvider>
     );
   }
 }

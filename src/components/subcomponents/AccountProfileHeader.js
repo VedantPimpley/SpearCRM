@@ -35,8 +35,6 @@ export default class AccountProfileHeader extends React.Component {
 
     let postContents = {"account_id": this.props._id, "company": this.props.cache};
     
-    console.log(postContents);
-
     const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       headers: {
@@ -47,18 +45,14 @@ export default class AccountProfileHeader extends React.Component {
 
     if (response.ok) {
       response.text().then( data => {
-        console.log(data);
-
         let str1 = "No companies to be transacted";
         let str2 = "Send correct company";
 
         if(data === str1) {
           if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
-          console.log("No companies to be transacted");
         }
         else if (data === str2) {
           if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
-          console.log("Send correct company");
         }
         else {
           fetch(`${API}/main/send_email_after_transaction`, {
@@ -100,7 +94,7 @@ export default class AccountProfileHeader extends React.Component {
             <span className="stage-name"> To-be-transacted </span>
           </span>  
 
-          <span style={{ verticalAlign: "middle" }}>
+          <span style={{ verticalAlign: "middle", cursor: "pointer" }}>
             <Tooltip title="Mark To-be-transacted orders as Transacted">
               <CheckCircleIcon 
                 onClick={this.markToBeTransactedOrdersAsTransacted}

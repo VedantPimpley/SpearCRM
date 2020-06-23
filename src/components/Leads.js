@@ -14,23 +14,6 @@ import './styles/Accounts.css' //both Accounts and Leads pages have the same sty
 
 const API = process.env.REACT_APP_API
 
-// rowSelection object indicates the need for row selection
-
-// const rowSelection = {
-//   onChange: (selectedRowKeys, selectedRows) => {
-//     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-//   },
-//   getCheckboxProps: record => ({
-//     disabled: record.name === 'Disabled User',
-//     // Column configuration not to be checked
-//     name: record.name,
-//   }),
-// };
-
-// function onChange(pagination, filters, sorter, extra) {
-//   console.log('params', pagination, filters, sorter, extra);
-// }
-
 export default class Leads extends React.Component {
   state = {
     searchText: '',
@@ -141,11 +124,6 @@ export default class Leads extends React.Component {
       this.setState({ selectedRowEmails: emails });
     }
   }
-  
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-
 
   render() {
     //conditional rendering of batch emailer component(button)

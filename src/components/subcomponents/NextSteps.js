@@ -16,8 +16,6 @@ export default function NextSteps(props) {
       "company" : props.cache,
     };
 
-    console.log(activityToTransition);
-
     const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       headers: {
@@ -61,7 +59,6 @@ export default function NextSteps(props) {
 
   return(
     <> 
-      {console.log(props.activitiesList)}
       <h2> Next Steps </h2>
       <div className="pretty-list">
         

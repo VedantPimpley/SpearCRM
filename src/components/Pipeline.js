@@ -17,7 +17,6 @@ export default class Pipeline extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     this._isMounted = true;
 
     fetch(`${API}/main/show_all_orders`).then(response =>
@@ -34,7 +33,6 @@ export default class Pipeline extends React.Component {
   }
 
   updatePipelineAPICall = async () => {
-    console.log("Update triggered");
     fetch(`${API}/main/show_all_orders`).then(response =>
       response.json().then(data => {
         if (this._isMounted) {
@@ -136,8 +134,6 @@ export default class Pipeline extends React.Component {
         "company" : this.props.cache,
       };
 
-      console.log(JSON.stringify(newCardStage));
-
       // third attribute company (actually means price)
       const response = await fetch(`${API}/main/order_stage_change`, {
         method: "POST",
@@ -190,7 +186,6 @@ export default class Pipeline extends React.Component {
 
     let companyPrices = {company: this.props.cache};
 
-    console.log(companyPrices);
     //POST the prices along with the request. The backend will use the stockprice data
     const response = await fetch(`${API}/main/complete_all_orders`, {
       method: "POST",
@@ -202,18 +197,15 @@ export default class Pipeline extends React.Component {
     
     if (response.ok) {
       response.text().then( data => {
-        console.log(data);
 
         let str1 = "No companies to be transacted";
         let str2 = "Send correct company";
 
         if(data === str1) {
           if (this._isMounted) {this.setState({ openSpinner: false})};
-          console.log("No change1");
         }
         else if (data === str2) {
           if (this._isMounted) {this.setState({ openSpinner: false})};
-          console.log("No change2");
         }
         else {
           fetch(`${API}/main/send_email_after_transaction`, {

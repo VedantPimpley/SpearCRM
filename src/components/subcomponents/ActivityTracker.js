@@ -44,7 +44,6 @@ export default function ActivityTracker(props) {
     props.updateSpinnerInAccountProfile(true);
 
     let today = new Date();
-    console.log("entered");
     //erroneous and disallowed inputs specified in the below if condition
     if(    ( activityType === "future" && activityDate.getTime() <= today.getTime() )
         || ( activityType === "past"   && activityDate.getTime() > today.getTime() ) 
