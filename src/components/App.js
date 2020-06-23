@@ -9,6 +9,7 @@ import Leads from './Leads.js';
 import LeadProfile from './LeadProfile.js';
 import Login from './Login.js';
 import { AuthProvider } from './Other/AuthContext.js';
+import { setUnion, setDifference, getPrice } from './Other/helper.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,7 +20,6 @@ import PrivateRoute from './Other/PrivateRoute.js';
 import './styles/App.css';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
-const stocksAPI = process.env.REACT_APP_STOCKS_API || "brhln8nrh5ra2pui7160";
 
 export default class App extends React.Component {
   state = {
@@ -49,25 +49,6 @@ export default class App extends React.Component {
   timer1 = 0;
   timer2 = 0;
 
-
-
-  //Javascript Set operations
-  difference = (setA, setB) => {
-    let _difference = new Set(setA)
-    for (let elem of setB) {
-        _difference.delete(elem)
-    }
-    return _difference
-  }
-
-  union = (setA, setB) => {
-    let _union = new Set(setA)
-    for (let elem of setB) {
-        _union.add(elem)
-    }
-    return _union
-  }
-
   componentDidMount() {
     this.receiveCompanyNamesDuringStartup()
     .then( ()=> {
@@ -93,8 +74,7 @@ export default class App extends React.Component {
     localStorage.removeItem("token");
   }
   
-  
-  //populates  the waitingList on startup
+  //populates the waitingList on startup
   receiveCompanyNamesDuringStartup = async () => {
     let initialCompanies = new Set();
 
@@ -103,8 +83,7 @@ export default class App extends React.Component {
       response.json()
       .then( allOrders => {
         console.log(allOrders);
-        allOrders.map( order => initialCompanies.add( (order.company).toLowerCase() ) );
-
+        allOrders.map(order => initialCompanies.add( (order.company).toLowerCase() ));
         this.waitingList = initialCompanies;
       })
     })
@@ -112,12 +91,47 @@ export default class App extends React.Component {
       
   receiveCompanyNamesDuringRuntime = companies => {
     let deduplicatedInput = new Set( companies.map(elem => elem.toLowerCase()) );
+    this.companiesThisSession = setUnion(this.companiesThisSession, deduplicatedInput);
 
-    this.companiesThisSession = this.union(this.companiesThisSession, deduplicatedInput);
-		// new companies is a misnomer. It consists of new companies AND the companies which were earlier cached 
+		// below, new companies is a misnomer. It consists of new companies AND the companies which were earlier cached 
 		// but were cleared from cachedCompanies because we do that every 5 minutes for freshness of data
-		let newCompanies = this.difference(this.companiesThisSession, this.cachedCompanies);
-		this.waitingList = this.union(this.waitingList, newCompanies);
+		let newCompanies = setDifference(this.companiesThisSession, this.cachedCompanies);
+		this.waitingList = setUnion(this.waitingList, newCompanies);
+  }
+
+  cacheUpdater = async() => {
+    if(this.waitingList.size === 0) { return null; }
+
+    //therefore, below code executes when elements ARE present in waitingList
+    let n = this.waitingList.size > 30 ? 30 : this.waitingList.size;
+		let ApiInput = [...this.waitingList].slice(0,n);
+		let ApiOutput = {};
+    let priceFoundCompanies = new Set();
+    console.log(this.waitingList);
+    console.log(ApiInput);
+
+    Promise.all( ApiInput.map(elem => getPrice(elem)) )
+		.then( responses => {
+			responses.forEach( resp => {
+				if (resp.price !== null) {
+					ApiOutput[resp.company] = resp.price;
+					priceFoundCompanies.add(resp.company);
+				}
+      })
+      
+      //update variables
+      this.setState({ cache: {...this.state.cache, ...ApiOutput} }) //merging of two objects
+      this.cachedCompanies = setUnion(this.cachedCompanies, priceFoundCompanies);
+      this.waitingList = setDifference(this.waitingList, priceFoundCompanies);
+  
+      console.log(this.state.cache);
+      console.log(Object.keys(this.state.cache).length);
+      //below code disables the loading spinner when all companies prices
+      //are done caching during startup
+      if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
+        this.setState({ isStartupSpinnerOn: false }, this.startAdditionalTimers())
+      }
+    })
   }
 
   //this function is called after all companies are cached during startup
@@ -140,52 +154,6 @@ export default class App extends React.Component {
         })
       )
     }, 300000);
-  }
-
-  cacheUpdater = async() => {
-    if(this.waitingList.size === 0) { return null; }
-
-    //therefore, below code executes when elements ARE present in waitingList
-    let n = this.waitingList.size > 30 ? 30 : this.waitingList.size;
-		let ApiInput = [...this.waitingList].slice(0,n);
-		let ApiOutput = {};
-    let priceFoundCompanies = new Set();
-    console.log(this.waitingList);
-    console.log(ApiInput);
-
-    Promise.all( ApiInput.map(elem => this.getPrice(elem)) )
-		.then( responses => {
-			responses.forEach( resp => {
-				if (resp.price !== null) {
-					ApiOutput[resp.company] = resp.price;
-					priceFoundCompanies.add(resp.company);
-				}
-      })
-      
-      //update variables
-      this.setState({ cache: {...this.state.cache, ...ApiOutput} }) //merging of two objects
-      this.cachedCompanies = this.union(this.cachedCompanies, priceFoundCompanies);
-      this.waitingList = this.difference(this.waitingList, priceFoundCompanies);
-  
-      console.log(this.state.cache);
-      console.log(Object.keys(this.state.cache).length);
-      //below code disables the loading spinner when all companies prices
-      //are done caching during startup
-      if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
-        this.setState({ isStartupSpinnerOn: false }, this.startAdditionalTimers())
-      }
-    })
-  }
-
-  getPrice = async(company) => {
-    //notice the URL formatting here: .NS appended and toUpperCase applied
-    let promise = fetch(`https://finnhub.io/api/v1/quote?symbol=${company.toUpperCase()}.NS&token=${stocksAPI}`);
-
-     //returns company's price
-    let price = await promise.then( response => response.json().then( data => data.c ) ).catch( err => null );
-
-    let output = { company: company, price: price };
-    return(output);
   }
 
   render() {
