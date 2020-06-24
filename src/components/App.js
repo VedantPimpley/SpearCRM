@@ -24,21 +24,25 @@ const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokua
 export default class App extends React.Component {
   state = {
     cache : {},
-    isStartupSpinnerOn : true,
-    authToken : "" || JSON.parse(localStorage.getItem("token")) 
+    isStartupSpinnerOn : false,
+    authToken : "" || JSON.parse(sessionStorage.getItem("token")) 
     //if user reloads the window, they not lose the token
     //But it won't be retained from previous session
   }
 
   setToken = (data) => {
     //passed data will be a string
-    alert("setToken "+data);
-    localStorage.setItem("token", JSON.stringify(data));
+    sessionStorage.setItem("token", JSON.stringify(data));
     this.setState({ authToken : data });
+
+    //if waitingList is non empty, stockprice fetching is incomplete. Hence spinner is turned on.
+    if(this.waitingList.size > 0) {
+      this.setState({ isStartupSpinnerOn: true });
+    }
   }
 
   logOut = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     this.setState({ authToken : "" });
   }
 
@@ -58,8 +62,22 @@ export default class App extends React.Component {
   timer1 = 0;
   timer2 = 0;
 
+  getCacheFromSessionStorage() {
+    this.setState({ cache: JSON.parse(sessionStorage.getItem("cache")) }, () => {
+        this.cachedCompanies = new Set( Object.keys(this.state.cache) );
+        //this.waitingList is dealt with in receiveCompanyNamesDuringStartup
+        this.companiesThisSession = new Set();
+      }
+    );
+  }
+
   componentDidMount() {
-    this.deleteTokenOnWindowClose();
+    if (sessionStorage.getItem("cache")) {
+      this.getCacheFromSessionStorage();
+      console.log("LOCALSTORAGE CACHE EXISTS")
+    }
+
+    // this.deleteTokenOnWindowClose();
 
     this.receiveCompanyNamesDuringStartup()
     .then( ()=> {
@@ -73,6 +91,7 @@ export default class App extends React.Component {
           this.cacheUpdater()
           .then( () => this.callCacheUpdaterAt = Date.now() + 60000)
         }
+        console.log(this.state.cache);
       }, 1000)
     });
   }
@@ -81,9 +100,6 @@ export default class App extends React.Component {
     //clear timers
     clearInterval(this.timer1);
     clearInterval(this.timer2);
-
-    //delete authentication token
-    localStorage.removeItem("token");
   }
   
   //populates the waitingList on startup
@@ -96,7 +112,10 @@ export default class App extends React.Component {
       .then( allOrders => {
         console.log(allOrders);
         allOrders.map(order => initialCompanies.add( (order.company).toLowerCase() ));
-        this.waitingList = initialCompanies;
+
+        //waitingList will only contain the company names which are in initialCompanies but not the ones which are already cached
+        //this runs during startup. So how are companies already cached? Because we got them from the local storage in which we had saved the cache.
+        this.waitingList = setDifference(initialCompanies, this.cachedCompanies);
       })
     })
   }
@@ -132,7 +151,12 @@ export default class App extends React.Component {
       })
       
       //update variables
-      this.setState({ cache: {...this.state.cache, ...ApiOutput} }) //merging of two objects
+
+      //merging of two objects and setting cache in local storage
+      this.setState(
+        { cache: {...this.state.cache, ...ApiOutput} }, 
+        () => sessionStorage.setItem("cache", JSON.stringify(this.state.cache))
+      ); 
       this.cachedCompanies = setUnion(this.cachedCompanies, priceFoundCompanies);
       this.waitingList = setDifference(this.waitingList, priceFoundCompanies);
   
@@ -141,7 +165,15 @@ export default class App extends React.Component {
       //below code disables the loading spinner when all companies prices
       //are done caching during startup
       if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
-        this.setState({ isStartupSpinnerOn: false }, this.startAdditionalTimers())
+        this.setState({ isStartupSpinnerOn: false }, this.startAdditionalTimers());
+      }
+
+      //on the absolute first page load, after all companies prices are cached
+      //this turns on the additional timers
+      //this case is added when enabling/disabling the startup spinner is not done
+      //i.e. when pricefetching happens before user has logged in
+      if(this.companiesThisSession.size === 0 && this.waitingList.size === 0) {
+        this.startAdditionalTimers();
       }
     })
   }
