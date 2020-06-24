@@ -227,8 +227,8 @@ export default class App extends React.Component {
                     <Link to="/pipeline"> Pipeline </Link>
                   </li>
                   <li>
-                    <a href="#" onClick={this.logOut} className="logout-button"> Logout </a>
-                  </li>  
+                    <button onClick={this.logOut} className="logout-button"> Logout </button>
+                  </li>
                 </ul>  
               </nav>
               :

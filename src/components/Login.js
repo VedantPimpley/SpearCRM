@@ -11,9 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import AuthContext from './Other/AuthContext.js';
-import jwtDecode from 'jwt-decode';
+//import jwtDecode from 'jwt-decode';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+//const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,6 +44,7 @@ export default function Login(props) {
     setPassword("");
 
     props.setToken("lorem");
+    console.log(email+password);
 
     // fetch(`${API}/main/authenticate`, {
     //   method: "POST",
