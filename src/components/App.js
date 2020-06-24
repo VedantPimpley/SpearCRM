@@ -27,7 +27,7 @@ export default class App extends React.Component {
     isStartupSpinnerOn : true,
     authToken : "" || JSON.parse(localStorage.getItem("token")) 
     //if user reloads the window, they not lose the token
-    //But it won't be retained from previous session. It gets deleted in CWU
+    //But it won't be retained from previous session
   }
 
   setToken = (data) => {
@@ -42,6 +42,15 @@ export default class App extends React.Component {
     this.setState({ authToken : "" });
   }
 
+  deleteTokenOnWindowClose = () => {
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      console.log("deleter");
+      localStorage.removeItem("token");
+      return ""
+    });
+  };
+
   companiesThisSession = new Set();
   waitingList = new Set();
   cachedCompanies = new Set();
@@ -50,10 +59,13 @@ export default class App extends React.Component {
   timer2 = 0;
 
   componentDidMount() {
+    this.deleteTokenOnWindowClose();
+
     this.receiveCompanyNamesDuringStartup()
     .then( ()=> {
-      //timer checks if cacheUpdater should be called every second
-      //as a result, cacheUpdater is called in 1 minute intervals between a response and next call
+      //timer checks every second if waitingList has items and whether it has 
+      //been one minute since the last time that cacheUpdater finished execution
+      //if yes, cacheUpdater gets called
       this.timer1 = setInterval( () => {
         if (Date.now() > this.callCacheUpdaterAt 
             && this.waitingList.size > 0) 

@@ -10,6 +10,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import { Link } from "react-router-dom";
 import './styles/Accounts.css'
 import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
+import AuthContext from './Other/AuthContext.js';
+import { makeGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -21,12 +23,13 @@ export default class Accounts extends React.Component {
     selectedRowEmails: [],
   };
   
-//Searching logic
+  static contextType = AuthContext;
 
   componentDidMount() {
     this._isMounted = true;
 
-    fetch(`${API}/main/show_all_accounts`).then(response =>
+    fetch(`${API}/main/show_all_accounts`, makeGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });

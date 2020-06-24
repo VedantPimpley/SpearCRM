@@ -26,3 +26,12 @@ export const getPrice = async(company) => {
   let output = { company: company, price: price };
   return(output);
 }
+
+export const makeGETOptions = (token) => {
+  return {
+    method:"GET", 
+    withCredentials: true,
+    // credentials: 'include',
+    headers: {'Authorization':'Bearer ' + token, 'Content-Type': 'application/json'},
+  }
+}

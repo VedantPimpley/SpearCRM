@@ -15,8 +15,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import AuthContext from '../Other/AuthContext.js';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class NewAccountDialogBox extends React.Component{
   state = {
@@ -38,6 +39,8 @@ export default class NewAccountDialogBox extends React.Component{
     trading_accno: 0,
     contact_comm_type : "Email",
   }
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this._isMounted = true;
@@ -78,9 +81,11 @@ export default class NewAccountDialogBox extends React.Component{
     const response = await fetch(`${API}/main/create_account`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization':"Bearer " + this.context
       },
-      body: JSON.stringify(newProfile)
+      body: JSON.stringify(newProfile),
+      withCredentials: true,
     });
     
     if (response.ok && this._isMounted) {

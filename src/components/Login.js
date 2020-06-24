@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import AuthContext from './Other/AuthContext.js';
+import jwtDecode from 'jwt-decode';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -25,12 +26,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 0.5),
   },
 }));
 
@@ -55,15 +52,17 @@ export default function Login(props) {
     //   },
     //   body: JSON.stringify( {e: email, p: password} )
     // })
-    // .then( result => {
-    //   if (result.status === 200) {
-    //     props.setToken(result.data);
-    //   } 
+    // .then(response => {
+    //   if (response.status === 200) {
+    //     response.json()
+    //   }
     //   else {
-    //     alert("Login error: Non-200 response");
+    //     throw new Error("Incorrect credentials: Non 200 Response")
     //   }
     // })
-    // .catch(e => {alert("Unexpected login error"); });
+    // .then( (data) => jwtDecode(data) )
+    // .then( (decodedData) => props.setToken(decodedData) )
+    // .catch(e => alert(e));
   }
 
   //if user is already logged in
@@ -78,45 +77,55 @@ export default function Login(props) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        
+        <h1>
           Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(event) => setEmail(event.target.value)}  
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(event) => setPassword(event.target.value)}
-          />
+        </h1>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={postLogin}
-          >
-            Sign In
-          </Button>
-          
-        </form>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          onChange={(event) => setEmail(event.target.value)}  
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          onChange={(event) => setPassword(event.target.value)}
+        />
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={postLogin}
+        >
+          Sign In
+        </Button>
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="secondary"
+          onClick={() => alert("Contact the developers")}
+        >
+          Register
+        </Button>
+
       </div>
       <Box mt={8}>
         <Typography variant="body2" color="textSecondary" align="center">
