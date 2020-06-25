@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import './styles/Accounts.css'
 import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 import AuthContext from './Other/AuthContext.js';
-import { makeGETOptions } from './Other/helper.js';
+import { prepareGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -28,7 +28,7 @@ export default class Accounts extends React.Component {
   componentDidMount() {
     this._isMounted = true;
 
-    fetch(`${API}/main/show_all_accounts`, makeGETOptions(this.context))
+    fetch(`${API}/main/show_all_accounts`, prepareGETOptions(this.context))
     .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
@@ -43,7 +43,8 @@ export default class Accounts extends React.Component {
   }
 
   updateAccountsAPICall = () => {
-    fetch(`${API}/main/show_all_accounts`).then(response =>
+    fetch(`${API}/main/show_all_accounts`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });

@@ -10,6 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {Link} from 'react-router-dom';
+import AuthContext from '../Other/AuthContext.js';
 
 const API = process.env.REACT_APP_API
 
@@ -21,6 +22,8 @@ export default class LeadProfileHeader extends React.Component {
     trading_accno: 0,
     newId: 0, //set after lead converts to account
   }
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this._isMounted = true;
@@ -56,9 +59,8 @@ export default class LeadProfileHeader extends React.Component {
 
     const response = await fetch(`${API}/main/convert_lead_to_account`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(fields)
     });
 

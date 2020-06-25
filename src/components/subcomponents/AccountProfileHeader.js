@@ -8,6 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import AuthContext from '../Other/AuthContext.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -18,6 +19,8 @@ export default class AccountProfileHeader extends React.Component {
     //Set to true when account does markToBeTransactedOrdersAsTransacted successfully
   };
 
+  static contextType = AuthContext;
+  
   componentDidMount() {
     this._isMounted = true;
   }
@@ -37,9 +40,8 @@ export default class AccountProfileHeader extends React.Component {
     
     const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(postContents)
     });
 
@@ -57,9 +59,8 @@ export default class AccountProfileHeader extends React.Component {
         else {
           fetch(`${API}/main/send_email_after_transaction`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
+            withCredentials: true,
+            headers: {'access-token': this.context, 'Content-Type': 'application/json'},
             body: data
           })
           .then(() => 

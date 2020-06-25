@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import './styles/Dashboard.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
@@ -7,9 +7,10 @@ import NewActivityDialogBox from './subcomponents/NewActivityDialogBox';
 import { Link } from 'react-router-dom';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CancelIcon from '@material-ui/icons/Cancel';
-
+import AuthContext from './Other/AuthContext.js';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { prepareGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 // var api_key = process.env.REACT_STOCKS_KEY
@@ -22,14 +23,16 @@ export default function Dashboard(props) {
 	const [lineChartData, setLineChartData] = useState([]);
   const [openSpinner, setOpenSpinner] = useState(false);
 
+  const authToken = useContext(AuthContext);
+
   const _isMounted = useRef(true);
 	useEffect( () => {
 		Promise.all([
-      fetch(`${API}/main/top_leads`),
-      fetch(`${API}/main/top_accounts`),
-      fetch(`${API}/main/show_all_activities`),
-      fetch(`${API}/main/get_line_graph_data`),
-      fetch(`${API}/main/get_pie_chart_data`)
+      fetch(`${API}/main/top_leads`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/top_accounts`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/show_all_activities`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/get_line_graph_data`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/get_pie_chart_data`, prepareGETOptions(authToken))
     ])
 		.then(responses => {
       if (_isMounted.current) {
@@ -42,15 +45,15 @@ export default function Dashboard(props) {
     })
     
     return () => _isMounted.current = false;
-	}, []);
+	}, [authToken]);
 
 	const updateDashboardAPICall = () => {
 		Promise.all([
-      fetch(`${API}/main/top_leads`),
-      fetch(`${API}/main/top_accounts`),
-      fetch(`${API}/main/show_all_activities`),
-      fetch(`${API}/main/get_line_graph_data`),
-      fetch(`${API}/main/get_pie_chart_data`)
+      fetch(`${API}/main/top_leads`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/top_accounts`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/show_all_activities`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/get_line_graph_data`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/get_pie_chart_data`, prepareGETOptions(authToken))
     ])
 		.then(responses => {
 			if (_isMounted.current) {
@@ -261,6 +264,8 @@ class LineChart extends React.Component {
 } 
 
 class UpcomingTasksWidget extends React.Component {
+  static contextType = AuthContext;
+
 	transitionActivity = async (activityId) => {
     this.props.setOpenSpinnerInDashboard(true);
     
@@ -272,9 +277,8 @@ class UpcomingTasksWidget extends React.Component {
     
 		const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
 		});
 
@@ -287,7 +291,7 @@ class UpcomingTasksWidget extends React.Component {
 	deleteActivity = (activityId) => {
     this.props.setOpenSpinnerInDashboard(true);
 
-		fetch(`${API}/main/delete_activity/${activityId}`)
+		fetch(`${API}/main/delete_activity/${activityId}`, prepareGETOptions(this.context))
     .then( () => this.props.updateDashboard())
     .then( () => this.props.setOpenSpinnerInDashboard(false))
 	}

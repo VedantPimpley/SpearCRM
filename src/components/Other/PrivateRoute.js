@@ -6,7 +6,6 @@ export default function PrivateRoute({ component: Component, ...rest }) {
   
   const authToken = useContext(AuthContext)
   //authToken could probably be renamed as isAuthenticated, with no difference being made effectively
-  console.log(authToken);
 
   return (
     <Route

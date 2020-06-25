@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef, useContext} from 'react'
 import '../styles/ActivityTracker.css'
 import ManualLogger from './ManualLogger.js'
 import NextSteps from './NextSteps'
@@ -7,6 +7,7 @@ import NewOrderDialogBox from './NewOrderDialogBox'
 import OrdersDisplay from './OrdersDisplay'
 import Button from "@material-ui/core/Button";
 import EmailIcon from '@material-ui/icons/Email';
+import AuthContext from '../Other/AuthContext.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -16,6 +17,8 @@ export default function ActivityTracker(props) {
   const [activityBody, setActivityBody] = useState("");
   const [activityDate, setActivityDate] = useState(new Date());
   
+  const authToken = useContext(AuthContext);
+
   const _isMounted = useRef(true);
   useEffect( () => {
     return () => _isMounted.current = false;
@@ -61,9 +64,8 @@ export default function ActivityTracker(props) {
     };
     const response = await fetch(`${API}/main/create_activity`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(newActivity)
     });
     

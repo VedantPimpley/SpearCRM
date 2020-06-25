@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import '../styles/NewOrderDialogBox.css'
+import AuthContext from '../Other/AuthContext.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -21,6 +22,8 @@ export default class NewOrderDialogBox extends React.Component{
     no_of_shares: 0,
     cost_of_share: "",
   };
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this._isMounted = true;
@@ -56,9 +59,8 @@ export default class NewOrderDialogBox extends React.Component{
 
     const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newOrder)
     });
     

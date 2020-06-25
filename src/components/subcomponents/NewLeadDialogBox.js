@@ -21,6 +21,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox';
+import AuthContext from '../Other/AuthContext.js';
 
 const API = process.env.REACT_APP_API
 
@@ -52,6 +53,8 @@ export default class NewLeadDialogBox extends React.Component{
     ml_leadQualityUncertainty : 0,
     ml_poorLeadQuality : 0,
   }
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this._isMounted = true;
@@ -95,9 +98,8 @@ export default class NewLeadDialogBox extends React.Component{
     delete newLead.showMlFields;
     const response = await fetch(`${API}/main/create_lead`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newLead)
     });
     

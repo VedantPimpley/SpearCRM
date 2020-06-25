@@ -6,13 +6,14 @@ import { SearchOutlined } from '@ant-design/icons';
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import EmailIcon from '@material-ui/icons/Email';
-
+import AuthContext from './Other/AuthContext.js';
+import { prepareGETOptions } from './Other/helper.js';
 import {Link} from "react-router-dom";
 import NewLeadDialogBox from './subcomponents/NewLeadDialogBox'
 import './styles/Accounts.css' //both Accounts and Leads pages have the same styling
 
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class Leads extends React.Component {
   state = {
@@ -22,10 +23,13 @@ export default class Leads extends React.Component {
     selectedRowEmails: [],
   };
 
+  static contextType = AuthContext;
+
   componentDidMount() {
     this._isMounted = true;
 
-    fetch(`${API}/main/show_all_leads`).then(response =>
+    fetch(`${API}/main/show_all_leads`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });
@@ -39,7 +43,8 @@ export default class Leads extends React.Component {
   }
 
   updateLeadsAPICall = () => {
-    fetch(`${API}/main/show_all_leads`).then(response =>
+    fetch(`${API}/main/show_all_leads`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedData: data });

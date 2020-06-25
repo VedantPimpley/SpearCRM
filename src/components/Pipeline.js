@@ -6,6 +6,8 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 import Button from "@material-ui/core/Button";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AuthContext from './Other/AuthContext.js';
+import { prepareGETOptions } from './Other/helper.js';
 import './styles/Pipeline.css';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
@@ -16,10 +18,13 @@ export default class Pipeline extends React.Component {
     openSpinner : false,
   };
 
+  static contextType = AuthContext;
+
   componentDidMount() {
     this._isMounted = true;
-
-    fetch(`${API}/main/show_all_orders`).then(response =>
+    
+    fetch(`${API}/main/show_all_orders`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedOrders: data });
@@ -33,7 +38,8 @@ export default class Pipeline extends React.Component {
   }
 
   updatePipelineAPICall = async () => {
-    fetch(`${API}/main/show_all_orders`).then(response =>
+    fetch(`${API}/main/show_all_orders`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ fetchedOrders: data });
@@ -137,9 +143,8 @@ export default class Pipeline extends React.Component {
       // third attribute company (actually means price)
       const response = await fetch(`${API}/main/order_stage_change`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        withCredentials: true,
+        headers: {'access-token': this.context, 'Content-Type': 'application/json'},
         body: JSON.stringify(newCardStage)
       });
       
@@ -165,7 +170,7 @@ export default class Pipeline extends React.Component {
 
   deleteCard = (cardId, laneId) => {
     this.setState({ openSpinner: true});
-    fetch(`${API}/main/delete_order/${cardId}`)
+    fetch(`${API}/main/delete_order/${cardId}`, prepareGETOptions(this.context))
     .then( () => this.updatePipelineAPICall() )
     .then( () => {
       if(this._isMounted) {
@@ -189,9 +194,8 @@ export default class Pipeline extends React.Component {
     //POST the prices along with the request. The backend will use the stockprice data
     const response = await fetch(`${API}/main/complete_all_orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
     
@@ -210,9 +214,8 @@ export default class Pipeline extends React.Component {
         else {
           fetch(`${API}/main/send_email_after_transaction`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
+            withCredentials: true,
+            headers: {'access-token': this.context, 'Content-Type': 'application/json'},
             body: data
           })
           .then(() => this.updatePipelineAPICall())
@@ -237,9 +240,8 @@ export default class Pipeline extends React.Component {
     let companyPrices = {company: this.props.cache};
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
 

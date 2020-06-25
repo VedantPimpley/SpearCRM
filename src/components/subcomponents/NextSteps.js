@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import '../styles/PrettyList.css'
 import {convertIsoDateToDateString} from "../Dashboard.js"
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CancelIcon from '@material-ui/icons/Cancel';
+import AuthContext from '../Other/AuthContext.js';
+import { prepareGETOptions } from '../Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function NextSteps(props) {
+  const authToken = useContext(AuthContext);
 
   const transitionActivity = async (activityId, isAiActivity) => {
     props.updateSpinnerInAccountProfile(true);
@@ -18,9 +21,8 @@ export default function NextSteps(props) {
 
     const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
     });
 
@@ -43,7 +45,7 @@ export default function NextSteps(props) {
 
   const deleteActivity = (activityId, isAiActivity) => {
     props.updateSpinnerInAccountProfile(true);
-		fetch(`${API}/main/delete_activity/${activityId}`)
+		fetch(`${API}/main/delete_activity/${activityId}`, prepareGETOptions(authToken))
 		.then( () => {
       if (isAiActivity) {
         props.updateAccountDataAndOrdersAndActivities()

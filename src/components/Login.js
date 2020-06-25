@@ -11,9 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import AuthContext from './Other/AuthContext.js';
-//import jwtDecode from 'jwt-decode';
+// import jwtDecode from 'jwt-decode';
 
-//const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,34 +39,32 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
 
   const postLogin = async (e) => {
-    e.preventDefault();
-    setEmail("");
+    if(email === "" || password === "") {
+      return null
+    }
+
     setPassword("");
 
-    props.setToken("lorem");
-    console.log(email+password);
-
-    // fetch(`${API}/main/authenticate`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify( {e: email, p: password} )
-    // })
-    // .then(response => {
-    //   if (response.status === 200) {
-    //     response.json()
-    //   }
-    //   else {
-    //     throw new Error("Incorrect credentials: Non 200 Response")
-    //   }
-    // })
-    // .then( (data) => jwtDecode(data) )
-    // .then( (decodedData) => props.setToken(decodedData) )
-    // .catch(e => alert(e));
+    fetch(`${API}/user/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify( {username: email, password: password} )
+    })
+    .then(response => {
+      if (response.status === 200) {
+        response.json().then( data => {
+          props.setToken(data.token);
+          // console.log(jwtDecode(data.token))
+        })
+      }
+      else {
+        throw new Error("Incorrect credentials: Non 200 Response")
+      }
+    })
+    .catch(e => alert(e));
   }
 
-  //if user is already logged in
+  // if user is already logged in
   if (authToken) {
     return <Redirect to="/dashboard" />
   }
@@ -92,6 +90,7 @@ export default function Login(props) {
           name="email"
           autoComplete="email"
           autoFocus
+          value={email}
           onChange={(event) => setEmail(event.target.value)}  
         />
         <TextField
@@ -102,6 +101,7 @@ export default function Login(props) {
           label="Password"
           type="password"
           id="password"
+          value={password}
           autoComplete="current-password"
           onChange={(event) => setPassword(event.target.value)}
         />

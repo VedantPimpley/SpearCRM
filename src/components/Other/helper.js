@@ -27,11 +27,12 @@ export const getPrice = async(company) => {
   return(output);
 }
 
-export const makeGETOptions = (token) => {
+export const prepareGETOptions = (token) => {
   return {
     method:"GET", 
     withCredentials: true,
+    headers: {'access-token': token, 'Content-Type': 'application/json'},
     // credentials: 'include',
-    headers: {'Authorization':'Bearer ' + token, 'Content-Type': 'application/json'},
   }
 }
+//for post requests, the options have been written manually for each POST request

@@ -4,8 +4,10 @@ import FieldsContainer1 from "./subcomponents/FieldsContainer1";
 import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import LeadProfileHeader from "./subcomponents/LeadProfileHeader";
+import AuthContext from './Other/AuthContext.js';
+import { prepareGETOptions } from './Other/helper.js';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class LeadProfile extends React.Component {
   state = {
@@ -14,13 +16,15 @@ export default class LeadProfile extends React.Component {
     ordersList: []
   };
 
+  static contextType = AuthContext;
+
   componentDidMount() {
     this._isMounted = true;
     const { cid } = this.props.location.state;
 
     Promise.all([
-      fetch(`${API}/main/display_lead/${cid}`), 
-      fetch(`${API}/main/show_user_activities/${cid}`)
+      fetch(`${API}/main/display_lead/${cid}`, prepareGETOptions(this.context)), 
+      fetch(`${API}/main/show_user_activities/${cid}`, prepareGETOptions(this.context))
     ])
     .then(responses => {
       if (this._isMounted) {
@@ -35,7 +39,8 @@ export default class LeadProfile extends React.Component {
   }
 
   updateLeadDataAPICall = () => {
-    fetch(`${API}/main/display_lead/${this.state.leadData._id}`).then(response =>
+    fetch(`${API}/main/display_lead/${this.state.leadData._id}`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ leadData: data });
@@ -45,7 +50,8 @@ export default class LeadProfile extends React.Component {
   }
 
   updateActivitiesAPICall = () => {
-    fetch(`${API}/main/show_user_activities/${this.state.leadData._id}`).then(response =>
+    fetch(`${API}/main/show_user_activities/${this.state.leadData._id}`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if (this._isMounted) {
           this.setState({ activitiesList: data });
@@ -88,9 +94,8 @@ export default class LeadProfile extends React.Component {
     leadDataObj.dob = new Date( Date.parse(leadDataObj.dob) );
     const response = await fetch(`${API}/main/edit_lead`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(leadDataObj)
     });
     
@@ -128,6 +133,7 @@ export default class LeadProfile extends React.Component {
           lead = {1}
           updateActivities = {this.updateActivitiesAPICall}
           activitiesList = {this.state.activitiesList}
+          email = {this.state.leadData.email}
         />
 {/* 'lead = 1' communicates that the parent component is LeadProfile */}
       </div>     

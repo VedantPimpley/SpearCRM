@@ -9,6 +9,7 @@ import Leads from './Leads.js';
 import LeadProfile from './LeadProfile.js';
 import Login from './Login.js';
 import { AuthProvider } from './Other/AuthContext.js';
+import { prepareGETOptions } from './Other/helper.js';
 import { setUnion, setDifference, getPrice } from './Other/helper.js'
 import {
   BrowserRouter as Router,
@@ -32,8 +33,7 @@ export default class App extends React.Component {
 
   setToken = (data) => {
     //passed data will be a string
-    sessionStorage.setItem("token", JSON.stringify(data));
-    this.setState({ authToken : data });
+    this.setState({ authToken : data }, sessionStorage.setItem("token", JSON.stringify(data)));
 
     //if waitingList is non empty, stockprice fetching is incomplete. Hence spinner is turned on.
     if(this.waitingList.size > 0) {
@@ -45,15 +45,6 @@ export default class App extends React.Component {
     sessionStorage.removeItem("token");
     this.setState({ authToken : "" });
   }
-
-  deleteTokenOnWindowClose = () => {
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      console.log("deleter");
-      localStorage.removeItem("token");
-      return ""
-    });
-  };
 
   companiesThisSession = new Set();
   waitingList = new Set();
@@ -74,10 +65,7 @@ export default class App extends React.Component {
   componentDidMount() {
     if (sessionStorage.getItem("cache")) {
       this.getCacheFromSessionStorage();
-      console.log("LOCALSTORAGE CACHE EXISTS")
     }
-
-    // this.deleteTokenOnWindowClose();
 
     this.receiveCompanyNamesDuringStartup()
     .then( ()=> {
@@ -91,7 +79,6 @@ export default class App extends React.Component {
           this.cacheUpdater()
           .then( () => this.callCacheUpdaterAt = Date.now() + 60000)
         }
-        console.log(this.state.cache);
       }, 1000)
     });
   }
@@ -106,12 +93,12 @@ export default class App extends React.Component {
   receiveCompanyNamesDuringStartup = async () => {
     let initialCompanies = new Set();
 
-    fetch(`${API}/main/show_all_orders`)
+    //this is a public route, unlike all the other API routes
+    fetch(`${API}/main/show_all_companies`)
     .then(response => {
       response.json()
-      .then( allOrders => {
-        console.log(allOrders);
-        allOrders.map(order => initialCompanies.add( (order.company).toLowerCase() ));
+      .then( allCompanies => {
+        allCompanies.map(element => initialCompanies.add( (element.company).toLowerCase() ));
 
         //waitingList will only contain the company names which are in initialCompanies but not the ones which are already cached
         //this runs during startup. So how are companies already cached? Because we got them from the local storage in which we had saved the cache.
@@ -138,8 +125,6 @@ export default class App extends React.Component {
 		let ApiInput = [...this.waitingList].slice(0,n);
 		let ApiOutput = {};
     let priceFoundCompanies = new Set();
-    console.log(this.waitingList);
-    console.log(ApiInput);
 
     Promise.all( ApiInput.map(elem => getPrice(elem)) )
 		.then( responses => {
@@ -160,8 +145,6 @@ export default class App extends React.Component {
       this.cachedCompanies = setUnion(this.cachedCompanies, priceFoundCompanies);
       this.waitingList = setDifference(this.waitingList, priceFoundCompanies);
   
-      console.log(this.state.cache);
-      console.log(Object.keys(this.state.cache).length);
       //below code disables the loading spinner when all companies prices
       //are done caching during startup
       if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
@@ -190,14 +173,14 @@ export default class App extends React.Component {
       console.log(this.cachedCompanies); 
 
       //(ii)
-      fetch(`${API}/main/get_order_from_email`)
+      fetch(`${API}/main/get_order_from_email`, prepareGETOptions(this.state.authToken))
       .then( response => 
         response.text()
         .then( text => {
           if (text === "Inserted") {alert(" New orders received from email. Refresh page to view changes.")}
         })
       )
-    }, 300000);
+    }, 60000);
   }
 
   render() {

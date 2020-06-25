@@ -6,6 +6,8 @@ import ActivityTracker from "./subcomponents/ActivityTracker";
 import AccountProfileHeader from "./subcomponents/AccountProfileHeader";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AuthContext from './Other/AuthContext.js';
+import { prepareGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -18,22 +20,24 @@ export default class AccountProfile extends React.Component {
     openSpinner : false,
   };
 
+  static contextType = AuthContext;
+
   componentDidMount() {
     this._isMounted = true;
     const { cid } = this.props.location.state;
 
     Promise.all([
-      fetch(`${API}/main/display_account/${cid}`), 
-      fetch(`${API}/main/show_user_activities/${cid}`),
-      fetch(`${API}/main/display_account_orders/${cid}`),
-      fetch(`${API}/main/get_account_turnover/${cid}`)
+      fetch(`${API}/main/display_account/${cid}`, prepareGETOptions(this.context) ), 
+      fetch(`${API}/main/show_user_activities/${cid}`, prepareGETOptions(this.context) ),
+      fetch(`${API}/main/display_account_orders/${cid}`, prepareGETOptions(this.context) ),
+      fetch(`${API}/main/get_account_turnover/${cid}`, prepareGETOptions(this.context) )
     ])
     .then(responses => {
       if(this._isMounted) {
-        responses[0].json().then( data => this.setState({ accountData: data }));
-        responses[1].json().then( data => this.setState({ activitiesList: data }));
-        responses[2].json().then( data => this.setState({ ordersList: data }));
-        responses[3].json().then( data => this.setState({ accountTurnover: data }));
+        responses[0].json().then( data => this.setState({ accountData: data }), prepareGETOptions(this.context));
+        responses[1].json().then( data => this.setState({ activitiesList: data }), prepareGETOptions(this.context));
+        responses[2].json().then( data => this.setState({ ordersList: data }), prepareGETOptions(this.context));
+        responses[3].json().then( data => this.setState({ accountTurnover: data }), prepareGETOptions(this.context));
       }
     })
   }
@@ -46,10 +50,10 @@ export default class AccountProfile extends React.Component {
   //and also used by markToBeTransactedOrdersAsTransacted in AccountProfileHeader
   updateAccountDataAndOrdersAndActivitiesAPICall = async () => {
     Promise.all([
-      fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
-      fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`),
-      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`),
-      fetch(`${API}/main/get_account_turnover/${this.state.accountData._id}`)
+      fetch(`${API}/main/display_account/${this.state.accountData._id}`, prepareGETOptions(this.context)), 
+      fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`, prepareGETOptions(this.context)),
+      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`, prepareGETOptions(this.context)),
+      fetch(`${API}/main/get_account_turnover/${this.state.accountData._id}`, prepareGETOptions(this.context))
     ])
     .then(responses => {
       if(this._isMounted) {
@@ -64,8 +68,8 @@ export default class AccountProfile extends React.Component {
   //function used by NewOrderDialogBox after POSTing new order
   updateAccountDataAndOrdersAPICall = async () => {
     Promise.all([
-      fetch(`${API}/main/display_account/${this.state.accountData._id}`), 
-      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`)
+      fetch(`${API}/main/display_account/${this.state.accountData._id}`, prepareGETOptions(this.context)), 
+      fetch(`${API}/main/display_account_orders/${this.state.accountData._id}`, prepareGETOptions(this.context))
     ])
     .then(responses => {
       if(this._isMounted) {
@@ -77,7 +81,8 @@ export default class AccountProfile extends React.Component {
 
   //function used by FieldContainer1 and FieldContainer2 after POSTing new fields
   updateAccountDataAPICall = async () => {
-    fetch(`${API}/main/display_account/${this.state.accountData._id}`).then(response =>
+    fetch(`${API}/main/display_account/${this.state.accountData._id}`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if(this._isMounted) {
           this.setState({ accountData: data });
@@ -88,7 +93,8 @@ export default class AccountProfile extends React.Component {
 
   //function used by ManualLogger after POSTing new order
   updateActivitiesAPICall = async () => {
-    fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`).then(response =>
+    fetch(`${API}/main/show_user_activities/${this.state.accountData._id}`, prepareGETOptions(this.context))
+    .then(response =>
       response.json().then(data => {
         if(this._isMounted) {
           this.setState({ activitiesList: data });
@@ -128,9 +134,8 @@ export default class AccountProfile extends React.Component {
 
     const response = await fetch(`${API}/main/edit_account`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(accountDataObj)
     });
     

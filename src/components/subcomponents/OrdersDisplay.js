@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -17,11 +17,15 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ListIcon from '@material-ui/icons/List';
 import { Tooltip } from '@material-ui/core';
 import '../styles/OrdersDisplay.css'
+import AuthContext from '../Other/AuthContext.js';
+import { prepareGETOptions } from '../Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function OrdersDisplay (props) {
   const [open, setOpen] = useState(false);
+
+  const authToken = useContext(AuthContext);
 
   const _isMounted = useRef(true);
   useEffect( () => {
@@ -39,7 +43,7 @@ export default function OrdersDisplay (props) {
 
   const deleteOrder = (orderId) => {
     props.updateSpinnerInAccountProfile(true);
-    fetch(`${API}/main/delete_order/${orderId}`)
+    fetch(`${API}/main/delete_order/${orderId}`, prepareGETOptions(authToken))
     .then( () => props.updateAccountDataAndOrdersAndActivities() )
     .then( () => props.updateSpinnerInAccountProfile(false));
   }
@@ -51,9 +55,8 @@ export default function OrdersDisplay (props) {
 
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
     

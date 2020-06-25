@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -19,11 +19,13 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import AuthContext from '../Other/AuthContext.js';
+import { prepareGETOptions } from '../Other/helper.js';
 
 const API = process.env.REACT_APP_API
 
 export default function NewActivityDialogBox(props) {
-  //manual logger related hooks
+  //ManualLogger related hooks
   const [activityTitle, setActivityTitle] = useState("");
   const [activityBody, setActivityBody] = useState("");
   const [activityDate, setActivityDate] = useState(new Date().toJSON().slice(0,10));
@@ -34,9 +36,15 @@ export default function NewActivityDialogBox(props) {
   const [leadSelectOptions, setLeadSelectOptions] = useState([]);
   const [accountSelectOptions, setAccountSelectOptions] = useState([]);
 
+  const authToken = useContext(AuthContext);
+
   const _isMounted = useRef(true);
+
   useEffect( () => {
-    Promise.all( [fetch(`${API}/main/get_all_account_names`), fetch(`${API}/main/get_all_lead_names`)] )
+    Promise.all([
+      fetch(`${API}/main/get_all_account_names`, prepareGETOptions(authToken)),
+      fetch(`${API}/main/get_all_lead_names`, prepareGETOptions(authToken))
+    ])
     .then(values => {
 
       //using if condition here to avoid unnecessary computation if component is unmounted
@@ -80,7 +88,7 @@ export default function NewActivityDialogBox(props) {
         _isMounted.current = false;
       }
     });
-  }, []);
+  }, [authToken]);
 
   useEffect( () => {
     let d = new Date();
@@ -111,9 +119,8 @@ export default function NewActivityDialogBox(props) {
     };
     const response = await fetch(`${API}/main/create_activity`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(newActivity)
     });
     

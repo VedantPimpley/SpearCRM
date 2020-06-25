@@ -10,7 +10,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import AddIcon from '@material-ui/icons/Add';
-import '../styles/NewOrderDialogBox.css'
+import '../styles/NewOrderDialogBox.css';
+import AuthContext from '../Other/AuthContext.js';
+import { prepareGETOptions } from '../Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -24,6 +26,8 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     account_id : 0,
   };
 
+  static contextType = AuthContext;
+
   //value is only set on first load
   //is made a class property due to bug where selectOptions alone is deleted after successful order addition
   selectOptions = [];
@@ -31,7 +35,8 @@ export default class PipelineNewOrderDialogBox extends React.Component{
   componentDidMount() {
     this._isMounted = true;
 
-    fetch(`${API}/main/get_all_account_names`).then(response =>
+    fetch(`${API}/main/get_all_account_names`, prepareGETOptions(this.context) )
+    .then(response =>
       response.json().then(data => {
         let menuItems = [<MenuItem value="" key={0}> <em>None</em> </MenuItem>] ;
         data.forEach( (entry, i) => {
@@ -77,9 +82,8 @@ export default class PipelineNewOrderDialogBox extends React.Component{
 
     const response = await fetch(`${API}/main/create_order`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      withCredentials: true,
+      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newOrder)
     });
     
