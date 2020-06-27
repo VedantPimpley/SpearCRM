@@ -27,17 +27,29 @@ export default class App extends React.Component {
   state = {
     cache : {},
     isStartupSpinnerOn : false,
-    authToken : "" || JSON.parse(sessionStorage.getItem("token")) 
+    authToken : "" || JSON.parse(sessionStorage.getItem("token")), 
     //token persists over reload, but not between sessions
+    preventRender : false || ( JSON.parse(sessionStorage.getItem("disallowCopy")) && !JSON.parse(sessionStorage.getItem("wasRefreshed")) )
   }
 
   tokenExpiryTime = 0;
+  
+  //executed when tab is a duplicate tab
+  forceLogOut = () => {
+    alert("Tab duplication is not allowed.");
+    this.setState({ authToken : "" }, () => {
+      sessionStorage.removeItem("token");
+    })
+  }
 
   //called during successful login
   setToken = (data) => {
     this.setState({ authToken : data }, () => {
       sessionStorage.setItem("token", JSON.stringify(data));
+      
       this.tokenExpiryTime = jwtDecode(data).exp;
+
+      sessionStorage.setItem("disallowCopy", JSON.stringify(true));
     });
 
     //if waitingList is non empty, stockprice fetching is incomplete. Hence spinner is turned on.
@@ -47,7 +59,10 @@ export default class App extends React.Component {
   }
 
   logOut = () => {
-    this.setState({ authToken : "" }, sessionStorage.removeItem("token"));
+    //return to initial state
+    this.setState({ authToken : "" }, () => {
+      sessionStorage.removeItem("token");
+    })
   }
 
   companiesThisSession = new Set();
@@ -58,6 +73,25 @@ export default class App extends React.Component {
   timer2 = 0;
 
   componentDidMount() {
+
+    // console.log(`${JSON.parse(sessionStorage.getItem("disallowCopy"))} & ${!JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);
+    // console.log(`${JSON.parse(sessionStorage.getItem("disallowCopy")) && !JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);
+    //for first load of main
+    if (JSON.parse(sessionStorage.getItem("disallowCopy")) === null || undefined) {
+      sessionStorage.setItem("disallowCopy", JSON.stringify(false));
+    }
+
+    //preventRender is true for duplicate tabs
+    if (this.state.preventRender === true) {
+      this.forceLogOut();
+    }
+
+    //allows page to be refreshed just once
+    if (JSON.parse(sessionStorage.getItem("wasRefreshed"))) {
+      sessionStorage.removeItem("wasRefreshed");
+    }
+    this.allowPageReloads();
+
     if (sessionStorage.getItem("cache")) {
       this.getCacheFromSessionStorage();
     }
@@ -84,6 +118,13 @@ export default class App extends React.Component {
           this.logOut();
           alert("Session duration is over. Log in again to continue.");
         }
+
+        // console.log(`
+        //   dc: ${JSON.parse(sessionStorage.getItem("disallowCopy"))}
+        // , pR: ${this.state.preventRender}
+        // , wR: ${JSON.parse(sessionStorage.getItem("wasRefreshed"))}
+        // , tokenOk: ${ typeof(JSON.parse(sessionStorage.getItem("token")))}
+        // `)
       }, 1000)
     });
   }
@@ -92,6 +133,19 @@ export default class App extends React.Component {
     //clear timers
     clearInterval(this.timer1);
     clearInterval(this.timer2);
+  }
+
+  allowPageReloads = () => {
+    window.addEventListener("beforeunload", (e) => {
+      // e.preventDefault();
+      // console.log("allower");
+      // preventRender is true for duplicate pages
+      if( !this.state.preventRender ) {
+        sessionStorage.setItem('wasRefreshed', JSON.stringify(true));
+        // console.log(`wR: ${JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);  
+      }
+      return ""
+    });
   }
 
   getCacheFromSessionStorage() {
@@ -196,6 +250,12 @@ export default class App extends React.Component {
   }
 
   render() {
+    if(this.state.preventRender) {
+      return (
+        <div> Please close this tab and return to the original to continue. </div>
+      );
+    }
+
     return(
       <AuthProvider value={this.state.authToken}>
         <Backdrop className="spinner-backdrop" open={this.state.isStartupSpinnerOn}>
