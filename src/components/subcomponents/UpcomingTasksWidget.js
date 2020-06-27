@@ -6,12 +6,73 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import AuthContext from '../Other/AuthContext.js';
 import { prepareGETOptions } from '../Other/helper.js';
 import {convertIsoDateToDateString} from "../Other/helper.js"
+import MenuItem from '@material-ui/core/MenuItem';
 import '../styles/UpcomingTasksWidget.css'
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default class UpcomingTasksWidget extends React.Component {
+  state = {
+    leadSelectOptions : [],
+    accountSelectOptions : [],
+  };
+  
   static contextType = AuthContext;
+
+  allLeadIds = [];
+
+  componentDidMount() {
+    this._isMounted = true;
+
+    Promise.all([
+      fetch(`${API}/main/get_all_account_names`, prepareGETOptions(this.context)),
+      fetch(`${API}/main/get_all_lead_names`, prepareGETOptions(this.context))
+    ])
+    .then(values => {
+      let leadsMenuItems = [<MenuItem value="" key={0}> <em>None</em> </MenuItem>];
+      let accountsMenuItems = [<MenuItem value="" key={0}> <em>None</em> </MenuItem>];
+
+      //sort and format account names
+      values[0].json()
+      .then(accounts => {
+        accounts = accounts.sort(function(a,b){ 
+          var x = a.name < b.name? -1:1; 
+          return x; 
+        });
+
+        accounts.forEach( (account, i) => {
+          accountsMenuItems.push([<MenuItem value={account._id} key={i+1}> {account.name} </MenuItem>]);
+          //existing null MenuItem has key=0, these entries have key=i+1
+        });
+      });
+
+      //sort and format lead names
+      values[1].json()
+      .then(leads => {
+        leads = leads.sort(function(a,b){ 
+          var x = a.name < b.name? -1:1; 
+          return x; 
+        });
+
+        leads.forEach( (lead, i) => {
+          leadsMenuItems.push([<MenuItem value={lead._id} key={i+1}> {lead.name} </MenuItem>])
+          this.allLeadIds.push(lead._id);
+          //existing None MenuItem has key=0, these entries have key=i+1
+        });
+      });
+
+      console.log(this.allLeadIds);
+
+      if (this._isMounted) {
+        this.setState({ leadSelectOptions : leadsMenuItems});
+        this.setState({ accountSelectOptions : accountsMenuItems});
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
 	transitionActivity = async (activityId) => {
     this.props.setOpenSpinnerInDashboard(true);
@@ -53,7 +114,9 @@ export default class UpcomingTasksWidget extends React.Component {
   					<span className="new-task-button"> 
               <NewActivityDialogBox 
                 updateDashboard = {this.props.updateDashboard} 
-                setOpenSpinnerInDashboard = {this.props.setOpenSpinnerInDashboard} 
+                setOpenSpinnerInDashboard = {this.props.setOpenSpinnerInDashboard}
+                leadSelectOptions = {this.state.leadSelectOptions}
+                accountSelectOptions = {this.state.accountSelectOptions}
               /> 
   					</span> 
   				</div>
@@ -89,7 +152,10 @@ export default class UpcomingTasksWidget extends React.Component {
                           onClick={() => {this.transitionActivity(element._id)}} 
                         />
 
-                        <Link to={ {pathname: "/accountprofile", state: {cid: element.user_id}} } >
+                        <Link to={{ 
+                          pathname: this.allLeadIds.includes(element.customer_id) ? '/leadprofile' : '/accountprofile', 
+                          state: {cid: element.customer_id} 
+                        }}>
                           <span className="task-title">
                             &nbsp; {element.title}                      
                           </span>
