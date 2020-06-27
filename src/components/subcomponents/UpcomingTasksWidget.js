@@ -84,7 +84,7 @@ export default class UpcomingTasksWidget extends React.Component {
 		const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
 		});
 

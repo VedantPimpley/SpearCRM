@@ -41,7 +41,7 @@ export default class AccountProfileHeader extends React.Component {
     const response = await fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(postContents)
     });
 
@@ -60,7 +60,7 @@ export default class AccountProfileHeader extends React.Component {
           fetch(`${API}/main/send_email_after_transaction`, {
             method: "POST",
             withCredentials: true,
-            headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+            headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
             body: data
           })
           .then(() => 

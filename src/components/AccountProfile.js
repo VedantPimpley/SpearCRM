@@ -135,7 +135,7 @@ export default class AccountProfile extends React.Component {
     const response = await fetch(`${API}/main/edit_account`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(accountDataObj)
     });
     

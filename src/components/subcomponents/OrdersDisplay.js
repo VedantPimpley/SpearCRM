@@ -56,7 +56,7 @@ export default function OrdersDisplay (props) {
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
     

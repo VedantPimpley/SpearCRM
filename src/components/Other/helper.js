@@ -31,7 +31,7 @@ export const prepareGETOptions = (token) => {
   return {
     method:"GET", 
     withCredentials: true,
-    headers: {'access-token': token, 'Content-Type': 'application/json'},
+    headers: {'Authorization': 'Bearer '+ token, 'Content-Type': 'application/json'},
     // credentials: 'include',
   }
 }

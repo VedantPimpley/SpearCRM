@@ -81,7 +81,7 @@ export default class NewAccountDialogBox extends React.Component{
     const response = await fetch(`${API}/main/create_account`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newProfile)
     });
     

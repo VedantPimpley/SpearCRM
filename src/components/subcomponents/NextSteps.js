@@ -22,7 +22,7 @@ export default function NextSteps(props) {
     const response = await fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': authToken, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
     });
 

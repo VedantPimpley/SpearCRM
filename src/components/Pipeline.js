@@ -144,7 +144,7 @@ export default class Pipeline extends React.Component {
       const response = await fetch(`${API}/main/order_stage_change`, {
         method: "POST",
         withCredentials: true,
-        headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+        headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
         body: JSON.stringify(newCardStage)
       });
       
@@ -195,7 +195,7 @@ export default class Pipeline extends React.Component {
     const response = await fetch(`${API}/main/complete_all_orders`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
     
@@ -215,7 +215,7 @@ export default class Pipeline extends React.Component {
           fetch(`${API}/main/send_email_after_transaction`, {
             method: "POST",
             withCredentials: true,
-            headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+            headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
             body: data
           })
           .then(() => this.updatePipelineAPICall())
@@ -241,7 +241,7 @@ export default class Pipeline extends React.Component {
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       withCredentials: true,
-      headers: {'access-token': this.context, 'Content-Type': 'application/json'},
+      headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
     });
 
