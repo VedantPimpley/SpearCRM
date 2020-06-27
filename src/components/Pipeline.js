@@ -48,6 +48,19 @@ export default class Pipeline extends React.Component {
     );
   }
 
+  updateSpinnerInPipeline = (bool) => {
+    //we introduce delay when turning off spinner, but not when turning it on
+    if (bool) {
+      this.setState({ openSpinner: bool });
+    } else {
+      setTimeout(() => {
+        if (this._isMounted) {
+          this.setState({ openSpinner: bool });
+        }
+      }, 1000)
+    }
+  }
+
   //prepares the input for Board component
   //AND passes possibly new (uncached) company names to App.js
   transformOrdersToBoardData = () => {
@@ -132,7 +145,7 @@ export default class Pipeline extends React.Component {
       || (fromLaneId === 3 && toLaneId === 0)
     ){
 
-      this.setState({ openSpinner: true});
+      this.updateSpinnerInPipeline(true);
 
       const newCardStage = {
         "_id" : cardId,
@@ -152,7 +165,7 @@ export default class Pipeline extends React.Component {
         this.updatePipelineAPICall()
         .then(() => {
           if(this._isMounted) {
-            this.setState({ openSpinner:false })
+            this.updateSpinnerInPipeline(false);
           }
         });
       }
@@ -160,6 +173,7 @@ export default class Pipeline extends React.Component {
         this.forceUpdate();
         alert("Server error encountered");
         this.setState({ openSpinner: false});
+        //not using updateSpinnerInPipeline here to avoid delaying error
       }
     }
     else if(this._isMounted) {
@@ -169,12 +183,12 @@ export default class Pipeline extends React.Component {
   }
 
   deleteCard = (cardId, laneId) => {
-    this.setState({ openSpinner: true});
+    this.updateSpinnerInPipeline(true);
     fetch(`${API}/main/delete_order/${cardId}`, prepareGETOptions(this.context))
     .then( () => this.updatePipelineAPICall() )
     .then( () => {
       if(this._isMounted) {
-        this.setState({ openSpinner:false })
+        this.updateSpinnerInPipeline(false)
       }
     });
   }
@@ -187,7 +201,7 @@ export default class Pipeline extends React.Component {
   }
 
   markToBeTransactedOrdersAsTransacted = async () => {
-    this.setState({ openSpinner: true});
+    this.updateSpinnerInPipeline(true);
 
     let companyPrices = {company: this.props.cache};
 
@@ -206,10 +220,10 @@ export default class Pipeline extends React.Component {
         let str2 = "Send correct company";
 
         if(data === str1) {
-          if (this._isMounted) {this.setState({ openSpinner: false})};
+          if (this._isMounted) {this.updateSpinnerInPipeline(false)};
         }
         else if (data === str2) {
-          if (this._isMounted) {this.setState({ openSpinner: false})};
+          if (this._isMounted) {this.updateSpinnerInPipeline(false)};
         }
         else {
           fetch(`${API}/main/send_email_after_transaction`, {
@@ -221,7 +235,7 @@ export default class Pipeline extends React.Component {
           .then(() => this.updatePipelineAPICall())
           .then(() => {
             if(this._isMounted) {
-              this.setState({ openSpinner:false });
+              this.updateSpinnerInPipeline(false);
             }
           });
         }
@@ -235,7 +249,7 @@ export default class Pipeline extends React.Component {
   //if no, it does not
   //if a to-be-transacted order NO LONGER meets the criteria, backend DOES NOT move it back to finalized
   convertEligibleFinalizedOrders = async () => {
-    this.setState({ openSpinner: true});
+    this.updateSpinnerInPipeline(true);
 
     let companyPrices = {company: this.props.cache};
     const response = await fetch(`${API}/main/convert_finalized_orders`, {
@@ -248,7 +262,7 @@ export default class Pipeline extends React.Component {
     if (response.ok) {
       this.updatePipelineAPICall()
       .then(() => {
-        if(this._isMounted) {this.setState({ openSpinner:false })};
+        if(this._isMounted) {this.updateSpinnerInPipeline(false)};
       });
     }
   }
@@ -267,6 +281,7 @@ export default class Pipeline extends React.Component {
         <div className="add-order-button"> 
           <PipelineNewOrderDialogBox 
             updatePipeline={this.updatePipelineAPICall} 
+            updateSpinner = {this.updateSpinnerInPipeline}
           /> 
         </div>
 

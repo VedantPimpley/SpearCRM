@@ -44,7 +44,7 @@ export default function Dashboard(props) {
     return () => _isMounted.current = false;
 	}, [authToken]);
 
-	const updateDashboardAPICall = () => {
+	const updateDashboardAPICall = async () => {
 		Promise.all([
       fetch(`${API}/main/top_leads`, prepareGETOptions(authToken)),
       fetch(`${API}/main/top_accounts`, prepareGETOptions(authToken)),
@@ -64,8 +64,15 @@ export default function Dashboard(props) {
   }
   
   const setOpenSpinnerInDashboard = bool => {
-    if (_isMounted.current) {
+    //we introduce delay when turning off spinner, but not when turning it on
+    if (bool) {
       setOpenSpinner(bool);
+    } else {
+      setTimeout(() => {
+        if (_isMounted.current) {
+          setOpenSpinner(bool);
+        }
+      }, 1500)
     }
   }
 

@@ -68,7 +68,8 @@ export default function NewActivityDialogBox(props) {
     if (response.ok) {
       setActivityBody("");
       setActivityTitle("");
-      props.updateDashboard();
+      props.updateDashboard()
+      .then( () => props.setOpenSpinnerInDashboard(false));
     }
   }
 

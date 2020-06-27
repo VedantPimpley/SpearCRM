@@ -42,14 +42,14 @@ export default function OrdersDisplay (props) {
   }
 
   const deleteOrder = (orderId) => {
-    props.updateSpinnerInAccountProfile(true);
+    props.updateSpinner(true);
     fetch(`${API}/main/delete_order/${orderId}`, prepareGETOptions(authToken))
     .then( () => props.updateAccountDataAndOrdersAndActivities() )
-    .then( () => props.updateSpinnerInAccountProfile(false));
+    .then( () => props.updateSpinner(false));
   }
 
   const convertEligibleFinalizedOrders = async () => {
-    props.updateSpinnerInAccountProfile(true);
+    props.updateSpinner(true);
 
     let companyPrices = {company: props.cache};
 
@@ -62,7 +62,7 @@ export default function OrdersDisplay (props) {
     
     if (response.ok && _isMounted) {
       props.updateAccountDataAndOrdersAndActivities()
-      .then( () => props.updateSpinnerInAccountProfile(false) );
+      .then( () => props.updateSpinner(false) );
     }
   }
 

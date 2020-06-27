@@ -4,6 +4,8 @@ import FieldsContainer1 from "./subcomponents/FieldsContainer1";
 import FieldsContainer2 from "./subcomponents/FieldsContainer2";
 import ActivityTracker from "./subcomponents/ActivityTracker";
 import LeadProfileHeader from "./subcomponents/LeadProfileHeader";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthContext from './Other/AuthContext.js';
 import { prepareGETOptions } from './Other/helper.js';
 
@@ -13,7 +15,8 @@ export default class LeadProfile extends React.Component {
   state = {
     leadData: {},
     activitiesList: [],
-    ordersList: []
+    ordersList: [],
+    openSpinner : false,
   };
 
   static contextType = AuthContext;
@@ -38,7 +41,7 @@ export default class LeadProfile extends React.Component {
     this._isMounted = false;
   }
 
-  updateLeadDataAPICall = () => {
+  updateLeadDataAPICall = async() => {
     fetch(`${API}/main/display_lead/${this.state.leadData._id}`, prepareGETOptions(this.context))
     .then(response =>
       response.json().then(data => {
@@ -49,7 +52,7 @@ export default class LeadProfile extends React.Component {
     );
   }
 
-  updateActivitiesAPICall = () => {
+  updateActivitiesAPICall = async() => {
     fetch(`${API}/main/show_user_activities/${this.state.leadData._id}`, prepareGETOptions(this.context))
     .then(response =>
       response.json().then(data => {
@@ -104,6 +107,19 @@ export default class LeadProfile extends React.Component {
     }
   }
 
+  updateSpinnerInLeadProfile = (bool) => {
+    //we introduce delay when turning off spinner, but not when turning it on
+    if (bool) {
+      this.setState({ openSpinner: bool });
+    } else {
+      setTimeout(() => {
+        if (this._isMounted) {
+          this.setState({ openSpinner: bool });
+        }
+      }, 1500)
+    }
+  }
+
   render(){
     return(
       <div className="profile-page-grid-container">
@@ -134,8 +150,13 @@ export default class LeadProfile extends React.Component {
           updateActivities = {this.updateActivitiesAPICall}
           activitiesList = {this.state.activitiesList}
           email = {this.state.leadData.email}
+          updateSpinner = {this.updateSpinnerInLeadProfile}
         />
-{/* 'lead = 1' communicates that the parent component is LeadProfile */}
+        {/* 'lead = 1' communicates that the parent component is LeadProfile */}
+
+        <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </div>     
     );
   }

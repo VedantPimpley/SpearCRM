@@ -145,7 +145,16 @@ export default class AccountProfile extends React.Component {
   }
 
   updateSpinnerInAccountProfile = (bool) => {
-    this.setState({ openSpinner: bool });
+  //we introduce delay when turning off spinner, but not when turning it on
+    if (bool) {
+      this.setState({ openSpinner: bool });
+    } else {
+      setTimeout(() => {
+        if (this._isMounted) {
+          this.setState({ openSpinner: bool });
+        }
+      }, 1500)
+    }
   }
 
   render(){
@@ -158,7 +167,7 @@ export default class AccountProfile extends React.Component {
             updateAccountDataAndOrdersAndActivities = {this.updateAccountDataAndOrdersAndActivitiesAPICall}
             _id = {this.state.accountData._id}
             cache = {this.props.cache}
-            updateSpinnerInAccountProfile = {this.updateSpinnerInAccountProfile}
+            updateSpinner = {this.updateSpinnerInAccountProfile}
           />
         </div>
         <FieldsContainer1 
@@ -185,7 +194,7 @@ export default class AccountProfile extends React.Component {
           updateActivities = {this.updateActivitiesAPICall}
           cache = {this.props.cache}
           lead = {0}
-          updateSpinnerInAccountProfile = {this.updateSpinnerInAccountProfile}
+          updateSpinner = {this.updateSpinnerInAccountProfile}
         />
         {/* 'lead = 0' communicates that the parent component is AccountProfile */}
 

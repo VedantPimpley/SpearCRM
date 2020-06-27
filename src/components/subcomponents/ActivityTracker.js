@@ -44,17 +44,17 @@ export default function ActivityTracker(props) {
   };
 
   const postNewActivity = async () => {
-    props.updateSpinnerInAccountProfile(true);
-
     let today = new Date();
     //erroneous and disallowed inputs specified in the below if condition
     if(    ( activityType === "future" && activityDate.getTime() <= today.getTime() )
-        || ( activityType === "past"   && activityDate.getTime() > today.getTime() ) 
-        || ( activityTitle === "" )
+    || ( activityType === "past"   && activityDate.getTime() > today.getTime() ) 
+    || ( activityTitle === "" )
     ){
       return null;
     }
 
+    props.updateSpinner(true);
+    
     const newActivity = {
       "user_id": props._id,
       "title": activityTitle,
@@ -73,7 +73,7 @@ export default function ActivityTracker(props) {
       setActivityBody("");
       setActivityTitle("");
       props.updateActivities()
-      .then( ()=> props.updateSpinnerInAccountProfile(false));
+      .then( ()=> props.updateSpinner(false));
     }
   }
 
@@ -90,7 +90,7 @@ export default function ActivityTracker(props) {
         <OrdersDisplay 
           ordersList={props.ordersList} 
           updateAccountDataAndOrdersAndActivities = {props.updateAccountDataAndOrdersAndActivities}
-          updateSpinnerInAccountProfile = {props.updateSpinnerInAccountProfile}
+          updateSpinner = {props.updateSpinner}
           cache = {props.cache}
         />
       </>
@@ -124,7 +124,7 @@ export default function ActivityTracker(props) {
         updateActivities = {props.updateActivities}
         cache = {props.cache}
         lead = {props.lead}
-        updateSpinnerInAccountProfile = {props.updateSpinnerInAccountProfile}
+        updateSpinner = {props.updateSpinner}
       />
       <PastActivity
         activitiesList={props.activitiesList.filter(activity => activity["activity_type"] === "past")}

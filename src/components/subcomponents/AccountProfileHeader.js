@@ -34,7 +34,7 @@ export default class AccountProfileHeader extends React.Component {
       return null;
     }
 
-    this.props.updateSpinnerInAccountProfile(true);
+    this.props.updateSpinner(true);
 
     let postContents = {"account_id": this.props._id, "company": this.props.cache};
     
@@ -51,10 +51,10 @@ export default class AccountProfileHeader extends React.Component {
         let str2 = "Send correct company";
 
         if(data === str1) {
-          if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
+          if (this._isMounted) {this.props.updateSpinner(false)};
         }
         else if (data === str2) {
-          if (this._isMounted) {this.props.updateSpinnerInAccountProfile(false)};
+          if (this._isMounted) {this.props.updateSpinner(false)};
         }
         else {
           fetch(`${API}/main/send_email_after_transaction`, {
@@ -68,7 +68,7 @@ export default class AccountProfileHeader extends React.Component {
           )
           .then(() => {
             if(this._isMounted) {
-              this.props.updateSpinnerInAccountProfile(false);
+              this.props.updateSpinner(false);
               this.setState({ openDialog: true});
             }
           });

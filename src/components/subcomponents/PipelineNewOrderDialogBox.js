@@ -73,6 +73,8 @@ export default class PipelineNewOrderDialogBox extends React.Component{
   }
 
   postNewOrder = async () => {
+    this.props.updateSpinner(true);
+
     const newOrder = this.state;
     newOrder.stage = 2;
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
@@ -91,6 +93,7 @@ export default class PipelineNewOrderDialogBox extends React.Component{
       this.props.updatePipeline()
       .then( () => {
         this.setState({ open:false });
+        this.props.updateSpinner(false);
       });
     }
   }

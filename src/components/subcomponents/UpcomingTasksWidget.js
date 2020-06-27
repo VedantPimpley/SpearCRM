@@ -89,8 +89,8 @@ export default class UpcomingTasksWidget extends React.Component {
 		});
 
 		if (response.ok) {
-      this.props.updateDashboard();
-      this.props.setOpenSpinnerInDashboard(false); 
+      this.props.updateDashboard()
+      .then( () => this.props.setOpenSpinnerInDashboard(false));
 		}
 	}
 	
