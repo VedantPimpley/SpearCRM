@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import '../styles/PrettyList.css'
-import {convertIsoDateToDateString} from "../Dashboard.js"
+import {convertIsoDateToDateString} from "../Other/helper.js"
 import StarRateIcon from '@material-ui/icons/StarRate';
 import CancelIcon from '@material-ui/icons/Cancel';
 import AuthContext from '../Other/AuthContext.js';

@@ -152,7 +152,7 @@ export default class Accounts extends React.Component {
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <EmailIcon />
+            <EmailIcon fontSize="large"/>
           </a>
         </div>
       );

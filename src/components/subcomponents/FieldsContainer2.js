@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import '../styles/FieldsContainer.css'
-import {convertIsoDateToDateString} from "../Dashboard.js"
+import {convertIsoDateToDateString} from "../Other/helper.js"
 
 export default class FieldsContainer2 extends React.Component {
   render() {

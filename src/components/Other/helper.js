@@ -36,3 +36,8 @@ export const prepareGETOptions = (token) => {
   }
 }
 //for post requests, the options have been written manually for each POST request
+
+export const convertIsoDateToDateString = (isoDate) => {
+	let tempDateObj = new Date(isoDate);
+	return tempDateObj.toDateString();
+};

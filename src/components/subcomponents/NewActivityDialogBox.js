@@ -22,7 +22,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import AuthContext from '../Other/AuthContext.js';
 import { prepareGETOptions } from '../Other/helper.js';
 
-const API = process.env.REACT_APP_API
+const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
 export default function NewActivityDialogBox(props) {
   //ManualLogger related hooks

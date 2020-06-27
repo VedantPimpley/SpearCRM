@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/PrettyList.css'
-import {convertIsoDateToDateString} from "../Dashboard.js"
+import {convertIsoDateToDateString} from "../Other/helper.js"
 import CloseIcon from '@material-ui/icons/Close';
 import StarRateIcon from '@material-ui/icons/StarRate';
 
