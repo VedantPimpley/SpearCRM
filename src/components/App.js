@@ -18,6 +18,7 @@ import {
   Link
 } from "react-router-dom";
 import PrivateRoute from './Other/PrivateRoute.js';
+import jwtDecode from 'jwt-decode';
 import './styles/App.css';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
@@ -27,13 +28,17 @@ export default class App extends React.Component {
     cache : {},
     isStartupSpinnerOn : false,
     authToken : "" || JSON.parse(sessionStorage.getItem("token")) 
-    //if user reloads the window, they not lose the token
-    //But it won't be retained from previous session
+    //token persists over reload, but not between sessions
   }
 
+  tokenExpiryTime = 0;
+
+  //called during successful login
   setToken = (data) => {
-    //passed data will be a string
-    this.setState({ authToken : data }, sessionStorage.setItem("token", JSON.stringify(data)));
+    this.setState({ authToken : data }, () => {
+      sessionStorage.setItem("token", JSON.stringify(data));
+      this.tokenExpiryTime = jwtDecode(data).exp;
+    });
 
     //if waitingList is non empty, stockprice fetching is incomplete. Hence spinner is turned on.
     if(this.waitingList.size > 0) {
@@ -42,8 +47,7 @@ export default class App extends React.Component {
   }
 
   logOut = () => {
-    sessionStorage.removeItem("token");
-    this.setState({ authToken : "" });
+    this.setState({ authToken : "" }, sessionStorage.removeItem("token"));
   }
 
   companiesThisSession = new Set();
@@ -53,31 +57,32 @@ export default class App extends React.Component {
   timer1 = 0;
   timer2 = 0;
 
-  getCacheFromSessionStorage() {
-    this.setState({ cache: JSON.parse(sessionStorage.getItem("cache")) }, () => {
-        this.cachedCompanies = new Set( Object.keys(this.state.cache) );
-        //this.waitingList is dealt with in receiveCompanyNamesDuringStartup
-        this.companiesThisSession = new Set();
-      }
-    );
-  }
-
   componentDidMount() {
     if (sessionStorage.getItem("cache")) {
       this.getCacheFromSessionStorage();
     }
 
+    //tokenExpiryTime value is lost during page reload
+    //hence we re-apply it
+    if (this.state.authToken) {
+      this.tokenExpiryTime = jwtDecode( this.state.authToken ).exp;
+    }
+
     this.receiveCompanyNamesDuringStartup()
     .then( ()=> {
-      //timer checks every second if waitingList has items and whether it has 
-      //been one minute since the last time that cacheUpdater finished execution
-      //if yes, cacheUpdater gets called
+      //timer checks every second 
+      //if waitingList has items and whether one minute has passed since the last time that cacheUpdater finished execution
+      //if true, cacheUpdater gets called
       this.timer1 = setInterval( () => {
-        if (Date.now() > this.callCacheUpdaterAt 
-            && this.waitingList.size > 0) 
-        {
+        if (Date.now() > this.callCacheUpdaterAt && this.waitingList.size > 0) {
           this.cacheUpdater()
           .then( () => this.callCacheUpdaterAt = Date.now() + 60000)
+        }
+
+        //current time in seconds below
+        if (Math.floor(new Date().getTime() / 1000) > this.tokenExpiryTime && this.state.authToken) {
+          this.logOut();
+          alert("Session duration is over. Log in again to continue.");
         }
       }, 1000)
     });
@@ -88,7 +93,16 @@ export default class App extends React.Component {
     clearInterval(this.timer1);
     clearInterval(this.timer2);
   }
-  
+
+  getCacheFromSessionStorage() {
+    this.setState({ cache: JSON.parse(sessionStorage.getItem("cache")) }, () => {
+        this.cachedCompanies = new Set( Object.keys(this.state.cache) );
+        //this.waitingList is updated accordingly in receiveCompanyNamesDuringStartup
+        this.companiesThisSession = new Set();
+      }
+    );
+  }
+
   //populates the waitingList on startup
   receiveCompanyNamesDuringStartup = async () => {
     let initialCompanies = new Set();
@@ -101,7 +115,7 @@ export default class App extends React.Component {
         allCompanies.map(element => initialCompanies.add( (element.company).toLowerCase() ));
 
         //waitingList will only contain the company names which are in initialCompanies but not the ones which are already cached
-        //this runs during startup. So how are companies already cached? Because we got them from the local storage in which we had saved the cache.
+        //this runs during startup. So how are companies already cached? Because we got them from the session storage in which we had saved the cache.
         this.waitingList = setDifference(initialCompanies, this.cachedCompanies);
       })
     })
@@ -168,9 +182,7 @@ export default class App extends React.Component {
   startAdditionalTimers = () => {
     this.timer2 = setInterval( () => {
       //(i)
-      console.log(this.cachedCompanies);
       this.cachedCompanies.clear();
-      console.log(this.cachedCompanies); 
 
       //(ii)
       fetch(`${API}/main/get_order_from_email`, prepareGETOptions(this.state.authToken))
@@ -180,7 +192,7 @@ export default class App extends React.Component {
           if (text === "Inserted") {alert(" New orders received from email. Refresh page to view changes.")}
         })
       )
-    }, 60000);
+    }, 300000);
   }
 
   render() {

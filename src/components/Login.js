@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import AuthContext from './Other/AuthContext.js';
-// import jwtDecode from 'jwt-decode';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
 
@@ -54,7 +53,6 @@ export default function Login(props) {
       if (response.status === 200) {
         response.json().then( data => {
           props.setToken(data.token);
-          // console.log(jwtDecode(data.token))
         })
       }
       else {

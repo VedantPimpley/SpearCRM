@@ -61,8 +61,6 @@ export default class UpcomingTasksWidget extends React.Component {
         });
       });
 
-      console.log(this.allLeadIds);
-
       if (this._isMounted) {
         this.setState({ leadSelectOptions : leadsMenuItems});
         this.setState({ accountSelectOptions : accountsMenuItems});
