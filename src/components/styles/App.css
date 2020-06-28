@@ -41,5 +41,10 @@ nav ul li a:hover:not(.active) {
 .spinner-backdrop {
   z-index: 5 !important;
   position: absolute;
-  color: 'blue';
+}
+
+.logout-button {
+  position: absolute;
+  right: 7px;
+  top: 7px;
 }

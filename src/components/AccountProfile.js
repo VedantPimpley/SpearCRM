@@ -199,7 +199,7 @@ export default class AccountProfile extends React.Component {
         {/* 'lead = 0' communicates that the parent component is AccountProfile */}
 
         <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
-          <CircularProgress color="inherit" />
+          <CircularProgress color="primary" />
         </Backdrop>
       </div>     
     );

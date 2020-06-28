@@ -10,7 +10,7 @@ import LeadProfile from './LeadProfile.js';
 import Login from './Login.js';
 import { AuthProvider } from './Other/AuthContext.js';
 import { prepareGETOptions } from './Other/helper.js';
-import { setUnion, setDifference, getPrice } from './Other/helper.js'
+import { setUnion, setDifference, getPrice, stocksKey } from './Other/helper.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,10 +18,14 @@ import {
   Link
 } from "react-router-dom";
 import PrivateRoute from './Other/PrivateRoute.js';
+import Button from '@material-ui/core/Button';
 import jwtDecode from 'jwt-decode';
 import './styles/App.css';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
+console.log(process.env.REACT_APP_STOCKS_KEY);
+console.log(stocksKey);
+console.log(process.env.REACT_APP_STOCKS_API);
 
 export default class App extends React.Component {
   state = {
@@ -59,7 +63,6 @@ export default class App extends React.Component {
   }
 
   logOut = () => {
-    //return to initial state
     this.setState({ authToken : "" }, () => {
       sessionStorage.removeItem("token");
     })
@@ -259,7 +262,7 @@ export default class App extends React.Component {
     return(
       <AuthProvider value={this.state.authToken}>
         <Backdrop className="spinner-backdrop" open={this.state.isStartupSpinnerOn}>
-          <CircularProgress color="inherit" />
+          <CircularProgress color="primary" />
           <p style={{ fontWeight: 800 }}> &nbsp; Loading stock prices </p>
         </Backdrop>
 
@@ -281,8 +284,16 @@ export default class App extends React.Component {
                   <li>
                     <Link to="/pipeline"> Pipeline </Link>
                   </li>
-                  <li>
-                    <button onClick={this.logOut} className="logout-button"> Logout </button>
+
+                  <li className="logout-button">
+                    <Button 
+                      variant="contained" 
+                      color="primary" 
+                      size="medium"
+                      onClick={this.logOut}
+                    >
+                      Log Out
+                    </Button>
                   </li>
                 </ul>  
               </nav>

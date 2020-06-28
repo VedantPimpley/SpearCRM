@@ -32,14 +32,14 @@ export default class EditableField extends React.Component {
 
   render() {
 
-    let fieldDataComponent = <div> {this.props.fieldData} </div>;
+    let fieldDataComponent = <div style={{ paddingTop: 8 }}> {this.props.fieldData} </div>;
     let editButton = <button className="DataEditButton" onClick={this.alternateViews}> <EditIcon /> </button>;
 
     // if field is a date field, it is dealt with differently than a text field.
     if (this.props.name === "dob"){
       let birthDate = new Date(this.props.fieldData);
       fieldDataComponent = (
-        <div> {birthDate.toDateString()} </div>
+        <div style={{ paddingTop: 8 }}> {birthDate.toDateString()} </div>
       );
     }
 

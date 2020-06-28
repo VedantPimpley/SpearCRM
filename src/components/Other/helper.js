@@ -41,3 +41,5 @@ export const convertIsoDateToDateString = (isoDate) => {
 	let tempDateObj = new Date(isoDate);
 	return tempDateObj.toDateString();
 };
+
+export const stocksKey = process.env.REACT_APP_STOCKS_KEY;

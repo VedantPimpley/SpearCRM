@@ -10,7 +10,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { prepareGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
-// var api_key = process.env.REACT_STOCKS_KEY
 
 export default function Dashboard(props) {
 	const [topLeads, setTopLeads] = useState([]);
@@ -99,7 +98,7 @@ export default function Dashboard(props) {
 			/>
 
       <Backdrop className="spinner-backdrop" open={openSpinner}>
-        <CircularProgress color="inherit" />
+        <CircularProgress />
       </Backdrop>
     </div>
 	); 

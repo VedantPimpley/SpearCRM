@@ -29,7 +29,7 @@ export default class FieldsContainer2 extends React.Component {
           <ListItem>
             <div className="noneditable-field-component">
               <p> Account turnover till date </p>
-              <div> Rs. {parseInt(this.props.accountTurnover.turnover)} </div>
+              <div style={{ paddingTop: 8 }}> Rs. {parseInt(this.props.accountTurnover.turnover)} </div>
             </div>  
           </ListItem>
           <Divider />
@@ -38,7 +38,7 @@ export default class FieldsContainer2 extends React.Component {
           <ListItem>
             <div className="noneditable-field-component">
               <p> Last Contacted </p>
-              <div> {convertIsoDateToDateString(this.props.fields.last_contact)} </div>
+              <div style={{ paddingTop: 8 }}> {convertIsoDateToDateString(this.props.fields.last_contact)} </div>
             </div>  
           </ListItem>
         </>

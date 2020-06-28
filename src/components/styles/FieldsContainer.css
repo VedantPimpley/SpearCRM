@@ -1,5 +1,7 @@
 .noneditable-field-component{
   padding: 1px;
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
+
+/* inline paddingTop applied to data displaying divs for all fields */

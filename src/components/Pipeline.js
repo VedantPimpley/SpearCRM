@@ -117,7 +117,7 @@ export default class Pipeline extends React.Component {
     let laneOneAndTwoCompanies = [];
     for (let i = 0; i < board.lanes.length; i++) {
       let Lane = board.lanes[i];
-      Lane.cards = orders.filter(entry => entry.stage === Lane.id).reverse();
+      Lane.cards = orders.filter(entry => entry.stage === Lane.id);
 
       //obtain names of companies in lane one and two.
       if (Lane.id === 1 || 2) {
@@ -310,7 +310,7 @@ export default class Pipeline extends React.Component {
         </div>
 
         <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
-          <CircularProgress color="inherit" />
+          <CircularProgress color="primary" />
         </Backdrop>
       </>
     );

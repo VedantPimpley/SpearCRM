@@ -9,4 +9,8 @@
   width: 100%;
 }
 
+.orders-display-dialog-box {
+  z-index: 2 !important;
+}
+
 /* view-orders-button is set to 290px width inline */

@@ -25,5 +25,4 @@ body {
 .spinner-backdrop {
   z-index: 20 !important;
   position: absolute;
-  color: 'blue';
 }

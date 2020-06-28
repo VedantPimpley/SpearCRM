@@ -155,7 +155,7 @@ export default class LeadProfile extends React.Component {
         {/* 'lead = 1' communicates that the parent component is LeadProfile */}
 
         <Backdrop className="spinner-backdrop" open={this.state.openSpinner}>
-          <CircularProgress color="inherit" />
+          <CircularProgress color="primary" />
         </Backdrop>
       </div>     
     );

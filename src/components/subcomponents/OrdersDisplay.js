@@ -85,6 +85,7 @@ export default function OrdersDisplay (props) {
         onClose={handleClose}
         fullWidth
         maxWidth={"md"}
+        className="orders-display-dialog-box"
       >
         
 
@@ -184,6 +185,12 @@ export default function OrdersDisplay (props) {
                         S
                       </Avatar>
                   );
+
+                  let costProduct = (
+                    isNaN(order.cost_of_share*order.no_of_shares) ?
+                    `${order.no_of_shares} X ${order.cost_of_share}`:
+                    `${Math.floor( order.cost_of_share*order.no_of_shares )} (${order.no_of_shares} X ${order.cost_of_share})`
+                  )
                   
                   return(
                     <div key={i}>
@@ -195,7 +202,7 @@ export default function OrdersDisplay (props) {
                       
                         <ListItemText
                           primary={order.company}
-                          secondary={order.cost_of_share*order.no_of_shares+" ("+order.no_of_shares+"X"+order.cost_of_share+")"}
+                          secondary={costProduct}
                         />
 
                         <ListItemSecondaryAction>

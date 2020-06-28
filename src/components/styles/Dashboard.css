@@ -8,6 +8,7 @@
 
 .grid-container > * {
 	border: 1px solid rgba(0, 0, 0, 0.12);
+	height: 45vh;
 }
 
 .pieChartContainer > * {
@@ -16,6 +17,6 @@
 
 .spinner-backdrop {
   z-index: 5 !important;
-  position: absolute;
-  color: 'blue';
+	position: absolute;
+	height: 100vh;
 }
