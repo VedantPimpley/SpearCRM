@@ -215,7 +215,8 @@ export default class NewLeadDialogBox extends React.Component{
                 >
                   <MenuItem value=""> <em>None</em> </MenuItem>
                   <MenuItem value={"high school"}>High school</MenuItem>
-                  <MenuItem value={"college"}>College</MenuItem>
+                  <MenuItem value={"University"}>University</MenuItem>
+                  <MenuItem value={"Professional Course"}>Professional Course</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -230,8 +231,13 @@ export default class NewLeadDialogBox extends React.Component{
                   name="job_type"
                 >
                   <MenuItem value=""> <em>None</em> </MenuItem>
-                  <MenuItem value={"services"}>Services</MenuItem>
-                  <MenuItem value={"other"}>Other</MenuItem>
+                  <MenuItem value={"Services"}>Services</MenuItem>
+                  <MenuItem value={"Self-Employed"}>Self-employed</MenuItem>
+                  <MenuItem value={"Student"}>Student</MenuItem>
+                  <MenuItem value={"Retired"}>Retired</MenuItem>
+                  <MenuItem value={"Entrepreneur"}>Entrepreneur</MenuItem>
+                  <MenuItem value={"Blue-collar"}>Blue-collar</MenuItem>
+                  <MenuItem value={"Management"}>Management</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -248,6 +254,7 @@ export default class NewLeadDialogBox extends React.Component{
                   <MenuItem value=""> <em>None</em> </MenuItem>
                   <MenuItem value={"Married"}>Married</MenuItem>
                   <MenuItem value={"Unmarried"}>Unmarried</MenuItem>
+                  <MenuItem value={"Divorced"}>Divorced</MenuItem>
                 </Select>
               </FormControl>
             </div>

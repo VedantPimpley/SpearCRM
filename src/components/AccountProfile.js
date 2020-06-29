@@ -176,12 +176,12 @@ export default class AccountProfile extends React.Component {
           handleChange={this.handleChange} 
           onSubmit={this.postFields}
           lead = {0}
+          accountTurnover={this.state.accountTurnover}
         />
         <FieldsContainer2 
           fields={this.state.accountData} 
           handleChange={this.handleChange} 
           onSubmit={this.postFields}
-          accountTurnover={this.state.accountTurnover}
           lead = {0}
         />
         <ActivityTracker 

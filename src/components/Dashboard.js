@@ -180,13 +180,16 @@ class PieChart extends React.Component {
   render() {
     return (
       <div className="pieChartContainer">
+        <div style={{ margin: "auto", fontSize: 28, fontWeight:600, textAlign: "center"}}>
+          Snapshot of Pipeline orders
+        </div>
         <Chart
           chartType = "PieChart"
           data = {this.transformOrdersToDataPoints(this.props.pieChartData)}
           options = {pieOptions}
           graph_id = "Distribution of orders currently"
           width = {"95%"}
-          height = {"95%"}
+          height = {"90%"}
           legend_toggle
         />
       </div>
