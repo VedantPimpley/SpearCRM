@@ -105,8 +105,8 @@ export default class LeadProfileHeader extends React.Component {
             <span id="Contacted" className="stage-name"> Contacted </span>
           </span>  
 
-          <span style={{ verticalAlign: "middle" }}>
-            <Tooltip title="Lead created account">
+          <span style={{ verticalAlign: "middle" , cursor: "pointer"}}>
+            <Tooltip title="Lead created account" arrow>
               <CheckCircleIcon onClick={this.handleOpen} />
             </Tooltip>
           </span>

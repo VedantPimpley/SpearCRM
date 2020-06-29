@@ -10,7 +10,8 @@ import LeadProfile from './LeadProfile.js';
 import Login from './Login.js';
 import { AuthProvider } from './Other/AuthContext.js';
 import { prepareGETOptions } from './Other/helper.js';
-import { setUnion, setDifference, getPrice, stocksKey } from './Other/helper.js'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { setUnion, setDifference, getPrice, LargeTooltip } from './Other/helper.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,9 +24,6 @@ import jwtDecode from 'jwt-decode';
 import './styles/App.css';
 
 const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
-console.log(process.env.REACT_APP_STOCKS_KEY);
-console.log(stocksKey);
-console.log(process.env.REACT_APP_STOCKS_API);
 
 export default class App extends React.Component {
   state = {
@@ -76,9 +74,6 @@ export default class App extends React.Component {
   timer2 = 0;
 
   componentDidMount() {
-
-    // console.log(`${JSON.parse(sessionStorage.getItem("disallowCopy"))} & ${!JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);
-    // console.log(`${JSON.parse(sessionStorage.getItem("disallowCopy")) && !JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);
     //for first load of main
     if (JSON.parse(sessionStorage.getItem("disallowCopy")) === null || undefined) {
       sessionStorage.setItem("disallowCopy", JSON.stringify(false));
@@ -122,13 +117,7 @@ export default class App extends React.Component {
           alert("Session duration is over. Log in again to continue.");
         }
 
-        // console.log(`
-        //   dc: ${JSON.parse(sessionStorage.getItem("disallowCopy"))}
-        // , pR: ${this.state.preventRender}
-        // , wR: ${JSON.parse(sessionStorage.getItem("wasRefreshed"))}
-        // , tokenOk: ${ typeof(JSON.parse(sessionStorage.getItem("token")))}
-        // `)
-      }, 1000)
+        }, 1000)
     });
   }
 
@@ -140,12 +129,9 @@ export default class App extends React.Component {
 
   allowPageReloads = () => {
     window.addEventListener("beforeunload", (e) => {
-      // e.preventDefault();
-      // console.log("allower");
       // preventRender is true for duplicate pages
       if( !this.state.preventRender ) {
         sessionStorage.setItem('wasRefreshed', JSON.stringify(true));
-        // console.log(`wR: ${JSON.parse(sessionStorage.getItem("wasRefreshed"))}`);  
       }
       return ""
     });
@@ -285,7 +271,16 @@ export default class App extends React.Component {
                     <Link to="/pipeline"> Pipeline </Link>
                   </li>
 
-                  <li className="logout-button">
+                  <div className="user-icon"> 
+                    <LargeTooltip 
+                      title={jwtDecode(this.state.authToken).first_name + " " + jwtDecode(this.state.authToken).last_name} 
+                      arrow
+                    >
+                      <AccountCircleIcon fontSize="large" color="primary"/>
+                    </LargeTooltip>
+                  </div>
+
+                  <div className="logout-button">
                     <Button 
                       variant="contained" 
                       color="primary" 
@@ -294,7 +289,7 @@ export default class App extends React.Component {
                     >
                       Log Out
                     </Button>
-                  </li>
+                  </div>
                 </ul>  
               </nav>
               :

@@ -1,4 +1,6 @@
-const stocksAPI = process.env.REACT_APP_STOCKS_API || "brhln8nrh5ra2pui7160";
+import { withStyles } from "@material-ui/core/styles";
+import { Tooltip } from '@material-ui/core';
+const stocksAPI = process.env.REACT_APP_STOCKS_KEY || "brhln8nrh5ra2pui7160";
 
 //Javascript Set operations
 export const setDifference = (setA, setB) => {
@@ -42,4 +44,8 @@ export const convertIsoDateToDateString = (isoDate) => {
 	return tempDateObj.toDateString();
 };
 
-export const stocksKey = process.env.REACT_APP_STOCKS_KEY;
+export const LargeTooltip = withStyles({
+  tooltip: {
+    fontSize: "12px"
+  }
+})(Tooltip);

@@ -96,7 +96,7 @@ export default class AccountProfileHeader extends React.Component {
           </span>  
 
           <span style={{ verticalAlign: "middle", cursor: "pointer" }}>
-            <Tooltip title="Mark To-be-transacted orders as Transacted">
+            <Tooltip title="Mark To-be-transacted orders as Transacted" arrow>
               <CheckCircleIcon 
                 onClick={this.markToBeTransactedOrdersAsTransacted}
               />

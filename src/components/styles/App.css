@@ -48,3 +48,10 @@ nav ul li a:hover:not(.active) {
   right: 7px;
   top: 7px;
 }
+
+.user-icon {
+  position: absolute;
+  right: 125px;
+  top: 8px;
+  /* tooltip styles applied in App.js */
+}
