@@ -12,15 +12,11 @@
 }
 
 .pieChartContainer > * {
-	margin-top: 10px;
+	padding-top: 10px;
 }
 
 .spinner-backdrop {
   z-index: 5 !important;
 	position: absolute;
 	height: 100vh;
-}
-
-.line-chart-container {
-	height: 100%;
 }

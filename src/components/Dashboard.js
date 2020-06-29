@@ -183,14 +183,6 @@ class PieChart extends React.Component {
         <Chart
           chartType = "PieChart"
           data = {this.transformOrdersToDataPoints(this.props.pieChartData)}
-          
-          // [
-          // 	['Stage', 'Volume'],
-          //   ['Received', 5],
-          //   ['Finalized', 29],
-          //   ['To-be-transacted', 56],
-          // 	 ['Transacted', 8],
-          // ]
           options = {pieOptions}
           graph_id = "Distribution of orders currently"
           width = {"95%"}
@@ -235,7 +227,7 @@ class LineChart extends React.Component {
 		const lineOptions = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2", // "light1", "dark1", "dark2"
+			theme: "light2",
 			title:{
 				text: "Revenue generated"
 			},
@@ -258,9 +250,7 @@ class LineChart extends React.Component {
 		return (
 		<div className="line-chart-container">
 			<CanvasJSChart options = {lineOptions}
-				/* onRef={ref => this.chart = ref} */
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 		</div>
 		);
 	}
