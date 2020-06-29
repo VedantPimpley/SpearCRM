@@ -120,7 +120,7 @@ export default function Login(props) {
           fullWidth
           variant="contained"
           color="secondary"
-          onClick={() => alert("Contact the developers")}
+          onClick={() => alert("Contact the developers.")}
         >
           Register
         </Button>

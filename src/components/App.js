@@ -140,8 +140,14 @@ export default class App extends React.Component {
   getCacheFromSessionStorage() {
     this.setState({ cache: JSON.parse(sessionStorage.getItem("cache")) }, () => {
         this.cachedCompanies = new Set( Object.keys(this.state.cache) );
-        //this.waitingList is updated accordingly in receiveCompanyNamesDuringStartup
+        //this.waitingList gets updated accordingly in receiveCompanyNamesDuringStartup
         this.companiesThisSession = new Set();
+
+        //timer2 is set at the end of cacheUpdater
+        //but if cache exists, then cacheUpdater isn't called as all companies are already cached
+        //then timer2 will not be set, which is a problem
+        //hence we run foll. func. after we get cache from session storage
+        this.startAdditionalTimers();
       }
     );
   }
@@ -205,16 +211,14 @@ export default class App extends React.Component {
       //below code disables the loading spinner when all companies prices
       //are done caching during startup
       if (this.state.isStartupSpinnerOn && this.waitingList.size === 0) {
-        this.setState({ isStartupSpinnerOn: false }, this.startAdditionalTimers());
+        this.setState({ isStartupSpinnerOn: false });
       }
 
-      //on the absolute first page load, after all companies prices are cached
-      //this turns on the additional timers
-      //this case is added when enabling/disabling the startup spinner is not done
-      //i.e. when pricefetching happens before user has logged in
-      if(this.companiesThisSession.size === 0 && this.waitingList.size === 0) {
+      //turn on timer2 during the first time cacheUpdater is called
+      if (this.timer2 === 0) {
         this.startAdditionalTimers();
       }
+
     })
   }
 
@@ -224,7 +228,7 @@ export default class App extends React.Component {
   //(ii) periodically calling the get_order_from_email API
   startAdditionalTimers = () => {
     this.timer2 = setInterval( () => {
-      //(i)
+      // (i)
       this.cachedCompanies.clear();
 
       //(ii)
@@ -235,6 +239,7 @@ export default class App extends React.Component {
           if (text === "Inserted") {alert(" New orders received from email. Refresh page to view changes.")}
         })
       )
+
     }, 300000);
   }
 
