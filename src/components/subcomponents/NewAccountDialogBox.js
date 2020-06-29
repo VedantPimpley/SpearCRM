@@ -78,17 +78,18 @@ export default class NewAccountDialogBox extends React.Component{
     //date and last_contact are sent as date objects
     //all other fields are sent as strings
 
-    const response = await fetch(`${API}/main/create_account`, {
+    fetch(`${API}/main/create_account`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newProfile)
-    });
-    
-    if (response.ok && this._isMounted) {
-      this.setState({ open:false });
-      this.props.updateAccounts();
-    }
+    })
+    .then( response => {
+      if (response.ok && this._isMounted) {
+        this.setState({ open:false });
+        this.props.updateAccounts();
+      }
+    })
   }
 
   render() {

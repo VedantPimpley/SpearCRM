@@ -96,17 +96,20 @@ export default class NewLeadDialogBox extends React.Component{
     const newLead = this.state;
     delete newLead.open;
     delete newLead.showMlFields;
-    const response = await fetch(`${API}/main/create_lead`, {
+
+    fetch(`${API}/main/create_lead`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newLead)
-    });
-    
-    if (response.ok && this._isMounted) {
-      this.setState({ open:false });
-      this.props.updateLeads();
-    }
+    })
+    .then(response => {
+      if (response.ok && this._isMounted) {
+        this.setState({ open:false });
+        this.props.updateLeads();
+      }
+    })
+    .catch( error => console.log(error))
   }
 
   render() {

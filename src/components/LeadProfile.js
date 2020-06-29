@@ -95,16 +95,18 @@ export default class LeadProfile extends React.Component {
   postFields = async () => {
     const leadDataObj = this.state.leadData;
     leadDataObj.dob = new Date( Date.parse(leadDataObj.dob) );
-    const response = await fetch(`${API}/main/edit_lead`, {
+    
+    fetch(`${API}/main/edit_lead`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(leadDataObj)
-    });
-    
-    if (response.ok) {
-      this.updateLeadDataAPICall();
-    }
+    })
+    .then( response => {
+      if (response.ok) {
+        this.updateLeadDataAPICall();
+      }
+    })
   }
 
   updateSpinnerInLeadProfile = (bool) => {

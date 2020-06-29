@@ -273,7 +273,7 @@ export default class App extends React.Component {
 
                   <div className="user-icon"> 
                     <LargeTooltip 
-                      title={jwtDecode(this.state.authToken).first_name + " " + jwtDecode(this.state.authToken).last_name} 
+                      title={"Logged in as: " + jwtDecode(this.state.authToken).first_name + " " + jwtDecode(this.state.authToken).last_name} 
                       arrow
                     >
                       <AccountCircleIcon fontSize="large" color="primary"/>

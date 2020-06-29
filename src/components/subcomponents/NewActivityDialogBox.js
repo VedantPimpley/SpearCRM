@@ -58,19 +58,25 @@ export default function NewActivityDialogBox(props) {
       "date": new Date( Date.parse(activityDate) ),
       "activity_type": "future",
     };
-    const response = await fetch(`${API}/main/create_activity`, {
+    
+    fetch(`${API}/main/create_activity`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(newActivity)
-    });
-    
-    if (response.ok) {
-      setActivityBody("");
-      setActivityTitle("");
-      props.updateDashboard()
-      .then( () => props.setOpenSpinnerInDashboard(false));
-    }
+    })
+    .then(response => {
+      if (response.ok) {
+        setActivityBody("");
+        setActivityTitle("");
+        props.updateDashboard();
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => props.setOpenSpinnerInDashboard(false))
   }
 
   return (

@@ -82,20 +82,27 @@ export default class PipelineNewOrderDialogBox extends React.Component{
     this.setState({ account_id: 0});
     this.setState({ trans_type: ""});
 
-    const response = await fetch(`${API}/main/create_order`, {
+    fetch(`${API}/main/create_order`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newOrder)
+    })
+    .then(response => {
+      if (response.ok && this._isMounted) {
+        this.props.updatePipeline();          
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => {
+      if (this._isMounted) {
+        this.setState({ open:false }); 
+        this.props.updateSpinner(false); 
+      }
     });
-    
-    if (response.ok && this._isMounted) {
-      this.props.updatePipeline()
-      .then( () => {
-        this.setState({ open:false });
-        this.props.updateSpinner(false);
-      });
-    }
   }
   
   render() {

@@ -38,43 +38,46 @@ export default class AccountProfileHeader extends React.Component {
 
     let postContents = {"account_id": this.props._id, "company": this.props.cache};
     
-    const response = await fetch(`${API}/main/complete_account_orders`, {
+    fetch(`${API}/main/complete_account_orders`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(postContents)
-    });
+    })
+    .then( response => {
+      if (response.ok) {
+        response.text().then( data => {
+          let str1 = "No companies to be transacted";
+          let str2 = "Send correct company";
 
-    if (response.ok) {
-      response.text().then( data => {
-        let str1 = "No companies to be transacted";
-        let str2 = "Send correct company";
-
-        if(data === str1) {
-          if (this._isMounted) {this.props.updateSpinner(false)};
-        }
-        else if (data === str2) {
-          if (this._isMounted) {this.props.updateSpinner(false)};
-        }
-        else {
-          fetch(`${API}/main/send_email_after_transaction`, {
-            method: "POST",
-            withCredentials: true,
-            headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
-            body: data
-          })
-          .then(() => 
-            this.props.updateAccountDataAndOrdersAndActivities()
-          )
-          .then(() => {
-            if(this._isMounted) {
-              this.props.updateSpinner(false);
-              this.setState({ openDialog: true});
-            }
-          });
-        }
-      })
-    }
+          if(data === str1) {
+            throw new Error("No companies to be transacted");
+          }
+          else if (data === str2) {
+            throw new Error("Send correct company");
+          }
+          else {
+            fetch(`${API}/main/send_email_after_transaction`, {
+              method: "POST",
+              withCredentials: true,
+              headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
+              body: data
+            })
+            .then(() => 
+              this.props.updateAccountDataAndOrdersAndActivities()
+            )
+            .then(() => {
+              if(this._isMounted) { this.setState({ openDialog: true}) }
+            });
+          }
+        })
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => {if (this._isMounted) {this.props.updateSpinner(false)}});
   }
 
   render() {

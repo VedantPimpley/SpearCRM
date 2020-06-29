@@ -132,16 +132,17 @@ export default class AccountProfile extends React.Component {
     //date and last_contact are sent as date objects
     //all other fields are sent as strings
 
-    const response = await fetch(`${API}/main/edit_account`, {
+    fetch(`${API}/main/edit_account`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(accountDataObj)
-    });
-    
-    if (response.ok) {
-      this.updateAccountDataAPICall();
-    }
+    })
+    .then(response => {
+      if (response.ok) {
+        this.updateAccountDataAPICall();
+      }
+    })
   }
 
   updateSpinnerInAccountProfile = (bool) => {

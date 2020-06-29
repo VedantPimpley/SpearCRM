@@ -62,19 +62,27 @@ export default function ActivityTracker(props) {
       "date": new Date( Date.parse(activityDate) ),
       "activity_type": activityType,
     };
-    const response = await fetch(`${API}/main/create_activity`, {
+
+    fetch(`${API}/main/create_activity`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(newActivity)
-    });
-    
-    if (response.ok && _isMounted.current) {
-      setActivityBody("");
-      setActivityTitle("");
-      props.updateActivities()
-      .then( ()=> props.updateSpinner(false));
-    }
+    })
+    .then( response => {
+      if (response.ok) {
+        if(_isMounted.current) {
+          setActivityBody("");
+          setActivityTitle("");
+          props.updateActivities();
+        }
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch(error => console.log(error))
+    .then( () => {if(_isMounted.current) {props.updateSpinner(false)}}) 
   }
 
   let ordersComponents = null;

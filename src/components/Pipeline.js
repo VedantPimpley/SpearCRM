@@ -154,27 +154,26 @@ export default class Pipeline extends React.Component {
       };
 
       // third attribute company (actually means price)
-      const response = await fetch(`${API}/main/order_stage_change`, {
+      fetch(`${API}/main/order_stage_change`, {
         method: "POST",
         withCredentials: true,
         headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
         body: JSON.stringify(newCardStage)
-      });
-      
-      if (response.ok) {
-        this.updatePipelineAPICall()
-        .then(() => {
-          if(this._isMounted) {
-            this.updateSpinnerInPipeline(false);
-          }
-        });
-      }
-      else if(response.ok === false && this._isMounted) {
-        this.forceUpdate();
-        alert("Server error encountered");
-        this.setState({ openSpinner: false});
-        //not using updateSpinnerInPipeline here to avoid delaying error
-      }
+      })
+      .then(response => {
+        if (response.ok) {
+          this.updatePipelineAPICall();
+        }
+        else if(response.ok === false && this._isMounted) {
+          this.forceUpdate();
+          throw new Error("Server error encountered");
+        }
+        else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .catch( error => console.log(error) )
+      .then( () => {if(this._isMounted) {this.updateSpinnerInPipeline(false)}})
     }
     else if(this._isMounted) {
       this.forceUpdate();
@@ -206,41 +205,42 @@ export default class Pipeline extends React.Component {
     let companyPrices = {company: this.props.cache};
 
     //POST the prices along with the request. The backend will use the stockprice data
-    const response = await fetch(`${API}/main/complete_all_orders`, {
+    fetch(`${API}/main/complete_all_orders`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
-    });
-    
-    if (response.ok) {
-      response.text().then( data => {
+    })
+    .then( response => {
+      if(response.ok) {
+        response.text().then( data => {
 
-        let str1 = "No companies to be transacted";
-        let str2 = "Send correct company";
+          let str1 = "No companies to be transacted";
+          let str2 = "Send correct company";
 
-        if(data === str1) {
-          if (this._isMounted) {this.updateSpinnerInPipeline(false)};
-        }
-        else if (data === str2) {
-          if (this._isMounted) {this.updateSpinnerInPipeline(false)};
-        }
-        else {
-          fetch(`${API}/main/send_email_after_transaction`, {
-            method: "POST",
-            withCredentials: true,
-            headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
-            body: data
-          })
-          .then(() => this.updatePipelineAPICall())
-          .then(() => {
-            if(this._isMounted) {
-              this.updateSpinnerInPipeline(false);
-            }
-          });
-        }
-      })
-    }
+          if(data === str1) {
+            throw new Error('No companies to be transacted');
+          }
+          else if (data === str2) {
+            throw new Error('Send correct company');
+          }
+          else {
+            fetch(`${API}/main/send_email_after_transaction`, {
+              method: "POST",
+              withCredentials: true,
+              headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
+              body: data
+            })
+            .then(() => this.updatePipelineAPICall())
+          }
+        })
+      }
+      else {
+        throw new Error('Something went wrong');
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => {if (this._isMounted) {this.updateSpinnerInPipeline(false)}})
   }
 
   //POSTs the stock prices of all companies to backend
@@ -252,19 +252,22 @@ export default class Pipeline extends React.Component {
     this.updateSpinnerInPipeline(true);
 
     let companyPrices = {company: this.props.cache};
-    const response = await fetch(`${API}/main/convert_finalized_orders`, {
+    fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
-    });
-
-    if (response.ok) {
-      this.updatePipelineAPICall()
-      .then(() => {
-        if(this._isMounted) {this.updateSpinnerInPipeline(false)};
-      });
-    }
+    })
+    .then(response => {
+      if(response.ok) {
+        this.updatePipelineAPICall();
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => { if(this._isMounted) {this.updateSpinnerInPipeline(false)} });
   }
 
   render() {

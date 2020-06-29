@@ -81,17 +81,22 @@ export default class UpcomingTasksWidget extends React.Component {
       "company" : this.props.cache,
     };
     
-		const response = await fetch(`${API}/main/change_activity_type`, {
+		fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
-		});
-
-		if (response.ok) {
-      this.props.updateDashboard()
-      .then( () => this.props.setOpenSpinnerInDashboard(false));
-		}
+		})
+    .then(response => {
+      if (response.ok) {
+        this.props.updateDashboard();
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => this.props.setOpenSpinnerInDashboard(false));
 	}
 	
 	deleteActivity = (activityId) => {

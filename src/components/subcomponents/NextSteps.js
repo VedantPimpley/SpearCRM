@@ -19,28 +19,32 @@ export default function NextSteps(props) {
       "company" : props.cache,
     };
 
-    const response = await fetch(`${API}/main/change_activity_type`, {
+    fetch(`${API}/main/change_activity_type`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(activityToTransition)
-    });
-
-    if (response.ok) {
-      if (isAiActivity && props.lead === 0) {
-        props.updateAccountDataAndOrdersAndActivities()
-        .then( () => props.updateSpinner(false))
+    })
+    .then(response => {
+      if(response.ok) {
+        if (isAiActivity && props.lead === 0) {
+          props.updateAccountDataAndOrdersAndActivities()
+        }
+        //isAiActivity is 1 for activities generated through automation. 
+        //Deleting an AI generated activity might involve deletion of corresponding order and updating activity data
+        //props.lead indicates the grandparent page. prop.lead===0 being true means AccountProfile is the grandparent.
+        else {
+          props.updateActivities()
+        }
+        //User generated activities can be deleted without updating orders and activities.
+        //an AI generated activity can cause wider changes than user generated activity upon transition.
       }
-      //isAiActivity is 1 for activities generated through automation. 
-      //Deleting an AI generated activity might involve deletion of corresponding order and updating activity data
-      //props.lead indicates the grandparent page. prop.lead===0 being true means AccountProfile is the grandparent.
       else {
-        props.updateActivities()
-        .then( () => props.updateSpinner(false))
+        throw new Error("Something went wrong");
       }
-      //User generated activities can be deleted without updating orders and activities.
-      //an AI generated activity can cause wider changes than user generated activity upon transition.
-    }
+    })
+    .catch( error => console.log(error))
+    .then(() => props.updateSpinner(false));
   }
 
   const deleteActivity = (activityId, isAiActivity) => {

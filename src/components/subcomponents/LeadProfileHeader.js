@@ -57,23 +57,23 @@ export default class LeadProfileHeader extends React.Component {
       last_contact: new Date(),
     }
 
-    const response = await fetch(`${API}/main/convert_lead_to_account`, {
+    fetch(`${API}/main/convert_lead_to_account`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(fields)
-    });
-
-    if (response.ok && this._isMounted) {
-      this.setState({ open:false });
-      this.setState({ submitted: true });
-
-      response.text().then( text => {
-        if(this._isMounted) {
-          this.setState({ newId: text });
-        }
-      });
-    }
+    })
+    .then( response => {
+      if (response.ok && this._isMounted) {
+        this.setState({ open:false });
+        this.setState({ submitted: true });
+        response.text().then( text => this.setState({ newId: text }) )
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))    
   };
 
   handleChange = (event) => {

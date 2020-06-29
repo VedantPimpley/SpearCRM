@@ -57,19 +57,19 @@ export default class NewOrderDialogBox extends React.Component{
     newOrder.no_of_shares = parseInt(this.state.no_of_shares);
     delete newOrder.open;
 
-    const response = await fetch(`${API}/main/create_order`, {
+    fetch(`${API}/main/create_order`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + this.context, 'Content-Type': 'application/json'},
       body: JSON.stringify(newOrder)
-    });
-    
-    if (response.ok) {
-      if (this._isMounted) {
-        this.setState({ open:false });
+    })
+    .then(response => {
+      if (response.ok) {
+        if (this._isMounted) { this.setState({ open:false }) }
+        this.props.updateAccountDataAndOrders();
       }
-      this.props.updateAccountDataAndOrders();
-    }
+    })
+    .catch( error => console.log(error));
   }
   
   render() {

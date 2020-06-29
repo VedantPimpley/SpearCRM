@@ -53,17 +53,22 @@ export default function OrdersDisplay (props) {
 
     let companyPrices = {company: props.cache};
 
-    const response = await fetch(`${API}/main/convert_finalized_orders`, {
+    fetch(`${API}/main/convert_finalized_orders`, {
       method: "POST",
       withCredentials: true,
       headers: {'Authorization' : 'Bearer ' + authToken, 'Content-Type': 'application/json'},
       body: JSON.stringify(companyPrices)
-    });
-    
-    if (response.ok && _isMounted) {
-      props.updateAccountDataAndOrdersAndActivities()
-      .then( () => props.updateSpinner(false) );
-    }
+    })
+    .then(response => {
+      if (response.ok && _isMounted) {
+        props.updateAccountDataAndOrdersAndActivities()
+      }
+      else {
+        throw new Error("Something went wrong");
+      }
+    })
+    .catch( error => console.log(error))
+    .then( () => {if (_isMounted) {props.updateSpinner(false)}} );
   }
 
   return (
