@@ -12,7 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import {Link} from 'react-router-dom';
 import AuthContext from '../Other/AuthContext.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default class LeadProfileHeader extends React.Component {
   state = {

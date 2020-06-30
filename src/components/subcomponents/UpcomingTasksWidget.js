@@ -9,7 +9,7 @@ import {convertIsoDateToDateString} from "../Other/helper.js"
 import MenuItem from '@material-ui/core/MenuItem';
 import '../styles/UpcomingTasksWidget.css'
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default class UpcomingTasksWidget extends React.Component {
   state = {

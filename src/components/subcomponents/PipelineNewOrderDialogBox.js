@@ -14,7 +14,7 @@ import '../styles/NewOrderDialogBox.css';
 import AuthContext from '../Other/AuthContext.js';
 import { prepareGETOptions } from '../Other/helper.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default class PipelineNewOrderDialogBox extends React.Component{
   state = {

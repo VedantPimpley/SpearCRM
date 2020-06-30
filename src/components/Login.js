@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import AuthContext from './Other/AuthContext.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 const useStyles = makeStyles((theme) => ({
   paper: {

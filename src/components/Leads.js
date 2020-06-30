@@ -13,7 +13,7 @@ import NewLeadDialogBox from './subcomponents/NewLeadDialogBox'
 import './styles/Accounts.css' //both Accounts and Leads pages have the same styling
 
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default class Leads extends React.Component {
   state = {

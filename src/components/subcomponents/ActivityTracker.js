@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import EmailIcon from '@material-ui/icons/Email';
 import AuthContext from '../Other/AuthContext.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default function ActivityTracker(props) {
   const [activityType, setActivityType] = useState("past"); //past or future

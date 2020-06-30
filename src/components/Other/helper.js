@@ -1,6 +1,6 @@
 import { withStyles } from "@material-ui/core/styles";
 import { Tooltip } from '@material-ui/core';
-const stocksAPI = process.env.REACT_APP_STOCKS_KEY || "brhln8nrh5ra2pui7160";
+const stocksAPI = process.env.REACT_APP_STOCKS_KEY;
 
 //Javascript Set operations
 export const setDifference = (setA, setB) => {

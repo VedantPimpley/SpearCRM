@@ -23,7 +23,7 @@ import Button from '@material-ui/core/Button';
 import jwtDecode from 'jwt-decode';
 import './styles/App.css';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com";
+const API = process.env.REACT_APP_API;
 
 export default class App extends React.Component {
   state = {

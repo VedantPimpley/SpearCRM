@@ -13,7 +13,7 @@ import NewAccountDialogBox from './subcomponents/NewAccountDialogBox'
 import AuthContext from './Other/AuthContext.js';
 import { prepareGETOptions } from './Other/helper.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default class Accounts extends React.Component {
   state = {

@@ -9,7 +9,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { prepareGETOptions } from './Other/helper.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default function Dashboard(props) {
 	const [topLeads, setTopLeads] = useState([]);

@@ -20,7 +20,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import AuthContext from '../Other/AuthContext.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default function NewActivityDialogBox(props) {
   const [activityTitle, setActivityTitle] = useState("");

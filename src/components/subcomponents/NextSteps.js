@@ -6,7 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import AuthContext from '../Other/AuthContext.js';
 import { prepareGETOptions } from '../Other/helper.js';
 
-const API = process.env.REACT_APP_API || "https://ancient-mountain-97216.herokuapp.com"
+const API = process.env.REACT_APP_API;
 
 export default function NextSteps(props) {
   const authToken = useContext(AuthContext);
