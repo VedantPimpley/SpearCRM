@@ -193,8 +193,8 @@ export default function OrdersDisplay (props) {
 
                   let costProduct = (
                     isNaN(order.cost_of_share*order.no_of_shares) ?
-                    `${order.no_of_shares} X ${order.cost_of_share}`:
-                    `${Math.floor( order.cost_of_share*order.no_of_shares )} (${order.no_of_shares} X ${order.cost_of_share})`
+                    `${order.no_of_shares} X Rs. ${order.cost_of_share}`:
+                    `${Math.floor( order.cost_of_share*order.no_of_shares )} (${order.no_of_shares} X Rs. ${order.cost_of_share})`
                   )
                   
                   return(

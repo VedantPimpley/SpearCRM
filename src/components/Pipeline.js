@@ -105,7 +105,13 @@ export default class Pipeline extends React.Component {
       else {
         entry.description = `Buy stocks for ${entry.name}`;
       }
-      entry.label = `${entry.no_of_shares} X ${entry.cost_of_share}`;
+      
+      if (entry.stage === 0) {
+        entry.label = `${entry.no_of_shares} X Rs. ${entry.cost_of_share}`;
+      }
+      else {
+        entry.label = `${entry.no_of_shares} X ${entry.cost_of_share}`;
+      }
       entry.metadata = {account_id: entry.account_id}
     });
 

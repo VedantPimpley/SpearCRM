@@ -3,6 +3,7 @@
 	text-align: center;
 	font-weight: 600;
 	font-size: 28px;
+	font-family: "Helvetica";
 	min-height: 43px;
 	height: 10%;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
@@ -59,6 +60,8 @@ li:last-child {
 .new-task-button{
 	float:right;
 	padding-right: 10px;
+	top:-5px;
+	position: relative;
 }
 
 input.largerCheckbox { 

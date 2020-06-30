@@ -261,7 +261,7 @@ class LineChart extends React.Component {
 			},
 			data: [{
 				type: "line",
-				toolTipContent: "Month {x}: Rs. {y}",
+				toolTipContent: "Month {x}: {y}",
 				dataPoints: this.transformOrdersToDataPoints(this.props.lineChartData)
 			}]
 		}
