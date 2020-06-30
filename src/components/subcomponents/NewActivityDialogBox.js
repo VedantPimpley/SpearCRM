@@ -81,7 +81,7 @@ export default function NewActivityDialogBox(props) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen} >
         +
       </Button>
 

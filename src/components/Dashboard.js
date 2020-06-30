@@ -180,16 +180,28 @@ class PieChart extends React.Component {
   render() {
     return (
       <div className="pieChartContainer">
-        <div style={{ margin: "auto", fontSize: 28, fontWeight:600, textAlign: "center"}}>
+        <div 
+          style={{ 
+            margin: "auto", 
+            fontSize: 28, 
+            fontWeight:600, 
+            textAlign: "center", 
+            fontFamily:'Helvetica', 
+            paddingTop: 0, 
+            color: "rgba(0,0,0,0.8)",
+            height: "10%"
+          }}
+        >
           Snapshot of Pipeline orders
         </div>
+
         <Chart
           chartType = "PieChart"
           data = {this.transformOrdersToDataPoints(this.props.pieChartData)}
           options = {pieOptions}
           graph_id = "Distribution of orders currently"
-          width = {"95%"}
           height = {"90%"}
+          width = {"99%"} //sizing errors occur at 100%
           legend_toggle
         />
       </div>
@@ -232,7 +244,10 @@ class LineChart extends React.Component {
 			exportEnabled: true,
 			theme: "light2",
 			title:{
-				text: "Revenue generated"
+        text: "Revenue generated",
+        fontSize: 28,
+        fontFamily: "Helvetica",
+        color: "rgba(0,0,0,0.8)"
 			},
 			axisY: {
 				title: "Revenue (in Rs.)",

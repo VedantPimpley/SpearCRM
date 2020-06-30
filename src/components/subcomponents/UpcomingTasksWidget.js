@@ -113,7 +113,7 @@ export default class UpcomingTasksWidget extends React.Component {
         <div className="upcoming-tasks-widget">
 
           <div className='tasks-widget-title'> 
-  					&nbsp; Upcoming Tasks 
+  					<span style={{ paddingLeft: 75 }}> Upcoming Tasks  </span>
   					<span className="new-task-button"> 
               <NewActivityDialogBox 
                 updateDashboard = {this.props.updateDashboard} 
