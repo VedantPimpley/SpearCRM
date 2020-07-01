@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import './styles/Dashboard.css';
+import './styles/Home.css';
 import Chart from 'react-google-charts';
 import CanvasJSReact from './Other/canvasjs.react';
 import TopOpportunitiesWidget from './subcomponents/TopOpportunitiesWidget.js';
@@ -10,8 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { prepareGETOptions } from './Other/helper.js';
 
 const API = process.env.REACT_APP_API;
-
-export default function Dashboard(props) {
+export default function Home(props) {
 	const [topLeads, setTopLeads] = useState([]);
 	const [topAccounts, setTopAccounts] = useState([]);
 	const [allActivities, setAllActivities] = useState([]);
@@ -43,7 +42,7 @@ export default function Dashboard(props) {
     return () => _isMounted.current = false;
 	}, [authToken]);
 
-	const updateDashboardAPICall = async () => {
+	const updateHomeAPICall = async () => {
 		Promise.all([
       fetch(`${API}/main/top_leads`, prepareGETOptions(authToken)),
       fetch(`${API}/main/top_accounts`, prepareGETOptions(authToken)),
@@ -62,7 +61,7 @@ export default function Dashboard(props) {
 		})
   }
   
-  const setOpenSpinnerInDashboard = bool => {
+  const setOpenSpinnerInHome = bool => {
     //we introduce delay when turning off spinner, but not when turning it on
     if (bool) {
       setOpenSpinner(bool);
@@ -91,10 +90,10 @@ export default function Dashboard(props) {
       />
 			
       <UpcomingTasksWidget 
-				updateDashboard = {updateDashboardAPICall}
+				updateHome = {updateHomeAPICall}
         activitiesList = {allActivities.filter( activity => activity["activity_type"] === "future" )}
         cache = {props.cache}
-        setOpenSpinnerInDashboard = {setOpenSpinnerInDashboard}
+        setOpenSpinnerInHome = {setOpenSpinnerInHome}
 			/>
 
       <Backdrop className="spinner-backdrop" open={openSpinner}>
