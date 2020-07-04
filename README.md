@@ -14,5 +14,7 @@ Technologies used:
 * springload/segmented-control
 
 Full showcase: [Youtube Link](https://youtu.be/PNviqti7bls)
+
 Full Project Repository: https://github.com/raneamol/SpearCRM
+
 Backend Repository: https://github.com/raneamol/stockbroker_crm_backend
