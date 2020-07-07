@@ -13,7 +13,7 @@ Technologies used:
 * yarn
 * springload/segmented-control
 
-Full showcase: [Youtube Link](https://youtu.be/PNviqti7bls)
+Full showcase: [Youtube Link](https://youtu.be/cxEaOhCAtX8)
 
 Full Project Repository: https://github.com/raneamol/SpearCRM
 
