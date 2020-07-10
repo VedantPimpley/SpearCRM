@@ -12,3 +12,9 @@ Technologies used:
 * CanvasJS React Charts
 * yarn
 * springload/segmented-control
+
+Full showcase: [Youtube Link](https://youtu.be/cxEaOhCAtX8)
+
+Full Project Repository: https://github.com/raneamol/SpearCRM
+
+Backend Repository: https://github.com/raneamol/stockbroker_crm_backend
