@@ -144,6 +144,7 @@ export default class Pipeline extends React.Component {
     if (fromLaneId === toLaneId){
       return null;
     }
+
     else if(     
       //these are the only permissible drag-and-drop transitions
          (fromLaneId === 1 && toLaneId === 2)
@@ -181,6 +182,7 @@ export default class Pipeline extends React.Component {
       .catch( error => console.log(error) )
       .then( () => {if(this._isMounted) {this.updateSpinnerInPipeline(false)}})
     }
+    
     else if(this._isMounted) {
       this.forceUpdate();
       alert("This kind of drag-and-drop is not allowed.")
@@ -188,14 +190,20 @@ export default class Pipeline extends React.Component {
   }
 
   deleteCard = (cardId, laneId) => {
-    this.updateSpinnerInPipeline(true);
-    fetch(`${API}/main/delete_order/${cardId}`, prepareGETOptions(this.context))
-    .then( () => this.updatePipelineAPICall() )
-    .then( () => {
-      if(this._isMounted) {
-        this.updateSpinnerInPipeline(false)
-      }
-    });
+    if (laneId === 0) {
+      this.forceUpdate();
+      alert("Transacted orders cannot be deleted.");
+    }
+    else {
+      this.updateSpinnerInPipeline(true);
+      fetch(`${API}/main/delete_order/${cardId}`, prepareGETOptions(this.context))
+      .then( () => this.updatePipelineAPICall() )
+      .then( () => {
+        if(this._isMounted) {
+          this.updateSpinnerInPipeline(false)
+        }
+      });
+    }
   }
 
   linkToAccountProfile = (cardId, metadata, laneId) => {
