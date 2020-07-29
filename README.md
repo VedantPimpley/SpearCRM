@@ -31,6 +31,7 @@ Hence, SpearCRM condenses the most important features into a user-friendly inter
 
 ### Related material:
 **Main, combined Repository**: [https://github.com/raneamol/SpearCRM](https://github.com/raneamol/SpearCRM)
+
 Individual Backend Repository: [https://github.com/raneamol/stockbroker_crm_backend](https://github.com/raneamol/stockbroker_crm_backend)
 
 Extended video showcase: [Youtube link](https://youtu.be/cxEaOhCAtX8)
